@@ -10,7 +10,8 @@ public class Soldat : MonoBehaviour {
     public Sprite imageFace;
     public Sprite imageDos;
     public Sprite imageGauche;
-    public Sprite imageDroite; 
+    public Sprite imageDroite;
+    public Element element;
     private int vie;
     private int etape;
     private pointPassage objectif;
@@ -93,6 +94,11 @@ public class Soldat : MonoBehaviour {
         {
             meurt();
         }
+    }
+
+    void degat(int dgt)
+    {
+        vie -= dgt;
     }
 
     void gagne()
