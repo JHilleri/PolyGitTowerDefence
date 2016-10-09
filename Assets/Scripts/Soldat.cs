@@ -7,9 +7,14 @@ public class Soldat : MonoBehaviour {
     public int vieMax;
     public float vitesse;
     public float marge;
+    public Sprite imageFace;
+    public Sprite imageDos;
+    public Sprite imageGauche;
+    public Sprite imageDroite; 
     private int vie;
     private int etape;
     private pointPassage objectif;
+    private SpriteRenderer spriteRenderer;
     private float distanceX;
     private float distanceY;
     private float distance;
@@ -21,7 +26,8 @@ public class Soldat : MonoBehaviour {
         etape = 0;
         objectif = null;
         vie = vieMax;
-	}
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -60,6 +66,28 @@ public class Soldat : MonoBehaviour {
         else
         {
             transform.Translate(vitesseX, vitesseY, 0);
+            if(Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
+            {
+                if (vitesseX > 0)
+                {
+                    spriteRenderer.sprite = imageDroite;
+                }
+                else
+                {
+                    spriteRenderer.sprite = imageGauche;
+                }
+            }
+            else
+            {
+                if(vitesseY > 0)
+                {
+                    spriteRenderer.sprite = imageDos;
+                }
+                else
+                {
+                    spriteRenderer.sprite = imageFace;
+                }
+            }
         }
         if(vie <= 0)
         {
