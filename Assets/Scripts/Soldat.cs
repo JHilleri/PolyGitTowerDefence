@@ -16,6 +16,7 @@ public class Soldat : MonoBehaviour {
     private int etape;
     private pointPassage objectif;
     private SpriteRenderer spriteRenderer;
+    private float oldDistance;
     private float distanceX;
     private float distanceY;
     private float distance;
@@ -59,7 +60,7 @@ public class Soldat : MonoBehaviour {
         distanceX = objectif.transform.position.x - transform.position.x;
         distanceY = objectif.transform.position.y - transform.position.y;
         distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
-        if(distance < marge)
+        if(distance < marge || distance > oldDistance)
         {
             etape++;
             objectif = null;
@@ -90,6 +91,7 @@ public class Soldat : MonoBehaviour {
                 }
             }
         }
+        oldDistance = distance;
         if(vie <= 0)
         {
             meurt();
