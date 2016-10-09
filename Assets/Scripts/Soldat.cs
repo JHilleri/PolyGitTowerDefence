@@ -8,14 +8,19 @@ public class Soldat : MonoBehaviour {
     public float vitesse;
     public float marge;
     public Sprite imageFace;
+    public Sprite imageFaceCouleur;
     public Sprite imageDos;
+    public Sprite imageDosCouleur;
     public Sprite imageGauche;
+    public Sprite imageGaucheCouleur;
     public Sprite imageDroite;
+    public Sprite imageDroiteCouleur;
     public Element element;
     private int vie;
     private int etape;
     private pointPassage objectif;
     private SpriteRenderer spriteRenderer;
+    private SpriteRenderer colorSpriteRenderer;
     private float oldDistance;
     private float distanceX;
     private float distanceY;
@@ -29,6 +34,8 @@ public class Soldat : MonoBehaviour {
         objectif = null;
         vie = vieMax;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        colorSpriteRenderer.color = element.couleur;
     }
 	
 	// Update is called once per frame
@@ -74,10 +81,12 @@ public class Soldat : MonoBehaviour {
                 if (vitesseX > 0)
                 {
                     spriteRenderer.sprite = imageDroite;
+                    colorSpriteRenderer.sprite = imageDroiteCouleur;
                 }
                 else
                 {
                     spriteRenderer.sprite = imageGauche;
+                    colorSpriteRenderer.sprite = imageGaucheCouleur;
                 }
             }
             else
@@ -85,10 +94,12 @@ public class Soldat : MonoBehaviour {
                 if(vitesseY > 0)
                 {
                     spriteRenderer.sprite = imageDos;
+                    colorSpriteRenderer.sprite = imageDosCouleur;
                 }
                 else
                 {
                     spriteRenderer.sprite = imageFace;
+                    colorSpriteRenderer.sprite = imageFaceCouleur;
                 }
             }
         }
