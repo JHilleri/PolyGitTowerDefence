@@ -46,6 +46,7 @@ public class Soldat : MonoBehaviour {
                     distanceX = objectif.transform.position.x - transform.position.x;
                     distanceY = objectif.transform.position.y - transform.position.y;
                     distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+                    oldDistance = distance;
                     vitesseX = (distanceX / distance) * vitesse;
                     vitesseY = (distanceY / distance) * vitesse;
                     found = true;
