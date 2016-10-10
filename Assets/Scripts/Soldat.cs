@@ -65,48 +65,51 @@ public class Soldat : MonoBehaviour {
                 gagne();
             }
         }
-        distanceX = objectif.transform.position.x - transform.position.x;
-        distanceY = objectif.transform.position.y - transform.position.y;
-        distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
-        if(distance < marge || distance > oldDistance)
+        if (transform != null && objectif != null)
         {
-            etape++;
-            objectif = null;
-        }
-        else
-        {
-            transform.Translate(vitesseX, vitesseY, 0);
-            if(Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
+            distanceX = objectif.transform.position.x - transform.position.x;
+            distanceY = objectif.transform.position.y - transform.position.y;
+            distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+            if (distance < marge || distance > oldDistance)
             {
-                if (vitesseX > 0)
-                {
-                    spriteRenderer.sprite = imageDroite;
-                    colorSpriteRenderer.sprite = imageDroiteCouleur;
-                }
-                else
-                {
-                    spriteRenderer.sprite = imageGauche;
-                    colorSpriteRenderer.sprite = imageGaucheCouleur;
-                }
+                etape++;
+                objectif = null;
             }
             else
             {
-                if(vitesseY > 0)
+                transform.Translate(vitesseX, vitesseY, 0);
+                if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
                 {
-                    spriteRenderer.sprite = imageDos;
-                    colorSpriteRenderer.sprite = imageDosCouleur;
+                    if (vitesseX > 0)
+                    {
+                        spriteRenderer.sprite = imageDroite;
+                        colorSpriteRenderer.sprite = imageDroiteCouleur;
+                    }
+                    else
+                    {
+                        spriteRenderer.sprite = imageGauche;
+                        colorSpriteRenderer.sprite = imageGaucheCouleur;
+                    }
                 }
                 else
                 {
-                    spriteRenderer.sprite = imageFace;
-                    colorSpriteRenderer.sprite = imageFaceCouleur;
+                    if (vitesseY > 0)
+                    {
+                        spriteRenderer.sprite = imageDos;
+                        colorSpriteRenderer.sprite = imageDosCouleur;
+                    }
+                    else
+                    {
+                        spriteRenderer.sprite = imageFace;
+                        colorSpriteRenderer.sprite = imageFaceCouleur;
+                    }
                 }
             }
-        }
-        oldDistance = distance;
-        if(vie <= 0)
-        {
-            meurt();
+            oldDistance = distance;
+            if (vie <= 0)
+            {
+                meurt();
+            }
         }
     }
 
