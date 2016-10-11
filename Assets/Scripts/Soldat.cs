@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts;
+using System;
 
-public class Soldat : MonoBehaviour {
+public class Soldat : MonoBehaviour, Pausable{
 
     public int chemin;
     public int vieMax;
@@ -27,6 +29,7 @@ public class Soldat : MonoBehaviour {
     private float distance;
     private float vitesseX;
     private float vitesseY;
+    private bool paused;
 
 	// Use this for initialization
 	void Start () {
@@ -40,75 +43,78 @@ public class Soldat : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (objectif == null)
+        if (!paused)
         {
-            pointPassage[] points = Object.FindObjectsOfType<pointPassage>();
-            bool found = false;
-            int indexPoints = 0;
-            while(indexPoints < points.Length && !found)
+            if (objectif == null)
             {
-                if (points[indexPoints].numeroChemin == chemin && points[indexPoints].ordre == etape)
+                pointPassage[] points = UnityEngine.Object.FindObjectsOfType<pointPassage>();
+                bool found = false;
+                int indexPoints = 0;
+                while (indexPoints < points.Length && !found)
                 {
-                    objectif = points[indexPoints];
-                    distanceX = objectif.transform.position.x - transform.position.x;
-                    distanceY = objectif.transform.position.y - transform.position.y;
-                    distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
-                    oldDistance = distance;
-                    vitesseX = (distanceX / distance) * vitesse;
-                    vitesseY = (distanceY / distance) * vitesse;
-                    found = true;
+                    if (points[indexPoints].numeroChemin == chemin && points[indexPoints].ordre == etape)
+                    {
+                        objectif = points[indexPoints];
+                        distanceX = objectif.transform.position.x - transform.position.x;
+                        distanceY = objectif.transform.position.y - transform.position.y;
+                        distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+                        oldDistance = distance;
+                        vitesseX = (distanceX / distance) * vitesse;
+                        vitesseY = (distanceY / distance) * vitesse;
+                        found = true;
+                    }
+                    indexPoints++;
                 }
-                indexPoints++;
-            }
-            if (!found)
-            {
-                gagne();
-            }
-        }
-        if (transform != null && objectif != null)
-        {
-            distanceX = objectif.transform.position.x - transform.position.x;
-            distanceY = objectif.transform.position.y - transform.position.y;
-            distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
-            if (distance < marge || distance > oldDistance)
-            {
-                etape++;
-                objectif = null;
-            }
-            else
-            {
-                transform.Translate(vitesseX, vitesseY, 0);
-                if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
+                if (!found)
                 {
-                    if (vitesseX > 0)
-                    {
-                        spriteRenderer.sprite = imageDroite;
-                        colorSpriteRenderer.sprite = imageDroiteCouleur;
-                    }
-                    else
-                    {
-                        spriteRenderer.sprite = imageGauche;
-                        colorSpriteRenderer.sprite = imageGaucheCouleur;
-                    }
+                    gagne();
+                }
+            }
+            if (transform != null && objectif != null)
+            {
+                distanceX = objectif.transform.position.x - transform.position.x;
+                distanceY = objectif.transform.position.y - transform.position.y;
+                distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+                if (distance < marge || distance > oldDistance)
+                {
+                    etape++;
+                    objectif = null;
                 }
                 else
                 {
-                    if (vitesseY > 0)
+                    transform.Translate(vitesseX, vitesseY, 0);
+                    if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
                     {
-                        spriteRenderer.sprite = imageDos;
-                        colorSpriteRenderer.sprite = imageDosCouleur;
+                        if (vitesseX > 0)
+                        {
+                            spriteRenderer.sprite = imageDroite;
+                            colorSpriteRenderer.sprite = imageDroiteCouleur;
+                        }
+                        else
+                        {
+                            spriteRenderer.sprite = imageGauche;
+                            colorSpriteRenderer.sprite = imageGaucheCouleur;
+                        }
                     }
                     else
                     {
-                        spriteRenderer.sprite = imageFace;
-                        colorSpriteRenderer.sprite = imageFaceCouleur;
+                        if (vitesseY > 0)
+                        {
+                            spriteRenderer.sprite = imageDos;
+                            colorSpriteRenderer.sprite = imageDosCouleur;
+                        }
+                        else
+                        {
+                            spriteRenderer.sprite = imageFace;
+                            colorSpriteRenderer.sprite = imageFaceCouleur;
+                        }
                     }
                 }
-            }
-            oldDistance = distance;
-            if (vie <= 0)
-            {
-                meurt();
+                oldDistance = distance;
+                if (vie <= 0)
+                {
+                    meurt();
+                }
             }
         }
     }
@@ -126,5 +132,15 @@ public class Soldat : MonoBehaviour {
     void meurt()
     {
         Destroy(transform.root.gameObject);
+    }
+
+    public void OnPauseGame()
+    {
+        paused = true;
+    }
+
+    public void OnResumeGame()
+    {
+        paused = false;
     }
 }
