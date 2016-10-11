@@ -20,7 +20,7 @@ public class Soldat : MonoBehaviour, Pausable{
     public Element element;
     private int vie;
     private int etape;
-    private pointPassage objectif;
+    private PointPassage objectif;
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
     private float oldDistance;
@@ -47,7 +47,7 @@ public class Soldat : MonoBehaviour, Pausable{
         {
             if (objectif == null)
             {
-                pointPassage[] points = UnityEngine.Object.FindObjectsOfType<pointPassage>();
+                PointPassage[] points = UnityEngine.Object.FindObjectsOfType<PointPassage>();
                 bool found = false;
                 int indexPoints = 0;
                 while (indexPoints < points.Length && !found)
@@ -119,7 +119,7 @@ public class Soldat : MonoBehaviour, Pausable{
         }
     }
 
-    void degat(int dgt)
+    public void degat(int dgt)
     {
         vie -= dgt;
     }

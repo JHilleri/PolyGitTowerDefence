@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class pointPassage : MonoBehaviour {
+public class PointPassage : MonoBehaviour {
 
     public int numeroChemin;
     public int ordre;
