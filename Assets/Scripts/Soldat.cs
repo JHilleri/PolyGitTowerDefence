@@ -126,12 +126,12 @@ public class Soldat : MonoBehaviour, Pausable{
 
     void gagne()
     {
-        Destroy(transform.root.gameObject);
+        Destroy(gameObject);
     }
 
     void meurt()
     {
-        Destroy(transform.root.gameObject);
+        Destroy(gameObject);
     }
 
     public void OnPauseGame()
