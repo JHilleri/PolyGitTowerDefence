@@ -9,7 +9,7 @@ public class Soldat : MonoBehaviour, Pausable{
     public int chemin; // numero du chemin suivi par ce Soldat
     public float vieMax; // Vie max du soldat
     public int tempsRecharge; // nombre de frames entre chaque attaque
-    public int degats; // degat causé par chaque attaque
+    public float degats; // degat causé par chaque attaque
     public float portee; // portee des attaques
     public float detect; // portee de detection
     public float vitesse; // vitesse de déplacement du soldat
@@ -80,7 +80,7 @@ public class Soldat : MonoBehaviour, Pausable{
                         pCible = sol;
                     }
                 }
-                if (pCible != null && (dist < detect))
+                if (pCible != null && (minDist < detect))
                 {
                     cible = pCible;
                     objectif = null;
