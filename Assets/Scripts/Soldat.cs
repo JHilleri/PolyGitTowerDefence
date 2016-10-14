@@ -5,6 +5,7 @@ using System;
 
 public class Soldat : MonoBehaviour, Pausable{
 
+    public int camp; // 1 = gauche 2 = droite
     public int chemin;
     public int vieMax;
     public float vitesse;
@@ -33,7 +34,14 @@ public class Soldat : MonoBehaviour, Pausable{
 
 	// Use this for initialization
 	void Start () {
-        etape = 0;
+        if (camp == 1)
+        {
+            etape = 0;
+        }
+        else
+        {
+            etape = pointMax(chemin);
+        }
         objectif = null;
         vie = vieMax;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -77,7 +85,14 @@ public class Soldat : MonoBehaviour, Pausable{
                 distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
                 if (distance < marge || distance > oldDistance)
                 {
-                    etape++;
+                    if(camp == 1)
+                    {
+                        etape++;
+                    }
+                    else
+                    {
+                        etape--;
+                    }
                     objectif = null;
                 }
                 else
@@ -117,6 +132,20 @@ public class Soldat : MonoBehaviour, Pausable{
                 }
             }
         }
+    }
+
+    int pointMax (int chemin)
+    {
+        PointPassage[] points = UnityEngine.Object.FindObjectsOfType<PointPassage>();
+        int max = 0;
+        foreach(PointPassage point in points)
+        {
+            if (point.numeroChemin == chemin && point.ordre > max)
+            {
+                max = point.ordre;
+            }
+        }
+        return max;
     }
 
     public void degat(int dgt)
