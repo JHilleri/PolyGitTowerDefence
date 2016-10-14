@@ -4,6 +4,7 @@ using System.Collections;
 public class Projectile : MonoBehaviour {
 
     public int dgt;
+    public int camp;
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +19,7 @@ public class Projectile : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         Soldat soldat = other.gameObject.GetComponent<Soldat>();
-        if (soldat != null)
+        if (soldat != null && soldat.camp != camp)
         {
             soldat.degat(dgt);
             Destroy(gameObject);

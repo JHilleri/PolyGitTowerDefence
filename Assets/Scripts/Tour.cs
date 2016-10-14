@@ -7,7 +7,7 @@ public class Tour : MonoBehaviour {
 
     public GameObject cible;
     public GameObject projectile;
-    public bool camp; // définie le camp auquel la tour appartient 0 -> toi, 1 -> l'IA
+    public int camp; // définie le camp auquel la tour appartient 1 -> gauche, 2 -> droite
     public Element element;
     public Sprite image;
     public Sprite imageCouleur;
@@ -42,12 +42,12 @@ public class Tour : MonoBehaviour {
                     Soldat[] cibles = UnityEngine.Object.FindObjectsOfType<Soldat>();
                     if (cibles.Length >= 1)
                     {
-                        cible = cibles[0].gameObject;
-                        float minDist = distance(cible);
+                        cible = null;
+                        float minDist = -1;
                         foreach (Soldat pCible in cibles)
                         {
                             float dist = distance(pCible.gameObject);
-                            if (dist < minDist)
+                            if (pCible.camp != camp && (minDist == -1 || dist < minDist))
                             {
                                 cible = pCible.gameObject;
                                 minDist = dist;
@@ -80,6 +80,8 @@ public class Tour : MonoBehaviour {
         GameObject proj = Instantiate(projectile);
         DeplacementProjectile script = proj.GetComponent<DeplacementProjectile>();
         proj.transform.position = transform.position;
+        Projectile projScript = proj.GetComponent<Projectile>();
+        projScript.camp = camp;
         script.objX = cible.transform.position.x;
         script.objY = cible.transform.position.y;
         script.speed = projectSpeed;

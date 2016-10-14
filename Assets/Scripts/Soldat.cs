@@ -144,11 +144,7 @@ public class Soldat : MonoBehaviour, Pausable{
                     distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
                     if (distance < portee)
                     {
-                        if (cooldown > 0)
-                        {
-                            cooldown--;
-                        }
-                        else
+                        if (cooldown <= 0)
                         {
                             attaque(cible);
                         }
@@ -194,6 +190,10 @@ public class Soldat : MonoBehaviour, Pausable{
             if (vie <= 0)
             {
                 meurt();
+            }
+            if(cooldown > 0)
+            {
+                cooldown--;
             }
         }
     }
