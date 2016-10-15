@@ -8,52 +8,45 @@ public class suiviSouris : MonoBehaviour
     public Color originalColor;
     public Color cantPlaceColor;
     public Element element;
-    private bool canPlace;
-    private SpriteRenderer spriteRenderer;
+    public Joueur player;
 
-    // Use this for initialization
+    private SpriteRenderer spriteRenderer;
+    private new Collider2D collider;
+    private bool lastPlassableState = true;
+
+    public bool isPlassable
+    {
+        get {
+            bool isPlassable = player.isTowerPlassable(gameObject.transform.position);
+            if(isPlassable != lastPlassableState)
+            {
+                spriteRenderer.color = (isPlassable) ? originalColor : cantPlaceColor;
+                lastPlassableState = isPlassable;
+            }
+            return isPlassable;
+        }
+    }
+
     void Start()
     {
-        canPlace = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = element.couleur;
         finalTurret.GetComponent<Tour>().element = element;
+        collider = GetComponent<Collider2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Vector3 mousePosition = Input.mousePosition;
-        Vector3 pos = Camera.main.ScreenToWorldPoint(mousePosition);
-        pos.z = 0;
-        transform.position = pos;
+        Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.position = position;
         if (Input.GetMouseButtonDown(1))
         {
-            Destroy(transform.root.gameObject);
+            Destroy(gameObject);
         }
-        if (Input.GetMouseButtonDown(0) && canPlace)
+        if (isPlassable && Input.GetMouseButtonDown(0))
         {
-            Instantiate(finalTurret, transform.position, transform.rotation);
-            Destroy(transform.root.gameObject);
+            player.buildTower( position, element);
+            Destroy(gameObject);
         }
     }
-
-    void OnTriggerStay2D(Collider2D other)
-    {
-        canPlace = false;
-        spriteRenderer.color = cantPlaceColor;
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        canPlace = false;
-        spriteRenderer.color = cantPlaceColor;
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        canPlace = true;
-        spriteRenderer.color = originalColor;
-    }
-
 }

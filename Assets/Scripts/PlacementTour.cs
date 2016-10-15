@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PlacementTour : MonoBehaviour
 {
+    public Joueur player;
 
     public GameObject turret;
     private GameObject sTurret;
@@ -37,6 +38,7 @@ public class PlacementTour : MonoBehaviour
         sTurret = Instantiate(turret);
         sTurret.transform.position = Input.mousePosition;
         sTurret.GetComponent<suiviSouris>().element = choosedColor();
+        sTurret.GetComponent<suiviSouris>().player = player;
         // }
     }
 
