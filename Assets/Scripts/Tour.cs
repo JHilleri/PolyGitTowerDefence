@@ -41,7 +41,7 @@ public class Tour : MonoBehaviour {
                 menuActif = false;
             }
         }
-        else
+        else if (menu != null)
         {
             menu.SetActive(false);
         }

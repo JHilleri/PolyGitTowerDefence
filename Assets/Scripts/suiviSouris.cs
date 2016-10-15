@@ -4,12 +4,17 @@ using System.Collections;
 public class suiviSouris : MonoBehaviour
 {
 
-    public GameObject finalTurret;
+    public GameObject tourelleAir;
+    public GameObject tourelleEau;
+    public GameObject tourelleFeu;
+    public GameObject tourellePlante;
+    public GameObject tourelleTerre;
     public Color originalColor;
     public Color cantPlaceColor;
     public Element element;
     private bool canPlace;
     private SpriteRenderer spriteRenderer;
+    private GameObject finalTurret;
 
     public int camp;
 
@@ -19,8 +24,27 @@ public class suiviSouris : MonoBehaviour
         canPlace = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = element.couleur;
+        if (element.nom.Equals("Air"))
+        {
+            finalTurret = tourelleAir;
+        }
+        if (element.nom.Equals("Eau"))
+        {
+            finalTurret = tourelleEau;
+        }
+        if (element.nom.Equals("Feu"))
+        {
+            finalTurret = tourelleFeu;
+        }
+        if (element.nom.Equals("Plante"))
+        {
+            finalTurret = tourellePlante;
+        }
+        if (element.nom.Equals("Terre"))
+        {
+            finalTurret = tourelleTerre;
+        }
         finalTurret.GetComponent<Tour>().camp = camp;
-        finalTurret.GetComponent<Tour>().element = element;
     }
 
     // Update is called once per frame
