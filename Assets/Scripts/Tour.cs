@@ -18,6 +18,8 @@ public class Tour : MonoBehaviour {
     private SpriteRenderer colorSpriteRenderer;
     private int compteur;
     private bool paused;
+    private GameObject menu;
+    private bool menuActif;
 
     // Use this for initialization
     void Start () {
@@ -25,10 +27,24 @@ public class Tour : MonoBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
+        menu = transform.GetChild(1).gameObject;
+        menu.SetActive(false);
+        menuActif = false;
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        if (menuActif)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                menuActif = false;
+            }
+        }
+        else
+        {
+            menu.SetActive(false);
+        }
         if (!paused)
         {
             if (compteur < intervalle)
@@ -74,6 +90,12 @@ public class Tour : MonoBehaviour {
             }
         }
 	}
+
+    void OnMouseDown()
+    {
+        menu.SetActive(true);
+        menuActif = true;
+    }
 
     void tir()
     {
