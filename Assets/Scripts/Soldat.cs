@@ -232,6 +232,13 @@ public class Soldat : MonoBehaviour, Pausable{
 
     void gagne()
     {
+        if (camp == 1)
+        {
+            GameObject.FindObjectOfType<Partie>().joueurDroit.vie -= 1; 
+        } else
+        {
+            GameObject.FindObjectOfType<Partie>().joueurGauche.vie -= 1;
+        }
         Destroy(gameObject);
     }
 
