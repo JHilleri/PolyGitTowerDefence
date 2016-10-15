@@ -6,7 +6,7 @@ using System;
 public class Tour : MonoBehaviour {
 
     public GameObject cible;
-    public GameObject projectile;
+    public GameObject projectileToFire;
     public int camp; // définit le camp auquel la tour appartient 1 -> gauche, 2 -> droite
     public Element element;
     public Sprite image;
@@ -99,21 +99,20 @@ public class Tour : MonoBehaviour {
 
     void tir()
     {
-        GameObject proj = Instantiate(projectile);
-        proj.GetComponent<Projectile>().element = element;
-        proj.GetComponent<SpriteRenderer>().color = element.couleur;
-        DeplacementProjectile script = proj.GetComponent<DeplacementProjectile>();
-        proj.transform.position = transform.position;
-        Projectile projScript = proj.GetComponent<Projectile>();
-        projScript.camp = camp;
-        script.objX = cible.transform.position.x;
-        script.objY = cible.transform.position.y;
+        GameObject firedProjectile = Instantiate(projectileToFire);
+        firedProjectile.GetComponent<SpriteRenderer>().color = element.couleur;
+        firedProjectile.transform.position = transform.position;
+        firedProjectile.transform.parent = transform;
+        Projectile script = firedProjectile.GetComponent<Projectile>();
+        script.element = element;
+        script.camp = camp;
+        script.target = cible.transform.position;
         script.speed = projectSpeed;
     }
 
     float distance (GameObject cible)
     {
-        return Mathf.Sqrt((transform.position.x-cible.transform.position.x)*(transform.position.x - cible.transform.position.x) + (transform.position.y - cible.transform.position.y)* (transform.position.y - cible.transform.position.y));
+        return ((Vector2)transform.position - (Vector2)cible.transform.position).magnitude;
     }
 
     public void OnPauseGame()

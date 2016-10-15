@@ -4,6 +4,13 @@ using System.Collections;
 public class Pause : MonoBehaviour {
 
     public bool pause = false;
+    public KeyCode pauseKey;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(pauseKey))
+            togglePause();
+    }
 
     public void setPause(bool newPauseState)
     {
