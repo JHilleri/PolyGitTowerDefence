@@ -78,6 +78,7 @@ public class Tour : MonoBehaviour {
     void tir()
     {
         GameObject proj = Instantiate(projectile);
+        proj.GetComponent<Projectile>().element = element;
         proj.GetComponent<SpriteRenderer>().color = element.couleur;
         DeplacementProjectile script = proj.GetComponent<DeplacementProjectile>();
         proj.transform.position = transform.position;
