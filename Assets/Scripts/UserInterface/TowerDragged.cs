@@ -21,16 +21,20 @@ public class TowerDragged : MonoBehaviour {
         spriteComponent.color = (plassable) ? originalColor : disabledColor;
     }
 
-    void OnTriggerStay2D(Collider2D other)
-    {
-        plassable = false;
-    }
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
+
     {
         plassable = false;
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
+
+    {
+        plassable = false;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+
     {
         plassable = true;
     }

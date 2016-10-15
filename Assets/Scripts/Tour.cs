@@ -7,7 +7,7 @@ public class Tour : MonoBehaviour {
 
     public GameObject cible;
     public GameObject projectile;
-    public int camp; // définie le camp auquel la tour appartient 1 -> gauche, 2 -> droite
+    public int camp; // définie le camp auquel la tour appartient 0 -> gauche, 1 -> droite
     public Element element;
     public Sprite image;
     public Sprite imageCouleur;
@@ -18,6 +18,8 @@ public class Tour : MonoBehaviour {
     private SpriteRenderer colorSpriteRenderer;
     private int compteur;
     private bool paused;
+    private GameObject menu;
+    private bool menuActif;
 
     // Use this for initialization
     void Start () {
@@ -25,10 +27,24 @@ public class Tour : MonoBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
+        menu = transform.GetChild(1).gameObject;
+        menu.SetActive(false);
+        menuActif = false;
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        if (menuActif)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                menuActif = false;
+            }
+        }
+        else if (menu != null)
+        {
+            menu.SetActive(false);
+        }
         if (!paused)
         {
             if (compteur < intervalle)
@@ -75,9 +91,16 @@ public class Tour : MonoBehaviour {
         }
 	}
 
+    void OnMouseDown()
+    {
+        menu.SetActive(true);
+        menuActif = true;
+    }
+
     void tir()
     {
         GameObject proj = Instantiate(projectile);
+        proj.GetComponent<Projectile>().element = element;
         proj.GetComponent<SpriteRenderer>().color = element.couleur;
         DeplacementProjectile script = proj.GetComponent<DeplacementProjectile>();
         proj.transform.position = transform.position;

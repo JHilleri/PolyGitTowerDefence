@@ -9,7 +9,7 @@ public class placementElement {
     public Toggle air;
     public Toggle terre;
     public Toggle plante; 
-    private Element element;
+    private Element element = new Element();
 
 
     // Use this for initialization

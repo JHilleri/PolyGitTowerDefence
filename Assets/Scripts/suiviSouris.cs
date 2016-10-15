@@ -4,7 +4,11 @@ using System.Collections;
 public class suiviSouris : MonoBehaviour
 {
 
-    public GameObject finalTurret;
+    public GameObject tourelleAir;
+    public GameObject tourelleEau;
+    public GameObject tourelleFeu;
+    public GameObject tourellePlante;
+    public GameObject tourelleTerre;
     public Color originalColor;
     public Color cantPlaceColor;
     public Element element;
@@ -31,7 +35,6 @@ public class suiviSouris : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = element.couleur;
-        finalTurret.GetComponent<Tour>().element = element;
         collider = GetComponent<Collider2D>();
     }
 

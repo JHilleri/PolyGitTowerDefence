@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
+using Assets.Scripts;
+using System;
 
-public class Joueur : MonoBehaviour {
+public class Joueur : MonoBehaviour{
 	
 	public int vie;
 	public int argent;
@@ -18,8 +20,11 @@ public class Joueur : MonoBehaviour {
     public LayerMask unbuildableLayers;
     private GameObject towerCreatorCursor;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject[] basicTowerList;
+    private Dictionary<Element, GameObject> basicTowers;
+
+    // Use this for initialization
+    void Start () {
 		vieText = GameObject.FindGameObjectsWithTag("VieJoueur")[0].GetComponent<Text>();
         vieText.text = vie.ToString();
 		argentText = GameObject.FindGameObjectsWithTag("Argent")[0].GetComponent<Text>();
@@ -32,6 +37,15 @@ public class Joueur : MonoBehaviour {
         towerCollider.isTrigger = true;
         towerCreatorCursor.AddComponent<Rigidbody2D>().isKinematic = true;
         towerCreatorCursor.transform.parent = transform;
+
+
+        basicTowers = new Dictionary<Element, GameObject>();
+
+        for(int i = 0; i < basicTowerList.GetLength(0); i++)
+        {
+            Tour towerScript = basicTowerList[i].GetComponent<Tour>();
+            basicTowers.Add(towerScript.element, basicTowerList[i]);
+        }
     }
 	
 	public void SetCamp(int c) {
@@ -53,8 +67,11 @@ public class Joueur : MonoBehaviour {
 
     public void buildTower(Vector2 position, Element element)
     {
-        if(!isTowerPlassable(position)) throw new System.ArgumentOutOfRangeException();
-        build(basicTower, position).GetComponent<Tour>().element = element;
+        if(!isTowerPlassable(position)) throw new System.ArgumentOutOfRangeException("position","tower can't be placed at that position");
+        if (!basicTowers.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
+
+        Tour towerScript = build(basicTowers[element], position).GetComponent<Tour>();
+        towerScript.camp = camp;
     }
     public void buildBarrack(Vector2 position, Element element)
     {

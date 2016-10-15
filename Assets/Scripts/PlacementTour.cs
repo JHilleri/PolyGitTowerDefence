@@ -17,12 +17,19 @@ public class PlacementTour : MonoBehaviour
     public Element[] tableau;
     private Element element;
 
-    //private Joueur joueur;
+    public int camp;
 
     // Use this for initialization
     void Start()
     {
-        //joueur = Object.FindObjectOfType<Joueur>();
+        if (Object.FindObjectOfType<Partie>().typePartie == 0)
+        {
+            camp = 0;
+        }
+        else
+        {
+            camp = 1;
+        }
     }
 
     // Update is called once per frame
