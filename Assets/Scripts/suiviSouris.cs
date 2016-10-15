@@ -11,12 +11,15 @@ public class suiviSouris : MonoBehaviour
     private bool canPlace;
     private SpriteRenderer spriteRenderer;
 
+    public int camp;
+
     // Use this for initialization
     void Start()
     {
         canPlace = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = element.couleur;
+        finalTurret.GetComponent<Tour>().camp = camp;
         finalTurret.GetComponent<Tour>().element = element;
     }
 

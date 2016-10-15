@@ -16,12 +16,19 @@ public class PlacementTour : MonoBehaviour
     public Element[] tableau;
     private Element element;
 
-    //private Joueur joueur;
+    public int camp;
 
     // Use this for initialization
     void Start()
     {
-        //joueur = Object.FindObjectOfType<Joueur>();
+        if (Object.FindObjectOfType<Partie>().typePartie == 0)
+        {
+            camp = 1;
+        }
+        else
+        {
+            camp = 2;
+        }
     }
 
     // Update is called once per frame
@@ -37,6 +44,7 @@ public class PlacementTour : MonoBehaviour
         sTurret = Instantiate(turret);
         sTurret.transform.position = Input.mousePosition;
         sTurret.GetComponent<suiviSouris>().element = choosedColor();
+        sTurret.GetComponent<suiviSouris>().camp = camp;
         // }
     }
 
