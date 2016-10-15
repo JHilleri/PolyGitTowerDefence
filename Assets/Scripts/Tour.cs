@@ -7,7 +7,7 @@ public class Tour : MonoBehaviour {
 
     public GameObject cible;
     public GameObject projectile;
-    public int camp; // définie le camp auquel la tour appartient 0 -> gauche, 1 -> droite
+    public int camp; // définit le camp auquel la tour appartient 1 -> gauche, 2 -> droite
     public Element element;
     public Sprite image;
     public Sprite imageCouleur;

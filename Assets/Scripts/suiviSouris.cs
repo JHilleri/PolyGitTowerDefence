@@ -3,12 +3,6 @@ using System.Collections;
 
 public class suiviSouris : MonoBehaviour
 {
-
-    public GameObject tourelleAir;
-    public GameObject tourelleEau;
-    public GameObject tourelleFeu;
-    public GameObject tourellePlante;
-    public GameObject tourelleTerre;
     public Color originalColor;
     public Color cantPlaceColor;
     public Element element;
