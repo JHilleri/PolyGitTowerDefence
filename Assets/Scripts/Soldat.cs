@@ -7,6 +7,9 @@ public class Soldat : MonoBehaviour, Pausable{
 
     public int camp; // 1 = gauche 2 = droite
     public int chemin; // numero du chemin suivi par ce Soldat
+    public int argentGagne;//Argent donné à l'adversaire lors de la destruction de cette unité
+    public int vieRetireeAuJoueur;//La vie qui est retiré au joueur adverse lorsque l'unité passe sa défense
+    public int xpGeneree;//Quantité de expérience générée par l'unité lors de sa destruction (Pour l'adversaire)
     public float vieMax; // Vie max du soldat
     public int tempsRecharge; // nombre de frames entre chaque attaque
     public float degats; // degat causé par chaque attaque
@@ -234,10 +237,14 @@ public class Soldat : MonoBehaviour, Pausable{
     {
         if (camp == 1)
         {
-            GameObject.FindObjectOfType<Partie>().joueurDroit.vie -= 1; 
+            GameObject.FindObjectOfType<Partie>().joueurDroit.vie -= vieRetireeAuJoueur;
+            GameObject.FindObjectOfType<Partie>().joueurGauche.argent += argentGagne;
+            GameObject.FindObjectOfType<Partie>().joueurGauche.experience += xpGeneree;
         } else
         {
-            GameObject.FindObjectOfType<Partie>().joueurGauche.vie -= 1;
+            GameObject.FindObjectOfType<Partie>().joueurGauche.vie -= vieRetireeAuJoueur;
+            GameObject.FindObjectOfType<Partie>().joueurDroit.argent += argentGagne;
+            GameObject.FindObjectOfType<Partie>().joueurDroit.experience += xpGeneree;
         }
         Destroy(gameObject);
     }
@@ -245,6 +252,16 @@ public class Soldat : MonoBehaviour, Pausable{
     void meurt()
     {
         Destroy(gameObject);
+        if (camp == 1)
+        {
+            GameObject.FindObjectOfType<Partie>().joueurDroit.argent += argentGagne;
+            GameObject.FindObjectOfType<Partie>().joueurDroit.experience += xpGeneree;
+        }
+        else
+        {
+            GameObject.FindObjectOfType<Partie>().joueurGauche.argent += argentGagne;
+            GameObject.FindObjectOfType<Partie>().joueurDroit.experience += xpGeneree;
+        }
     }
 
     public void OnPauseGame()
