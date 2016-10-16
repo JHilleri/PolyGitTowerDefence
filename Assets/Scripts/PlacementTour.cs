@@ -15,7 +15,6 @@ public class PlacementTour : MonoBehaviour
     public Toggle terre;
     public Toggle plante;
     public Element[] tableau;
-    private Element element;
 
     public int camp;
 
@@ -44,12 +43,12 @@ public class PlacementTour : MonoBehaviour
         // {
         sTurret = Instantiate(turret);
         sTurret.transform.position = Input.mousePosition;
-        sTurret.GetComponent<suiviSouris>().element = choosedColor();
+        sTurret.GetComponent<suiviSouris>().element = choosedElement();
         sTurret.GetComponent<suiviSouris>().player = player;
         // }
     }
 
-    Element choosedColor()
+    Element choosedElement()
     {
         if (eau.isOn)
         {

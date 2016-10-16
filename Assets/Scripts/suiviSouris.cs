@@ -9,7 +9,6 @@ public class suiviSouris : MonoBehaviour
     public Joueur player;
 
     private SpriteRenderer spriteRenderer;
-    private new Collider2D collider;
     private bool lastPlassableState = true;
 
     public bool isPlassable
@@ -29,7 +28,6 @@ public class suiviSouris : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = element.couleur;
-        collider = GetComponent<Collider2D>();
     }
 
     void Update()
