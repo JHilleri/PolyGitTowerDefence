@@ -8,6 +8,7 @@ public class Tour : MonoBehaviour {
     public GameObject cible;
     public GameObject projectileToFire;
     public int camp; // définit le camp auquel la tour appartient 1 -> gauche, 2 -> droite
+    public int cout;// Cout de la tourelle
     public bool buf_allie;
     public bool tir_ennemi;
     public Element element;
