@@ -17,7 +17,7 @@ public class Tour : MonoBehaviour {
     public float projectSpeed;
     public int intervalle;
     public int portee;
-    private SpriteRenderer spriteRenderer;
+    //private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
     private int compteur;
     private bool paused;
@@ -27,7 +27,7 @@ public class Tour : MonoBehaviour {
     // Use this for initialization
     void Start () {
         compteur = 0;
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        //spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
         menu = transform.GetChild(1).gameObject;

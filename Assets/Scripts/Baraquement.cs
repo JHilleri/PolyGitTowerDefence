@@ -15,14 +15,12 @@ public class Baraquement : MonoBehaviour {
 	
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
-    private int compteur;
     private bool paused;
     private GameObject menu;
     private bool menuActif;
 
     // Use this for initialization
     void Start () {
-        compteur = 0;
         spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
@@ -44,7 +42,7 @@ public class Baraquement : MonoBehaviour {
         {
             menu.SetActive(false);
         }
-        if (!paused)
+        /*if (!paused)
         {
             if (compteur < intervalle)
             {
@@ -55,7 +53,7 @@ public class Baraquement : MonoBehaviour {
                 creationUnite();
                 compteur = 0;
             }
-        }
+        }*/
 	}
 
     void OnMouseDown()
