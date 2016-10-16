@@ -11,8 +11,9 @@ public class Projectile : MonoBehaviour, Pausable {
     public bool buf_allie_vitesse;
     public bool debuf_ennemie_repouse;
     public bool tir_ennemi;
+    public float windEffectPower;
 
-
+    public Effect[] effects;
     public Vector2 target;
     public float speed;
     private Vector2 direction;
@@ -35,22 +36,13 @@ public class Projectile : MonoBehaviour, Pausable {
     void OnTriggerEnter2D(Collider2D other)
     {
         Soldat soldat = other.gameObject.GetComponent<Soldat>();
-        //Si c'est une tour de buff
-        if (buf_allie_vitesse)
+        if(soldat != null)
         {
-            if (soldat != null && soldat.camp == camp)
+            if(tir_ennemi && soldat.camp != camp || !tir_ennemi && soldat.camp == camp)
             {
-                soldat.vitesse = soldat.vitesse * (float)1.2;
-                Destroy(gameObject);
-            }
-        }
-        if (tir_ennemi)
-        {
-            if (soldat != null && soldat.camp != camp)
-            {
-                if (debuf_ennemie_repouse)
+                foreach (Effect effect in effects)
                 {
-                    soldat.vitesse = -soldat.vitesse;
+                    soldat.addEffect(effect);
                 }
                 soldat.degat(soldat.element.lireRatioDegat(element) * damage);
                 Destroy(gameObject);

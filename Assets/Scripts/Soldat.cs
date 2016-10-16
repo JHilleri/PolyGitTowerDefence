@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using Assets.Scripts;
 using System;
 
@@ -15,6 +15,7 @@ public class Soldat : MonoBehaviour, Pausable{
     public float degats; // degat causé par chaque attaque
     public float portee; // portee des attaques
     public float detect; // portee de detection
+    public float normalSpeed;
     public float vitesse; // vitesse de déplacement du soldat
     public float marge; // distance à laquelle il considère avoir atteint un objectif
     public bool lanceProjectiles; // ce soldat lance-t-il des projectiles ?
@@ -44,6 +45,8 @@ public class Soldat : MonoBehaviour, Pausable{
     private bool paused;
     private bool enCombat;
 
+    private List<Effect> effects = new List<Effect>();
+
 	// Use this for initialization
 	void Start () {
         if (camp == 1)// Si ce soldat est dans le camps de gauche, sa première étape est la numéro 0
@@ -65,9 +68,21 @@ public class Soldat : MonoBehaviour, Pausable{
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate() {
         if (!paused)// Vérifie que le soldat n'est pas en pause
         {
+            vitesse = normalSpeed;
+            if(effects.Count != 0)
+            {
+                effects.RemoveAll(effect => (effect.haveDuration && effect.duration <= 0));
+                foreach(Effect effect in effects)
+                {
+                    applyEffect(effect);
+                    if (effect.haveDuration) effect.duration--;
+                }
+            }
+            
+
             if (!enCombat)// Si le soldat n'est pas en combat
             {
                 Soldat[] listeSoldats = FindObjectsOfType<Soldat>();
@@ -201,11 +216,9 @@ public class Soldat : MonoBehaviour, Pausable{
         }
     }
 
-    float calcDistance(GameObject autre)
+    float calcDistance(GameObject other)
     {
-        float x = autre.transform.position.x - transform.position.x;
-        float y = autre.transform.position.y - transform.position.y;
-        return Mathf.Sqrt(x * x + y * y);
+        return ((Vector2)other.transform.position - (Vector2)transform.position).magnitude;
     }
 
     int pointMax (int chemin)
@@ -272,5 +285,18 @@ public class Soldat : MonoBehaviour, Pausable{
     public void OnResumeGame()
     {
         paused = false;
+    }
+
+    void applyEffect(Effect effect)
+    {
+        vitesse *= effect.speedRelativeModifier;
+        vitesse += effect.speedAbsoluteModifier;
+    }
+
+    public void addEffect(Effect effectToAdd)
+    {
+        Effect actualVersion = effects.Find( effect => (effect.name == effectToAdd.name));
+        if (actualVersion == null) effects.Add(effectToAdd.Clone());
+        else actualVersion = effectToAdd.Clone();
     }
 }
