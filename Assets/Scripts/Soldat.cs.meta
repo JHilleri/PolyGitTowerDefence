@@ -1,10 +1,20 @@
 fileFormatVersion: 2
 guid: 5e804b337519d684689ffbd6ed197453
-timeCreated: 1476041421
+timeCreated: 1476633411
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - projectile: {instanceID: 0}
+  - element: {instanceID: 0}
+  - imageFace: {instanceID: 0}
+  - imageFaceCouleur: {instanceID: 0}
+  - imageDos: {instanceID: 0}
+  - imageDosCouleur: {instanceID: 0}
+  - imageGauche: {instanceID: 0}
+  - imageGaucheCouleur: {instanceID: 0}
+  - imageDroite: {instanceID: 0}
+  - imageDroiteCouleur: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

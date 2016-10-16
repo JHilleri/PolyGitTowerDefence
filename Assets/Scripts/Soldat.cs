@@ -8,8 +8,8 @@ public class Soldat : MonoBehaviour, Pausable{
     public int camp; // 1 = gauche 2 = droite
     public int chemin; // numero du chemin suivi par ce Soldat
     public int argentGagne;//Argent donné à l'adversaire lors de la destruction de cette unité
-    public int vieRetireeAuJoueur;//La vie qui est retiré au joueur adverse lorsque l'unité passe sa défense
-    public int xpGeneree;//Quantité de expérience générée par l'unité lors de sa destruction (Pour l'adversaire)
+    public int vieRetireeAuJoueur;//La vie qui est retirée au joueur adverse lorsque l'unité passe sa défense
+    public int xpGeneree;//Quantité d'expérience générée par l'unité lors de sa destruction (Pour l'adversaire)
     public float vieMax; // Vie max du soldat
     public int tempsRecharge; // nombre de frames entre chaque attaque
     public float degats; // degat causé par chaque attaque
@@ -20,20 +20,21 @@ public class Soldat : MonoBehaviour, Pausable{
     public float marge; // distance à laquelle il considère avoir atteint un objectif
     public bool lanceProjectiles; // ce soldat lance-t-il des projectiles ?
     public GameObject projectile; // projectile que ce soldat lance (null si lanceProjectiles = false)
-    public Sprite imageFace; // image non colorisée de face
-    public Sprite imageFaceCouleur; //image colorisée par l'élément de face
-    public Sprite imageDos;
-    public Sprite imageDosCouleur;
-    public Sprite imageGauche;
-    public Sprite imageGaucheCouleur;
-    public Sprite imageDroite;
-    public Sprite imageDroiteCouleur;
+	public int classe; //la classe du soldat : archer = 0 - brute = 1 - magicien = 2 - paysan = 3 - soldat = 4 - tank = 5
     public Element element; //élément du soldat
     private float vie;
     private int etape;
     private int cooldown;
     private PointPassage objectif;
     private Soldat cible;
+	private Sprite imageFace; // image non colorisée de face. l'image est definie suivant la classe du soldat
+    private Sprite imageFaceCouleur; //image colorisée par l'élément de face
+    private Sprite imageDos;
+    private Sprite imageDosCouleur;
+    private Sprite imageGauche;
+    private Sprite imageGaucheCouleur;
+    private Sprite imageDroite;
+    private Sprite imageDroiteCouleur;
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
     private float oldDistance;
@@ -47,8 +48,8 @@ public class Soldat : MonoBehaviour, Pausable{
 
     private List<Effect> effects = new List<Effect>();
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         if (camp == 1)// Si ce soldat est dans le camps de gauche, sa première étape est la numéro 0
         {
             etape = 0;
@@ -63,6 +64,72 @@ public class Soldat : MonoBehaviour, Pausable{
         spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
+        if (classe == 0)
+        {
+            imageFace = Resources.Load("Assets/archer_face.PNG", typeof(Sprite)) as Sprite;
+            imageFaceCouleur = Resources.Load("Assets/archer_face - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDos = Resources.Load("Assets/archer_dos.PNG", typeof(Sprite)) as Sprite;
+            imageDosCouleur = Resources.Load("Assets/archer_dos - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageGauche = Resources.Load("Assets/archer_gauche.PNG", typeof(Sprite)) as Sprite;
+            imageGaucheCouleur = Resources.Load("Assets/archer_gauche - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDroite = Resources.Load("Assets/archer_droite.PNG", typeof(Sprite)) as Sprite;
+            imageDroiteCouleur = Resources.Load("Assets/archer_doite - couleur.PNG", typeof(Sprite)) as Sprite;
+        }
+        else if (classe == 1)
+        {
+            imageFace = Resources.Load("Assets/brute_face.PNG", typeof(Sprite)) as Sprite;
+            imageFaceCouleur = Resources.Load("Assets/brute_face - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDos = Resources.Load("Assets/brute_dos.PNG", typeof(Sprite)) as Sprite;
+            imageDosCouleur = Resources.Load("Assets/brute_dos - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageGauche = Resources.Load("Assets/brute_gauche.PNG", typeof(Sprite)) as Sprite;
+            imageGaucheCouleur = Resources.Load("Assets/brute_gauche - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDroite = Resources.Load("Assets/brute_droite.PNG", typeof(Sprite)) as Sprite;
+            imageDroiteCouleur = Resources.Load("Assets/brute_doite - couleur.PNG", typeof(Sprite)) as Sprite;
+        }
+        else if (classe == 2)
+        {
+            imageFace = Resources.Load("Assets/magicien_face.PNG", typeof(Sprite)) as Sprite;
+            imageFaceCouleur = Resources.Load("Assets/magicien_face - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDos = Resources.Load("Assets/magicien_dos.PNG", typeof(Sprite)) as Sprite;
+            imageDosCouleur = Resources.Load("Assets/magicien_dos - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageGauche = Resources.Load("Assets/magicien_gauche.PNG", typeof(Sprite)) as Sprite;
+            imageGaucheCouleur = Resources.Load("Assets/magicien_gauche - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDroite = Resources.Load("Assets/magicien_droite.PNG", typeof(Sprite)) as Sprite;
+            imageDroiteCouleur = Resources.Load("Assets/magicien_doite - couleur.PNG", typeof(Sprite)) as Sprite;
+        }
+        else if (classe == 3)
+        {
+            imageFace = Resources.Load("Assets/paysan_face.PNG", typeof(Sprite)) as Sprite;
+            imageFaceCouleur = Resources.Load("Assets/paysan_face - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDos = Resources.Load("Assets/paysan_dos.PNG", typeof(Sprite)) as Sprite;
+            imageDosCouleur = Resources.Load("Assets/paysan_dos - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageGauche = Resources.Load("Assets/paysan_gauche.PNG", typeof(Sprite)) as Sprite;
+            imageGaucheCouleur = Resources.Load("Assets/paysan_gauche - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDroite = Resources.Load("Assets/paysan_droite.PNG", typeof(Sprite)) as Sprite;
+            imageDroiteCouleur = Resources.Load("Assets/paysan_doite - couleur.PNG", typeof(Sprite)) as Sprite;
+        }
+        else if (classe == 4)
+        {
+            imageFace = Resources.Load("Assets/soldat_de_base_face.PNG", typeof(Sprite)) as Sprite;
+            imageFaceCouleur = Resources.Load("Assets/soldat_de_base_face - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDos = Resources.Load("Assets/soldat_de_base_dos.PNG", typeof(Sprite)) as Sprite;
+            imageDosCouleur = Resources.Load("Assets/soldat_de_base_dos - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageGauche = Resources.Load("Assets/soldat_de_base_gauche.PNG", typeof(Sprite)) as Sprite;
+            imageGaucheCouleur = Resources.Load("Assets/soldat_de_base_gauche - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDroite = Resources.Load("Assets/soldat_de_base_droite.PNG", typeof(Sprite)) as Sprite;
+            imageDroiteCouleur = Resources.Load("Assets/soldat_de_base_doite - couleur.PNG", typeof(Sprite)) as Sprite;
+        }
+        else // if (classe == 5)
+        {
+            imageFace = Resources.Load("Assets/tank_face.PNG", typeof(Sprite)) as Sprite;
+            imageFaceCouleur = Resources.Load("Assets/tank_face - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDos = Resources.Load("Assets/tank_dos.PNG", typeof(Sprite)) as Sprite;
+            imageDosCouleur = Resources.Load("Assets/tank_dos - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageGauche = Resources.Load("Assets/tank_gauche.PNG", typeof(Sprite)) as Sprite;
+            imageGaucheCouleur = Resources.Load("Assets/tank_gauche - couleur.PNG", typeof(Sprite)) as Sprite;
+            imageDroite = Resources.Load("Assets/tank_droite.PNG", typeof(Sprite)) as Sprite;
+            imageDroiteCouleur = Resources.Load("Assets/tank_doite - couleur.PNG", typeof(Sprite)) as Sprite;
+        }
         cooldown = 0;
         enCombat = false;
     }
@@ -87,23 +154,24 @@ public class Soldat : MonoBehaviour, Pausable{
             {
                 Soldat[] listeSoldats = FindObjectsOfType<Soldat>();
                 float minDist = -1;
-                float dist = 0;
+                float dist = detect + 1; // on initialise la dist supérieur à sa portée de détection
                 Soldat pCible = null;
                 foreach(Soldat sol in listeSoldats)
                 {
                     dist = calcDistance(sol.gameObject);
-                    if (sol.camp != camp && (minDist == -1 || dist < minDist))
+                    if (sol.camp != camp && dist < minDist)
                     {
                         minDist = dist;
                         pCible = sol;
                     }
                 }
-                if (pCible != null && (minDist < detect))
+                if (pCible != null)
                 {
                     cible = pCible;
                     objectif = null;
                     enCombat = true;
                 }
+				
                 if (objectif == null)// s'il n'a pas d'objectif en cours
                 {
                     PointPassage[] points = UnityEngine.Object.FindObjectsOfType<PointPassage>();
@@ -153,6 +221,7 @@ public class Soldat : MonoBehaviour, Pausable{
                     oldDistance = distance;
                 }
             }
+			
             else // Si le soldat est actuellement en combat
             {
                 if (cible != null)
@@ -179,6 +248,7 @@ public class Soldat : MonoBehaviour, Pausable{
                     enCombat = false;
                 }
             }
+			
             if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY)) // Les lignes qui suivent changent l'image en fonction de la direction du soldat
             {
                 if (vitesseX > 0)

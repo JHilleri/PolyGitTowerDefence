@@ -62,28 +62,27 @@ public class Tour : MonoBehaviour {
                     if (cibles.Length >= 1)
                     {
                         cible = null;
-                        float minDist = -1;
+                        float minDist = portee + 1; // on initialise la la distance minimale de tir supérieur à la portée de la tour (un cas ou cela ne tire pas si aucune cible est à portée) 
                         foreach (Soldat pCible in cibles)
                         {
                             float dist = distance(pCible.gameObject);
                             if(tir_ennemi)
                             {
-                                if (pCible.camp != camp && (minDist == -1 || dist < minDist))
-                                                            {
-                                                                cible = pCible.gameObject;
-                                                                minDist = dist;
-                                                            }
-                            }
-
-                            if(buf_allie)
-                            {
-                                if (pCible.camp == camp && (minDist == -1 || dist < minDist))
+                                if (pCible.camp != camp && dist < minDist)
                                 {
                                     cible = pCible.gameObject;
                                     minDist = dist;
                                 }
                             }
 
+                            if(buf_allie)
+                            {
+                                if (pCible.camp == camp && dist < minDist)
+                                {
+                                    cible = pCible.gameObject;
+                                    minDist = dist;
+                                }
+                            }
 
                         }
                         if (minDist > portee)
@@ -95,14 +94,7 @@ public class Tour : MonoBehaviour {
                 compteur = 0;
                 if (cible != null)
                 {
-                    if (distance(cible) > portee)
-                    {
-                        cible = null;
-                    }
-                    else
-                    {
-                        tir();
-                    }
+                    tir();
                 }
             }
         }
