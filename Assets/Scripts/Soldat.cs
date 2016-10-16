@@ -20,14 +20,14 @@ public class Soldat : MonoBehaviour, Pausable{
     public float marge; // distance à laquelle il considère avoir atteint un objectif
     public bool lanceProjectiles; // ce soldat lance-t-il des projectiles ?
     public GameObject projectile; // projectile que ce soldat lance (null si lanceProjectiles = false)
-	public int classe; //la classe du soldat : archer = 0 - brute = 1 - magicien = 2 - paysan = 3 - soldat = 4 - tank = 5
+    public int classe; //la classe du soldat : archer = 0 - brute = 1 - magicien = 2 - paysan = 3 - soldat = 4 - tank = 5
     public Element element; //élément du soldat
     private float vie;
     private int etape;
     private int cooldown;
     private PointPassage objectif;
     private Soldat cible;
-	private Sprite imageFace; // image non colorisée de face. l'image est definie suivant la classe du soldat
+    private Sprite imageFace; // image non colorisée de face. l'image est definie suivant la classe du soldat
     private Sprite imageFaceCouleur; //image colorisée par l'élément de face
     private Sprite imageDos;
     private Sprite imageDosCouleur;
@@ -153,8 +153,8 @@ public class Soldat : MonoBehaviour, Pausable{
             if (!enCombat)// Si le soldat n'est pas en combat
             {
                 Soldat[] listeSoldats = FindObjectsOfType<Soldat>();
-                float minDist = -1;
-                float dist = detect + 1; // on initialise la dist supérieur à sa portée de détection
+                float minDist = detect + 1; // on initialise la distance minimale quand étant supérieur à sa portée de détection
+                float dist;
                 Soldat pCible = null;
                 foreach(Soldat sol in listeSoldats)
                 {
