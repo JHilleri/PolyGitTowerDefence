@@ -9,18 +9,20 @@ public class suiviSouris : MonoBehaviour
     public Joueur player;
 
     private SpriteRenderer spriteRenderer;
-    private bool lastPlassableState = true;
 
-    public bool isPlassable
+    private new Collider2D collider;
+    private bool lastPlaceableState = true;
+
+    public bool isPlaceable
     {
         get {
-            bool isPlassable = player.isTowerPlassable(gameObject.transform.position);
-            if(isPlassable != lastPlassableState)
+            bool isPlaceable = player.isTowerPlaceable(gameObject.transform.position);
+            if(isPlaceable != lastPlaceableState)
             {
-                spriteRenderer.color = (isPlassable) ? originalColor : cantPlaceColor;
-                lastPlassableState = isPlassable;
+                spriteRenderer.color = (isPlaceable) ? originalColor : cantPlaceColor;
+                lastPlaceableState = isPlaceable;
             }
-            return isPlassable;
+            return isPlaceable;
         }
     }
 
@@ -38,7 +40,7 @@ public class suiviSouris : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (isPlassable && Input.GetMouseButtonDown(0))
+        if (isPlaceable && Input.GetMouseButtonDown(0))
         {
             player.buildTower( position, element);
             Destroy(gameObject);

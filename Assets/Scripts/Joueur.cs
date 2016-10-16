@@ -67,18 +67,19 @@ public class Joueur : MonoBehaviour{
 
     public void buildTower(Vector2 position, Element element)
     {
-        if(!isTowerPlassable(position)) throw new System.ArgumentOutOfRangeException("position","tower can't be placed at that position");
+        if(!isTowerPlaceable(position)) throw new System.ArgumentOutOfRangeException("position","tower can't be placed at that position");
         if (!basicTowers.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
-
+        if (basicTower.GetComponentInChildren<Tour>().cout > argent) throw new System.ArgumentOutOfRangeException("cout", "Vous n\'avez pas assez d\'argent pour acheter cette tour");
         Tour towerScript = build(basicTowers[element], position).GetComponent<Tour>();
         towerScript.camp = camp;
+        argent -= basicTower.GetComponentInChildren<Tour>().cout;
     }
     public void buildBarrack(Vector2 position, Element element)
     {
         throw new System.NotImplementedException();
     }
 
-    public bool isTowerPlassable(Vector2 position)
+    public bool isTowerPlaceable(Vector2 position)
     {
         towerCreatorCursor.transform.position = position;
         return (area.OverlapPoint(position) && !towerCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
