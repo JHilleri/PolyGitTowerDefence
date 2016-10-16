@@ -8,6 +8,8 @@ public class Tour : MonoBehaviour {
     public GameObject cible;
     public GameObject projectileToFire;
     public int camp; // définit le camp auquel la tour appartient 1 -> gauche, 2 -> droite
+    public bool buf_allie;
+    public bool tir_ennemi;
     public Element element;
     public Sprite image;
     public Sprite imageCouleur;
@@ -63,11 +65,25 @@ public class Tour : MonoBehaviour {
                         foreach (Soldat pCible in cibles)
                         {
                             float dist = distance(pCible.gameObject);
-                            if (pCible.camp != camp && (minDist == -1 || dist < minDist))
+                            if(tir_ennemi)
                             {
-                                cible = pCible.gameObject;
-                                minDist = dist;
+                                if (pCible.camp != camp && (minDist == -1 || dist < minDist))
+                                                            {
+                                                                cible = pCible.gameObject;
+                                                                minDist = dist;
+                                                            }
                             }
+
+                            if(buf_allie)
+                            {
+                                if (pCible.camp == camp && (minDist == -1 || dist < minDist))
+                                {
+                                    cible = pCible.gameObject;
+                                    minDist = dist;
+                                }
+                            }
+
+
                         }
                         if (minDist > portee)
                         {
