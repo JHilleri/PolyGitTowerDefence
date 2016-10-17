@@ -42,7 +42,7 @@ public class suiviSouris : MonoBehaviour
         }
         if (isPlaceable && Input.GetMouseButtonDown(0))
         {
-            player.buildTower( position, element);
+            player.buildTower(position, element);
             Destroy(gameObject);
         }
     }
