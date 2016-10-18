@@ -21,9 +21,13 @@ public class Joueur : MonoBehaviour{
 
     public LayerMask unbuildableLayers;
     private GameObject towerCreatorCursor;
+    private GameObject barrackCreatorCursor;
 
     public GameObject[] basicTowerList;
     private Dictionary<Element, GameObject> basicTowers;
+
+    public GameObject[] basicBarrackList;
+    private Dictionary<Element, GameObject> basicBarracks;
 
     // Use this for initialization
     void Start () {
@@ -31,6 +35,23 @@ public class Joueur : MonoBehaviour{
         vieText.text = vie.ToString();
 		argentText = GameObject.FindGameObjectsWithTag("Argent")[0].GetComponent<Text>();
         argentText.text = argent.ToString();
+
+        barrackCreatorCursor = new GameObject("barrackCreatorCursor");
+        BoxCollider2D barrackCollider = barrackCreatorCursor.AddComponent<BoxCollider2D>();
+        barrackCollider.offset = basicBarrack.GetComponent<BoxCollider2D>().offset;
+        barrackCollider.size = basicBarrack.GetComponent<BoxCollider2D>().size;
+        barrackCollider.isTrigger = true;
+        barrackCreatorCursor.AddComponent<Rigidbody2D>().isKinematic = true;
+        barrackCreatorCursor.transform.parent = transform;
+
+
+        basicBarracks = new Dictionary<Element, GameObject>();
+
+        for (int i = 0; i < basicBarrackList.GetLength(0); i++)
+        {
+            Baraquement barrackScript = basicBarrackList[i].GetComponent<Baraquement>();
+            basicBarracks.Add(barrackScript.element, basicBarrackList[i]);
+        }
 
         towerCreatorCursor = new GameObject("towerCreatorCursor");
         BoxCollider2D towerCollider = towerCreatorCursor.AddComponent<BoxCollider2D>();
@@ -78,7 +99,18 @@ public class Joueur : MonoBehaviour{
     }
     public void buildBarrack(Vector2 position, Element element)
     {
-        throw new System.NotImplementedException();
+        if (!isBarrackPlaceable(position)) throw new System.ArgumentOutOfRangeException("position", "barrack can't be placed at that position");
+        if (!basicBarracks.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
+        if (basicBarrack.GetComponentInChildren<Baraquement>().cout > argent) throw new System.ArgumentOutOfRangeException("cout", "Vous n\'avez pas assez d\'argent pour acheter ce barraquement");
+        Baraquement barrackScript = build(basicBarracks[element], position).GetComponent<Baraquement>();
+        barrackScript.camp = camp;
+        argent -= basicBarrack.GetComponentInChildren<Baraquement>().cout;
+    }
+
+    public bool isBarrackPlaceable(Vector2 position)
+    {
+        barrackCreatorCursor.transform.position = position;
+        return (area.OverlapPoint(position) && !barrackCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
     }
 
     public bool isTowerPlaceable(Vector2 position)

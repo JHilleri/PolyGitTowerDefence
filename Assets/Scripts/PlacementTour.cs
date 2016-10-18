@@ -1,75 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class PlacementTour : MonoBehaviour
 {
+    public Color originalColor;
+    public Color cantPlaceColor;
+    public Element element;
     public Joueur player;
 
-    public GameObject turret;
-    private GameObject sTurret;
+    private SpriteRenderer spriteRenderer;
 
-    public Toggle eau;
-    public Toggle feu;
-    public Toggle air;
-    public Toggle terre;
-    public Toggle plante;
-    public Element[] tableau;
+    private new Collider2D collider;
+    private bool lastPlaceableState = true;
 
-    public int camp;
+    public bool isPlaceable
+    {
+        get {
+            bool isPlaceable = player.isTowerPlaceable(gameObject.transform.position);
+            if(isPlaceable != lastPlaceableState)
+            {
+                spriteRenderer.color = (isPlaceable) ? originalColor : cantPlaceColor;
+                lastPlaceableState = isPlaceable;
+            }
+            return isPlaceable;
+        }
+    }
 
-    // Use this for initialization
     void Start()
     {
-        if (Object.FindObjectOfType<Partie>().typePartie == 0)
-        {
-            camp = 0;
-        }
-        else
-        {
-            camp = 1;
-        }
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = element.couleur;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-    }
-
-    void spawn()
-    {
-        //if (joueur.place == false)
-        // {
-        sTurret = Instantiate(turret);
-        sTurret.transform.position = Input.mousePosition;
-        sTurret.GetComponent<suiviSouris>().element = choosedElement();
-        sTurret.GetComponent<suiviSouris>().player = player;
-        // }
-    }
-
-    Element choosedElement()
-    {
-        if (eau.isOn)
+        Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.position = position;
+        if (Input.GetMouseButtonDown(1))
         {
-            return tableau[0];
+            Destroy(gameObject);
         }
-        if (feu.isOn)
+        if (isPlaceable && Input.GetMouseButtonDown(0))
         {
-            return tableau[1];
+            player.buildTower(position, element);
+            Destroy(gameObject);
         }
-        if (air.isOn)
-        {
-            return tableau[2];
-        }
-        if (terre.isOn)
-        {
-            return tableau[3];
-        }
-        if (plante.isOn)
-        {
-            return tableau[4];
-        }
-        return null;
     }
 }

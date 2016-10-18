@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class suiviSouris : MonoBehaviour
-{
+public class PlacementBaraquement : MonoBehaviour {
+
     public Color originalColor;
     public Color cantPlaceColor;
     public Element element;
@@ -15,9 +15,10 @@ public class suiviSouris : MonoBehaviour
 
     public bool isPlaceable
     {
-        get {
-            bool isPlaceable = player.isTowerPlaceable(gameObject.transform.position);
-            if(isPlaceable != lastPlaceableState)
+        get
+        {
+            bool isPlaceable = player.isBarrackPlaceable(gameObject.transform.position);
+            if (isPlaceable != lastPlaceableState)
             {
                 spriteRenderer.color = (isPlaceable) ? originalColor : cantPlaceColor;
                 lastPlaceableState = isPlaceable;
@@ -42,7 +43,7 @@ public class suiviSouris : MonoBehaviour
         }
         if (isPlaceable && Input.GetMouseButtonDown(0))
         {
-            player.buildTower( position, element);
+            player.buildBarrack(position, element);
             Destroy(gameObject);
         }
     }
