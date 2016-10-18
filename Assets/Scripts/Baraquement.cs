@@ -13,7 +13,7 @@ public class Baraquement : MonoBehaviour {
 	 public Element element;
     public Sprite image;
     public Sprite imageCouleur;
-    //public int intervalle;
+    public int intervalle;
 	
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
