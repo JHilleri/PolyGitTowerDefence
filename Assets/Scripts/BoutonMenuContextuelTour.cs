@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BoutonMenuContextuel : MonoBehaviour {
+public class BoutonMenuContextuelTour : MonoBehaviour {
 
     public int numeroBouton;
-    private MenuContextuel menu;
+    private MenuContextuelTour menu;
 
 	// Use this for initialization
 	void Start ()
     {
-        menu = GetComponentInParent<MenuContextuel>();
+        menu = GetComponentInParent<MenuContextuelTour>();
     }
 	
 	// Update is called once per frame

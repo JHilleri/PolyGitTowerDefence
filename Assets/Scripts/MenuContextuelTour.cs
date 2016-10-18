@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MenuContextuel : MonoBehaviour {
+public class MenuContextuelTour : MonoBehaviour {
 
     public Sprite imageFond;
     public GameObject ameliorationElement;

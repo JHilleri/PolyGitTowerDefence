@@ -18,6 +18,7 @@ public class Projectile : MonoBehaviour, Pausable {
     public float speed;
     private Vector2 direction;
     private bool isPaused = false;
+    public int portee;
     
 
     void Start()
@@ -27,9 +28,11 @@ public class Projectile : MonoBehaviour, Pausable {
 
     void FixedUpdate()
     {
+
         if(!isPaused)
         {
             transform.Translate(direction * speed);
+            if (distance(target) > portee) Destroy(gameObject);
         }
     }
 
@@ -45,7 +48,11 @@ public class Projectile : MonoBehaviour, Pausable {
                     soldat.addEffect(effect);
                 }
                 soldat.degat(soldat.element.lireRatioDegat(element) * damage);
-                Destroy(gameObject);
+                if (debuf_ennemie_repouse)
+                {
+                    soldat.transform.Translate((float)0.5 * direction.x,(float)0.5*direction.y, 0);
+                }
+                else Destroy(gameObject);
             }
         }
     }
@@ -58,5 +65,10 @@ public class Projectile : MonoBehaviour, Pausable {
     public void OnResumeGame()
     {
         isPaused = false;
+    }
+
+    float distance(Vector2 cible)
+    {
+        return ((Vector2)transform.position - cible).magnitude;
     }
 }

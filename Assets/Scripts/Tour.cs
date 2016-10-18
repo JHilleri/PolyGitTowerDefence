@@ -117,6 +117,7 @@ public class Tour : MonoBehaviour, Pausable {
         script.camp = camp;
         script.target = cible.transform.position;
         script.speed = projectSpeed;
+        script.portee = portee * 2;
     }
 
     float distance (GameObject cible)
