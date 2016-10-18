@@ -10,6 +10,7 @@ public class Round : MonoBehaviour {
         public uint timeBeforSpawn;
         public int faction;
         public Element element;
+        public int chemin;
     }
     private List<UnitToSpawn> unitsToSpawn = new List<UnitToSpawn>();
 
@@ -37,6 +38,7 @@ public class Round : MonoBehaviour {
                 unitToSpawnToAdd.position = barrack.transform.position;
                 unitToSpawnToAdd.faction = barrackScript.camp;
                 unitToSpawnToAdd.element = barrackScript.element;
+                unitToSpawnToAdd.chemin = barrackScript.chemin;
                 unitToSpawnToAdd.timeBeforSpawn = index * barrackScript.spawnInterval;
                 unitsToSpawn.Add(unitToSpawnToAdd);
             }
@@ -61,6 +63,7 @@ public class Round : MonoBehaviour {
             newUnit.GetComponent<Soldat>().camp = unitToTryToSpawn.faction;
             newUnit.transform.parent = unitsContainer.transform;
             newUnit.GetComponent<Soldat>().element = unitToTryToSpawn.element;
+            newUnit.GetComponent<Soldat>().chemin = unitToTryToSpawn.chemin;
             return true;
         }
         else
