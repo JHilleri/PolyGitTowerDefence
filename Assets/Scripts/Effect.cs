@@ -12,7 +12,7 @@ public class Effect : ScriptableObject{
 
     public Effect Clone()
     {
-        Effect clone = new Effect();
+        Effect clone = CreateInstance<Effect>();
         clone.duration = duration;
         clone.haveDuration = haveDuration;
         clone.name = name;

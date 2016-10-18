@@ -5,7 +5,9 @@ using System;
 
 public class Baraquement : MonoBehaviour {
 
-    public GameObject AjoutUnite;
+    public GameObject unitToSpawn;
+    public uint nbUnitToSpawnPerRound;
+    public uint spawnInterval;
     public int camp; // définit le camp auquel la tour appartient 1 -> gauche, 2 -> droite
     public int cout; // Cout de la caserne
 	 public Element element;

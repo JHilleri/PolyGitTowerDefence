@@ -3,7 +3,7 @@ using System.Collections;
 using Assets.Scripts;
 using System;
 
-public class Tour : MonoBehaviour {
+public class Tour : MonoBehaviour, Pausable {
 
     public GameObject cible;
     public GameObject projectileToFire;

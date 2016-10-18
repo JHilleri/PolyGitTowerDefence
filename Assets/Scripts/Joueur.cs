@@ -13,6 +13,8 @@ public class Joueur : MonoBehaviour{
 	public Text vieText;
 	public Text argentText;
 
+    public PointPassage[] defaultsSpawn;
+
     public GameObject basicTower;
     public GameObject basicBarrack;
     public Collider2D area;
