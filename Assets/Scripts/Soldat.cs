@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Assets.Scripts;
 using System;
 
-public class Soldat : MonoBehaviour, Pausable{
+public class Soldat : Unite, Pausable{
 
     public int camp; // 1 = gauche 2 = droite
     public int chemin; // numero du chemin suivi par ce Soldat
     public int argentGagne;//Argent donné à l'adversaire lors de la destruction de cette unité
     public int vieRetireeAuJoueur;//La vie qui est retirée au joueur adverse lorsque l'unité passe sa défense
     public int xpGeneree;//Quantité d'expérience générée par l'unité lors de sa destruction (Pour l'adversaire)
-    public float vieMax; // Vie max du soldat
     public int tempsRecharge; // nombre de frames entre chaque attaque
     public float degats; // degat causé par chaque attaque
     public float portee; // portee des attaques
@@ -28,15 +27,14 @@ public class Soldat : MonoBehaviour, Pausable{
     public Sprite imageGaucheCouleur;
     public Sprite imageDroite;
     public Sprite imageDroiteCouleur;
-    public Element element; //élément du soldat
     public bool monte;
+    public bool occupe;
     public UniteTour monture;
     public AudioClip sonMort;
-    private float vie;
     private int etape;
     private int cooldown;
     private PointPassage objectif;
-    private Soldat cible;
+    private Unite cible;
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
     private float oldDistance;
@@ -241,17 +239,12 @@ public class Soldat : MonoBehaviour, Pausable{
         return max;
     }
 
-    public void degat(float dgt)
-    {
-        vie -= dgt;
-    }
-
     public void recalculeTrajectoireVitesse()
     {
         objectif = null;
     }
 
-    void attaque(Soldat ennemi)
+    void attaque(Unite ennemi)
     {
         ennemi.degat(ennemi.element.lireRatioDegat(element) * degats);
         cooldown = tempsRecharge;
@@ -345,6 +338,13 @@ public class Soldat : MonoBehaviour, Pausable{
     {
         vitesse *= effect.speedRelativeModifier;
         vitesse += effect.speedAbsoluteModifier;
+    }
+
+    public void forceCible(Unite nCible)
+    {
+        cible = nCible;
+        objectif = null;
+        enCombat = true;
     }
 
     public void addEffect(Effect effectToAdd)

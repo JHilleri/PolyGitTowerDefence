@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class UniteTour : MonoBehaviour {
+public abstract class UniteTour : Unite {
 
     public Tour tour;
     public int camp;
@@ -11,15 +11,12 @@ public abstract class UniteTour : MonoBehaviour {
     public float porteeTour;
     public float portee;
     public float detect;
-    public float vieMax;
     public float vitesse;
     public Sprite imageFace;
     public Sprite imageDos;
     public Sprite imageGauche;
     public Sprite imageDroite;
-    public Element element;
 
-    protected float vie;
     protected GameObject objectif;
     protected float distanceX;
     protected float distanceY;
@@ -120,7 +117,7 @@ public abstract class UniteTour : MonoBehaviour {
 
     internal abstract void action();// A override dans les classes filles
 
-    internal void meurt()
+    internal virtual void meurt()
     {
         tour.uniteMorte();
         Destroy(gameObject);
