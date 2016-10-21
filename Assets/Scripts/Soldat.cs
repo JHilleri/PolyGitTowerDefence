@@ -284,7 +284,10 @@ public class Soldat : MonoBehaviour, Pausable{
             monture.meurt();
         }
         Destroy(gameObject);
-        AudioSource.PlayClipAtPoint(sonMort, Vector3.one, 1);
+        if (sonMort != null)
+        {
+            AudioSource.PlayClipAtPoint(sonMort, Vector3.one, 1);
+        }
         if (camp == 1)
         {
             GameObject.FindObjectOfType<Partie>().joueurDroit.argent += argentGagne;
