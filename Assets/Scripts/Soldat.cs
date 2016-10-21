@@ -348,4 +348,7 @@ public class Soldat : MonoBehaviour, Pausable{
         if (actualVersion == null) effects.Add(effectToAdd.Clone());
         else actualVersion = effectToAdd.Clone();
     }
+
+    public void removeEffect(bool ennemi) { 
+}
 }

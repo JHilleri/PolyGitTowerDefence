@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour, Pausable {
     public bool debuf_ennemie_repouse;
     public bool tir_ennemi;
     public float windEffectPower;
+    public bool buf_debuf_eau;
 
     public Effect[] effects;
     public Vector2 target;
