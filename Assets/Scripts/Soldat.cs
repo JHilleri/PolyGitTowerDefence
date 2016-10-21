@@ -31,6 +31,7 @@ public class Soldat : MonoBehaviour, Pausable{
     public Element element; //élément du soldat
     public bool monte;
     public UniteTour monture;
+    public AudioClip sonMort;
     private float vie;
     private int etape;
     private int cooldown;
@@ -283,6 +284,7 @@ public class Soldat : MonoBehaviour, Pausable{
             monture.meurt();
         }
         Destroy(gameObject);
+        AudioSource.PlayClipAtPoint(sonMort, Vector3.one, 1);
         if (camp == 1)
         {
             GameObject.FindObjectOfType<Partie>().joueurDroit.argent += argentGagne;
