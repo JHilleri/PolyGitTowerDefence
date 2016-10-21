@@ -23,37 +23,60 @@ public class MenuContextuelBaraquement : MonoBehaviour
     public string textAmelioration4;
     private Baraquement baraquement;
     private Text desc;
-
+    private Configs config;
 
     // Use this for initialization
     void Start()
     {
         baraquement = GetComponentInParent<Baraquement>();
+        config = FindObjectOfType<Partie>().configs;
+        GetComponent<SpriteRenderer>().sprite = config.fondMenuContextuel;
+        transform.GetChild(5).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVendreMenuContextuel;
         if (imageAmeliorationElement != null)
         {
             transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmeliorationElement;
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
         }
         if (imageAmelioration1 != null)
         {
             transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration1;
         }
+        else
+        {
+            transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+        }
         if (imageAmelioration2 != null)
         {
             transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration2;
+        }
+        else
+        {
+            transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
         }
         if (imageAmelioration3 != null)
         {
             transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration3;
         }
+        else
+        {
+            transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+        }
         if (imageAmelioration4 != null)
         {
             transform.GetChild(4).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration4;
         }
+        else
+        {
+            transform.GetChild(4).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+        }
         desc = GameObject.FindGameObjectWithTag("Description").GetComponent<Text>();
     }
 
-    // Update is called once per frame
-    void Update()
+        // Update is called once per frame
+        void Update()
     {
 
     }

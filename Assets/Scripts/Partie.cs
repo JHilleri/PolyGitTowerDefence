@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Partie : MonoBehaviour {
 
 	public int typePartie;//Solo/gauche (0), multi/droit (1)
+    public Configs configs;
 	public Joueur joueurGauche;
 	public Joueur joueurDroit;
     Text pdvAdverse;

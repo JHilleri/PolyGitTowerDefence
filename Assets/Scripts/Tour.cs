@@ -30,7 +30,7 @@ public class Tour : MonoBehaviour, Pausable {
         //spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
-        menu = transform.GetChild(1).gameObject;
+        menu = GetComponentInChildren<MenuContextuelTour>().gameObject;
         menu.SetActive(false);
         menuActif = false;
     }
