@@ -17,16 +17,17 @@ public class ChevalBois : UniteTour {
     {
         if (objectif.GetComponent<Soldat>().monte == false)
         {
-            cibleAllies = false;
-            cibleEnnemis = false;
+            stopRecherches = true;
             transform.SetParent(objectif.transform);
             attache = objectif.GetComponent<Soldat>();
             attache.vieMax += vieMax;
             baseVie = attache.getVie();
             attache.degat(-vie);
-            attache.vitesse += vitesseAjoutee;
+            attache.normalSpeed += vitesseAjoutee;
             attache.monte = true;
+            attache.monture = this;
             transform.position = attache.transform.position;
+            attache.recalculeTrajectoireVitesse();
         }
         else
         {
@@ -40,8 +41,9 @@ public class ChevalBois : UniteTour {
         if(attache != null && attache.getVie() < baseVie)
         {
             attache.vieMax -= vieMax;
-            attache.vitesse -= vitesseAjoutee;
+            attache.normalSpeed -= vitesseAjoutee;
             attache.monte = false;
+            attache.monture = null;
             meurt();
         }
         if (attache != null)

@@ -7,6 +7,7 @@ public abstract class UniteTour : MonoBehaviour {
     public int camp;
     public bool cibleAllies;
     public bool cibleEnnemis;
+    public bool stopRecherches;
     public float porteeTour;
     public float portee;
     public float detect;
@@ -37,27 +38,30 @@ public abstract class UniteTour : MonoBehaviour {
 	internal virtual void Update () {
         if (objectif == null)
         {
-            if (calcDistance(tour.gameObject) < porteeTour)
+            if (!stopRecherches)
             {
-                Soldat[] soldats = FindObjectsOfType<Soldat>();
-                float minDist = detect + 1;
-                Soldat plusProche = null;
-                foreach (Soldat soldat in soldats)
+                if (calcDistance(tour.gameObject) < porteeTour)
                 {
-                    if (calcDistance(soldat.gameObject) < minDist && ((soldat.camp == camp && cibleAllies) || (soldat.camp != camp && cibleEnnemis)) && conditionsSpeciales(soldat))
+                    Soldat[] soldats = FindObjectsOfType<Soldat>();
+                    float minDist = detect + 1;
+                    Soldat plusProche = null;
+                    foreach (Soldat soldat in soldats)
                     {
-                        minDist = calcDistance(soldat.gameObject);
-                        plusProche = soldat;
+                        if (calcDistance(soldat.gameObject) < minDist && ((soldat.camp == camp && cibleAllies) || (soldat.camp != camp && cibleEnnemis)) && conditionsSpeciales(soldat))
+                        {
+                            minDist = calcDistance(soldat.gameObject);
+                            plusProche = soldat;
+                        }
+                    }
+                    if (minDist < detect)
+                    {
+                        objectif = plusProche.gameObject;
                     }
                 }
-                if (minDist < detect)
+                else
                 {
-                    objectif = plusProche.gameObject;
+                    objectif = tour.gameObject;
                 }
-            }
-            else
-            {
-                objectif = tour.gameObject;
             }
         }
         else

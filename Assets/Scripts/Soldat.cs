@@ -30,6 +30,7 @@ public class Soldat : MonoBehaviour, Pausable{
     public Sprite imageDroiteCouleur;
     public Element element; //élément du soldat
     public bool monte;
+    public UniteTour monture;
     private float vie;
     private int etape;
     private int cooldown;
@@ -244,6 +245,11 @@ public class Soldat : MonoBehaviour, Pausable{
         vie -= dgt;
     }
 
+    public void recalculeTrajectoireVitesse()
+    {
+        objectif = null;
+    }
+
     void attaque(Soldat ennemi)
     {
         ennemi.degat(ennemi.element.lireRatioDegat(element) * degats);
@@ -252,6 +258,10 @@ public class Soldat : MonoBehaviour, Pausable{
 
     void gagne()
     {
+        if (monture != null)
+        {
+            monture.meurt();
+        }
         if (camp == 1)
         {
             GameObject.FindObjectOfType<Partie>().joueurDroit.vie -= vieRetireeAuJoueur;
@@ -268,6 +278,10 @@ public class Soldat : MonoBehaviour, Pausable{
 
     void meurt()
     {
+        if (monture != null)
+        {
+            monture.meurt();
+        }
         Destroy(gameObject);
         if (camp == 1)
         {
