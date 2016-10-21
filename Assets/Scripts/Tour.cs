@@ -11,6 +11,10 @@ public class Tour : MonoBehaviour, Pausable {
     public int cout;// Cout de la tourelle
     public bool buf_allie;
     public bool tir_ennemi;
+    public bool spawner;
+    public GameObject uniteSpawn;
+    public int intervalleSpawn;
+    public int unitesMax;
     public Element element;
     public Sprite image;
     public Sprite imageCouleur;
@@ -20,6 +24,8 @@ public class Tour : MonoBehaviour, Pausable {
     //private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
     private int compteur;
+    private int compteurSpawn;
+    private int unitesEnVie;
     private bool paused;
     private GameObject menu;
     private bool menuActif;
@@ -27,6 +33,8 @@ public class Tour : MonoBehaviour, Pausable {
     // Use this for initialization
     void Start () {
         compteur = 0;
+        compteurSpawn = 0;
+        unitesEnVie = 0;
         //spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
@@ -97,6 +105,22 @@ public class Tour : MonoBehaviour, Pausable {
                     tir();
                 }
             }
+            if (spawner)
+            {
+                if(compteurSpawn < intervalleSpawn)
+                {
+                    compteurSpawn++;
+                }
+                else if(unitesEnVie < unitesMax)
+                {
+                    GameObject spawned = Instantiate(uniteSpawn);
+                    spawned.GetComponent<UniteTour>().tour = this;
+                    spawned.GetComponent<UniteTour>().camp = camp;
+                    spawned.transform.position = transform.position;
+                    unitesEnVie++;
+                    compteurSpawn = 0;
+                }
+            }
         }
 	}
 
@@ -123,6 +147,11 @@ public class Tour : MonoBehaviour, Pausable {
     float distance (GameObject cible)
     {
         return ((Vector2)transform.position - (Vector2)cible.transform.position).magnitude;
+    }
+
+    public void uniteMorte()
+    {
+        unitesEnVie--;
     }
 
     public void OnPauseGame()

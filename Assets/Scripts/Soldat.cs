@@ -29,6 +29,7 @@ public class Soldat : MonoBehaviour, Pausable{
     public Sprite imageDroite;
     public Sprite imageDroiteCouleur;
     public Element element; //élément du soldat
+    public bool monte;
     private float vie;
     private int etape;
     private int cooldown;
@@ -288,6 +289,37 @@ public class Soldat : MonoBehaviour, Pausable{
     public void OnResumeGame()
     {
         paused = false;
+    }
+
+    public float getVie()
+    {
+        return vie;
+    }
+
+    public int getDirection()
+    {
+        if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
+        {
+            if (vitesseX > 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+        else
+        {
+            if (vitesseY > 0)
+            {
+                return 3;
+            }
+            else
+            {
+                return 4;
+            }
+        }
     }
 
     void applyEffect(Effect effect)
