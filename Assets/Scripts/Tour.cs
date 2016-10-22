@@ -21,17 +21,18 @@ public class Tour : MonoBehaviour, Pausable {
     public float projectSpeed;
     public int intervalle;
     public int portee;
-    //private SpriteRenderer spriteRenderer;
-    private SpriteRenderer colorSpriteRenderer;
-    private int compteur;
-    private int compteurSpawn;
-    private int unitesEnVie;
+    //internal SpriteRenderer spriteRenderer;
+    internal SpriteRenderer colorSpriteRenderer;
+    internal int compteur;
+    internal int compteurSpawn;
+    internal int unitesEnVie;
     private bool paused;
-    private GameObject menu;
-    private bool menuActif;
+    internal GameObject menu;
+    internal bool menuActif;
+    internal bool stopTirs;
 
     // Use this for initialization
-    void Start () {
+    internal virtual void Start () {
         compteur = 0;
         compteurSpawn = 0;
         unitesEnVie = 0;
@@ -41,10 +42,11 @@ public class Tour : MonoBehaviour, Pausable {
         menu = GetComponentInChildren<MenuContextuelTour>().gameObject;
         menu.SetActive(false);
         menuActif = false;
+        stopTirs = false;
     }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	internal virtual void FixedUpdate () {
         if (menuActif)
         {
             if (Input.GetMouseButtonDown(0))
@@ -62,7 +64,7 @@ public class Tour : MonoBehaviour, Pausable {
             {
                 compteur++;
             }
-            else
+            else if (!stopTirs)
             {
                 if (cible == null)
                 {
@@ -142,9 +144,10 @@ public class Tour : MonoBehaviour, Pausable {
         script.target = cible.transform.position;
         script.speed = projectSpeed;
         script.portee = portee * 2;
+        script.tour = this;
     }
 
-    float distance (GameObject cible)
+    internal float distance (GameObject cible)
     {
         return ((Vector2)transform.position - (Vector2)cible.transform.position).magnitude;
     }

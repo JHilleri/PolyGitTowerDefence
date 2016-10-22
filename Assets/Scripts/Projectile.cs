@@ -6,6 +6,7 @@ using System;
 public class Projectile : MonoBehaviour, Pausable {
 
     public int damage;
+    public Tour tour;
     public Element element;
     public int camp;
     public bool buf_allie_vitesse;
@@ -13,14 +14,13 @@ public class Projectile : MonoBehaviour, Pausable {
     public bool tir_ennemi;
     public float windEffectPower;
     public bool buf_debuf_eau;
-
     public Effect[] effects;
     public Vector2 target;
     public float speed;
-    private Vector2 direction;
-    private bool isPaused = false;
     public int portee;
-    
+
+    internal Vector2 direction;
+    private bool isPaused = false;
 
     void Start()
     {
@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour, Pausable {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    internal virtual void OnTriggerEnter2D(Collider2D other)
     {
         Soldat soldat = other.gameObject.GetComponent<Soldat>();
         if(soldat != null)

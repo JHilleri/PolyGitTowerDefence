@@ -29,6 +29,7 @@ public class Soldat : Unite, Pausable{
     public Sprite imageDroiteCouleur;
     public bool monte;
     public bool occupe;
+    public bool paralise;
     public UniteTour monture;
     public AudioClip sonMort;
     private int etape;
@@ -70,152 +71,155 @@ public class Soldat : Unite, Pausable{
 	
 	// Update is called once per frame
 	void FixedUpdate() {
-        if (!paused)// Vérifie que le soldat n'est pas en pause
+        if (!paused)
         {
-            vitesse = normalSpeed;
-            if(effects.Count != 0)
+            if (!paralise)// Vérifie que le soldat n'est pas en pause
             {
-                effects.RemoveAll(effect => (effect.haveDuration && effect.duration <= 0));
-                foreach(Effect effect in effects)
+                vitesse = normalSpeed;
+                if (effects.Count != 0)
                 {
-                    applyEffect(effect);
-                    if (effect.haveDuration) effect.duration--;
+                    effects.RemoveAll(effect => (effect.haveDuration && effect.duration <= 0));
+                    foreach (Effect effect in effects)
+                    {
+                        applyEffect(effect);
+                        if (effect.haveDuration) effect.duration--;
+                    }
                 }
-            }
-            
 
-            if (!enCombat)// Si le soldat n'est pas en combat
-            {
-                Soldat[] listeSoldats = FindObjectsOfType<Soldat>();
-                float minDist = detect + 1; // on initialise la distance minimale quand étant supérieur à sa portée de détection
-                float dist;
-                Soldat pCible = null;
-                foreach(Soldat sol in listeSoldats)
+
+                if (!enCombat)// Si le soldat n'est pas en combat
                 {
-                    dist = calcDistance(sol.gameObject);
-                    if (sol.camp != camp && dist < minDist)
+                    Soldat[] listeSoldats = FindObjectsOfType<Soldat>();
+                    float minDist = detect + 1; // on initialise la distance minimale quand étant supérieur à sa portée de détection
+                    float dist;
+                    Soldat pCible = null;
+                    foreach (Soldat sol in listeSoldats)
                     {
-                        minDist = dist;
-                        pCible = sol;
-                    }
-                }
-                if (pCible != null)
-                {
-                    cible = pCible;
-                    objectif = null;
-                    enCombat = true;
-                }
-				
-                if (objectif == null)// s'il n'a pas d'objectif en cours
-                {
-                    PointPassage[] points = UnityEngine.Object.FindObjectsOfType<PointPassage>();
-                    bool found = false;
-                    int indexPoints = 0;
-                    while (indexPoints < points.Length && !found)
-                    {
-                        if (points[indexPoints].numeroChemin == chemin && points[indexPoints].ordre == etape)
+                        dist = calcDistance(sol.gameObject);
+                        if (sol.camp != camp && dist < minDist)
                         {
-                            objectif = points[indexPoints];
-                            distanceX = objectif.transform.position.x - transform.position.x;
-                            distanceY = objectif.transform.position.y - transform.position.y;
-                            distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
-                            oldDistance = distance;
-                            vitesseX = (distanceX / distance) * vitesse;
-                            vitesseY = (distanceY / distance) * vitesse;
-                            found = true;
+                            minDist = dist;
+                            pCible = sol;
                         }
-                        indexPoints++;
                     }
-                    if (!found)
+                    if (pCible != null)
                     {
-                        gagne();
+                        cible = pCible;
+                        objectif = null;
+                        enCombat = true;
                     }
-                }
-                if (transform != null && objectif != null)
-                {
-                    distanceX = objectif.transform.position.x - transform.position.x;
-                    distanceY = objectif.transform.position.y - transform.position.y;
-                    distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
-                    if (distance < marge || distance > oldDistance)
+
+                    if (objectif == null)// s'il n'a pas d'objectif en cours
                     {
-                        if (camp == 1)
+                        PointPassage[] points = UnityEngine.Object.FindObjectsOfType<PointPassage>();
+                        bool found = false;
+                        int indexPoints = 0;
+                        while (indexPoints < points.Length && !found)
                         {
-                            etape++;
+                            if (points[indexPoints].numeroChemin == chemin && points[indexPoints].ordre == etape)
+                            {
+                                objectif = points[indexPoints];
+                                distanceX = objectif.transform.position.x - transform.position.x;
+                                distanceY = objectif.transform.position.y - transform.position.y;
+                                distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+                                oldDistance = distance;
+                                vitesseX = (distanceX / distance) * vitesse;
+                                vitesseY = (distanceY / distance) * vitesse;
+                                found = true;
+                            }
+                            indexPoints++;
+                        }
+                        if (!found)
+                        {
+                            gagne();
+                        }
+                    }
+                    if (transform != null && objectif != null)
+                    {
+                        distanceX = objectif.transform.position.x - transform.position.x;
+                        distanceY = objectif.transform.position.y - transform.position.y;
+                        distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+                        if (distance < marge || distance > oldDistance)
+                        {
+                            if (camp == 1)
+                            {
+                                etape++;
+                            }
+                            else
+                            {
+                                etape--;
+                            }
+                            objectif = null;
                         }
                         else
                         {
-                            etape--;
+                            transform.Translate(vitesseX, vitesseY, 0);
                         }
-                        objectif = null;
+                        oldDistance = distance;
                     }
-                    else
-                    {
-                        transform.Translate(vitesseX, vitesseY, 0);
-                    }
-                    oldDistance = distance;
                 }
-            }
-			
-            else // Si le soldat est actuellement en combat
-            {
-                if (cible != null)
+
+                else // Si le soldat est actuellement en combat
                 {
-                    distanceX = cible.transform.position.x - transform.position.x;
-                    distanceY = cible.transform.position.y - transform.position.y;
-                    distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
-                    if (distance < portee)
+                    if (cible != null)
                     {
-                        if (cooldown <= 0)
+                        distanceX = cible.transform.position.x - transform.position.x;
+                        distanceY = cible.transform.position.y - transform.position.y;
+                        distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+                        if (distance < portee)
                         {
-                            attaque(cible);
+                            if (cooldown <= 0)
+                            {
+                                attaque(cible);
+                            }
+                        }
+                        else
+                        {
+                            vitesseX = (distanceX / distance) * vitesse;
+                            vitesseY = (distanceY / distance) * vitesse;
+                            transform.Translate(vitesseX, vitesseY, 0);
                         }
                     }
                     else
                     {
-                        vitesseX = (distanceX / distance) * vitesse;
-                        vitesseY = (distanceY / distance) * vitesse;
-                        transform.Translate(vitesseX, vitesseY, 0);
+                        enCombat = false;
+                    }
+                }
+
+                if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY)) // Les lignes qui suivent changent l'image en fonction de la direction du soldat
+                {
+                    if (vitesseX > 0)
+                    {
+                        spriteRenderer.sprite = imageDroite;
+                        colorSpriteRenderer.sprite = imageDroiteCouleur;
+                    }
+                    else
+                    {
+                        spriteRenderer.sprite = imageGauche;
+                        colorSpriteRenderer.sprite = imageGaucheCouleur;
                     }
                 }
                 else
                 {
-                    enCombat = false;
+                    if (vitesseY > 0)
+                    {
+                        spriteRenderer.sprite = imageDos;
+                        colorSpriteRenderer.sprite = imageDosCouleur;
+                    }
+                    else
+                    {
+                        spriteRenderer.sprite = imageFace;
+                        colorSpriteRenderer.sprite = imageFaceCouleur;
+                    }
                 }
-            }
-			
-            if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY)) // Les lignes qui suivent changent l'image en fonction de la direction du soldat
-            {
-                if (vitesseX > 0)
+                if (cooldown > 0)
                 {
-                    spriteRenderer.sprite = imageDroite;
-                    colorSpriteRenderer.sprite = imageDroiteCouleur;
-                }
-                else
-                {
-                    spriteRenderer.sprite = imageGauche;
-                    colorSpriteRenderer.sprite = imageGaucheCouleur;
-                }
-            }
-            else
-            {
-                if (vitesseY > 0)
-                {
-                    spriteRenderer.sprite = imageDos;
-                    colorSpriteRenderer.sprite = imageDosCouleur;
-                }
-                else
-                {
-                    spriteRenderer.sprite = imageFace;
-                    colorSpriteRenderer.sprite = imageFaceCouleur;
+                    cooldown--;
                 }
             }
             if (vie <= 0)
             {
                 meurt();
-            }
-            if(cooldown > 0)
-            {
-                cooldown--;
             }
         }
     }
