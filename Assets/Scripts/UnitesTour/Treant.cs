@@ -16,11 +16,18 @@ public class Treant : UniteTour {
         {
             objectif.GetComponent<Soldat>().forceCible(this);
             objectif.GetComponent<Soldat>().occupe = true;
+            stopRecherches = true;
+            objectifAction = objectif;
         }
         else
         {
             objectif = null;
         }
+    }
+
+    internal override void objectifMort()
+    {
+        stopRecherches = false;
     }
 
     internal override void meurt()

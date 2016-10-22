@@ -18,6 +18,7 @@ public abstract class UniteTour : Unite {
     public Sprite imageDroite;
 
     protected GameObject objectif;
+    protected GameObject objectifAction;
     protected float distanceX;
     protected float distanceY;
     protected float distance;
@@ -59,6 +60,10 @@ public abstract class UniteTour : Unite {
                 {
                     objectif = tour.gameObject;
                 }
+            }
+            if(objectifAction == null)
+            {
+                objectifMort();
             }
         }
         else
@@ -113,6 +118,11 @@ public abstract class UniteTour : Unite {
     internal virtual bool conditionsSpeciales(Soldat sol)//A override pour des conditions spéciales sur les cibles
     {
         return true;
+    }
+
+    internal virtual void objectifMort()//A override pour des actions spéciales à la mort de la cible
+    {
+
     }
 
     internal abstract void action();// A override dans les classes filles
