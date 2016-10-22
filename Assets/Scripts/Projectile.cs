@@ -13,6 +13,11 @@ public class Projectile : MonoBehaviour, Pausable {
     public bool tir_ennemi;
     public float windEffectPower;
     public bool buf_debuf_eau;
+    public bool buff_allie_attaque;
+    public bool paralysie;
+    public bool eclair_en_chaine;
+    public bool terre_obstacle;
+    public bool terre_boulet_persistant;
 
     public Effect[] effects;
     public Vector2 target;
@@ -53,6 +58,15 @@ public class Projectile : MonoBehaviour, Pausable {
                 {
                     soldat.transform.Translate((float)0.5 * direction.x,(float)0.5*direction.y, 0);
                 }
+                else if (eclair_en_chaine)
+                {
+                    //insérer code de l'éclair en chaine
+                    Destroy(gameObject);
+                }
+				else if (terre_obstacle || terre_boulet_persistant)
+				{
+					
+				}
                 else Destroy(gameObject);
             }
         }

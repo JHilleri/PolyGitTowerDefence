@@ -11,6 +11,7 @@ public class Baraquement : MonoBehaviour {
     public int camp; // définit le camp auquel la tour appartient 1 -> gauche, 2 -> droite
     public int cout; // Cout de la caserne
     public int chemin; // assignation d'un chemin aux unités générées
+    public int etape;
     public Element element;
     public Sprite image;
     public Sprite imageCouleur;
@@ -30,7 +31,7 @@ public class Baraquement : MonoBehaviour {
         menu = transform.GetChild(1).gameObject;
         menu.SetActive(false);
         menuActif = false;
-        chemin = choixChemin();
+        choixChemin();
     }
 	
 	// Update is called once per frame
@@ -86,9 +87,10 @@ public class Baraquement : MonoBehaviour {
         paused = false;
     }
 
-    int choixChemin()
+    void choixChemin()
     {
         PointPassage[] points = FindObjectsOfType<PointPassage>();
+        int etapeAPrendre = 0;
         int cheminAPrendre = 0;
         float distPoint;
         float minDistPoint = 100;
@@ -99,9 +101,11 @@ public class Baraquement : MonoBehaviour {
             {
                 cheminAPrendre = point.numeroChemin;
                 minDistPoint = distPoint;
+                etapeAPrendre = point.ordre;
             }
         }
-        return cheminAPrendre;
+        chemin = cheminAPrendre;
+        etape = etapeAPrendre;
     }
 
     float calcDistance(GameObject other)
