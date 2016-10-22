@@ -11,6 +11,7 @@ public class Round : MonoBehaviour {
         public int faction;
         public Element element;
         public int chemin;
+        public int etape;
     }
     private List<UnitToSpawn> unitsToSpawn = new List<UnitToSpawn>();
 
@@ -39,6 +40,7 @@ public class Round : MonoBehaviour {
                 unitToSpawnToAdd.faction = barrackScript.camp;
                 unitToSpawnToAdd.element = barrackScript.element;
                 unitToSpawnToAdd.chemin = barrackScript.chemin;
+                unitToSpawnToAdd.etape = barrackScript.etape;
                 unitToSpawnToAdd.timeBeforSpawn = index * barrackScript.spawnInterval;
                 unitsToSpawn.Add(unitToSpawnToAdd);
             }
@@ -64,6 +66,7 @@ public class Round : MonoBehaviour {
             newUnit.transform.parent = unitsContainer.transform;
             newUnit.GetComponent<Soldat>().element = unitToTryToSpawn.element;
             newUnit.GetComponent<Soldat>().chemin = unitToTryToSpawn.chemin;
+            newUnit.GetComponent<Soldat>().etape = unitToTryToSpawn.etape;
             return true;
         }
         else

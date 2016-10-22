@@ -7,6 +7,7 @@ public class Soldat : Unite, Pausable{
 
     public int camp; // 1 = gauche 2 = droite
     public int chemin; // numero du chemin suivi par ce Soldat
+    public int etape;
     public int argentGagne;//Argent donné à l'adversaire lors de la destruction de cette unité
     public int vieRetireeAuJoueur;//La vie qui est retirée au joueur adverse lorsque l'unité passe sa défense
     public int xpGeneree;//Quantité d'expérience générée par l'unité lors de sa destruction (Pour l'adversaire)
@@ -32,7 +33,6 @@ public class Soldat : Unite, Pausable{
     public bool paralise;
     public UniteTour monture;
     public AudioClip sonMort;
-    private int etape;
     private int cooldown;
     private PointPassage objectif;
     private Unite cible;
@@ -51,14 +51,17 @@ public class Soldat : Unite, Pausable{
 
     // Use this for initialization
     void Start() {
-        if (camp == 1)// Si ce soldat est dans le camps de gauche, sa première étape est la numéro 0
+        // Ce morceau devra être supprimé à la fin, il sert pour les unités de test
+        if (camp == 1 && etape == 0)// Si ce soldat est dans le camps de gauche, sa première étape est la numéro 0
         {
             etape = 0;
         }
-        else // Sinon il commence à la derniere étape
+        else if (camp == 2)// Sinon il commence à la derniere étape
         {
             etape = pointMax(chemin);
         }
+        //fin du morceau des unités de test
+
         objectif = null;
         cible = null;
         vie = vieMax;
@@ -342,6 +345,7 @@ public class Soldat : Unite, Pausable{
     {
         vitesse *= effect.speedRelativeModifier;
         vitesse += effect.speedAbsoluteModifier;
+        degats *= effect.attackModifier;
     }
 
     public void forceCible(Unite nCible)
@@ -359,5 +363,5 @@ public class Soldat : Unite, Pausable{
     }
 
     public void removeEffect(bool ennemi) { 
-}
+    }
 }

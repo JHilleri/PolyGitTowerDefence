@@ -66,39 +66,34 @@ public class Tour : MonoBehaviour, Pausable {
             }
             else if (!stopTirs)
             {
-                if (cible == null)
+                Soldat[] cibles = UnityEngine.Object.FindObjectsOfType<Soldat>();
+                if (cibles.Length >= 1)
                 {
-                    Soldat[] cibles = UnityEngine.Object.FindObjectsOfType<Soldat>();
-                    if (cibles.Length >= 1)
+                    float minDist = portee + 1; // on initialise la la distance minimale de tir supérieur à la portée de la tour (un cas ou cela ne tire pas si aucune cible est à portée) 
+                    foreach (Soldat pCible in cibles)
+                    {
+                        float dist = distance(pCible.gameObject);
+                        if(tir_ennemi)
+                        {
+                            if (pCible.camp != camp && dist < minDist)
+                            {
+                                cible = pCible.gameObject;
+                                minDist = dist;
+                            }
+                        }
+
+                        if(buf_allie)
+                        {
+                            if (pCible.camp == camp && dist < minDist)
+                            {
+                                cible = pCible.gameObject;
+                                minDist = dist;
+                            }
+                        }
+                    }
+                    if (minDist > portee)
                     {
                         cible = null;
-                        float minDist = portee + 1; // on initialise la la distance minimale de tir supérieur à la portée de la tour (un cas ou cela ne tire pas si aucune cible est à portée) 
-                        foreach (Soldat pCible in cibles)
-                        {
-                            float dist = distance(pCible.gameObject);
-                            if(tir_ennemi)
-                            {
-                                if (pCible.camp != camp && dist < minDist)
-                                {
-                                    cible = pCible.gameObject;
-                                    minDist = dist;
-                                }
-                            }
-
-                            if(buf_allie)
-                            {
-                                if (pCible.camp == camp && dist < minDist)
-                                {
-                                    cible = pCible.gameObject;
-                                    minDist = dist;
-                                }
-                            }
-
-                        }
-                        if (minDist > portee)
-                        {
-                            cible = null;
-                        }
                     }
                 }
                 compteur = 0;
