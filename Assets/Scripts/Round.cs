@@ -47,6 +47,14 @@ public class Round : MonoBehaviour {
         }
         ++nbRound;
         time = 0;
+        foreach(var player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            AI artificialIntelligence = player.GetComponent<AI>();
+            if(artificialIntelligence != null)
+            {
+                artificialIntelligence.beginRound();
+            }
+        }
 	}
 	
 	void FixedUpdate()

@@ -109,12 +109,14 @@ public class Joueur : MonoBehaviour{
 
     public bool isBarrackPlaceable(Vector2 position)
     {
+        if (basicBarrack.GetComponentInChildren<Baraquement>().cout > argent) return false;
         barrackCreatorCursor.transform.position = position;
         return (area.OverlapPoint(position) && !barrackCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
     }
 
     public bool isTowerPlaceable(Vector2 position)
     {
+        if (basicTower.GetComponentInChildren<Tour>().cout > argent) return false;
         towerCreatorCursor.transform.position = position;
         return (area.OverlapPoint(position) && !towerCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
     }
