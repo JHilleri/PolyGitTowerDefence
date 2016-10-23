@@ -12,6 +12,7 @@ public class Tour : MonoBehaviour, Pausable {
     public bool buf_allie;
     public bool tir_ennemi;
     public bool spawner;
+    public bool projectile_obstacle;
     public GameObject uniteSpawn;
     public int intervalleSpawn;
     public int unitesMax;
@@ -21,7 +22,6 @@ public class Tour : MonoBehaviour, Pausable {
     public float projectSpeed;
     public int intervalle;
     public int portee;
-    //internal SpriteRenderer spriteRenderer;
     internal SpriteRenderer colorSpriteRenderer;
     internal int compteur;
     internal int compteurSpawn;
@@ -37,7 +37,6 @@ public class Tour : MonoBehaviour, Pausable {
         compteur = 0;
         compteurSpawn = 0;
         unitesEnVie = 0;
-        //spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
         menu = GetComponentInChildren<MenuContextuelTour>().gameObject;
@@ -70,10 +69,11 @@ public class Tour : MonoBehaviour, Pausable {
                 Soldat[] cibles = UnityEngine.Object.FindObjectsOfType<Soldat>();
                 if (cibles.Length >= 1)
                 {
+                    float dist = 0;
                     float minDist = portee + 1; // on initialise la la distance minimale de tir supérieur à la portée de la tour (un cas ou cela ne tire pas si aucune cible est à portée) 
                     foreach (Soldat pCible in cibles)
                     {
-                        float dist = distance(pCible.gameObject);
+                        dist = distance(pCible.gameObject);
                         if(tir_ennemi)
                         {
                             if (pCible.camp != camp && dist < minDist)
@@ -137,7 +137,26 @@ public class Tour : MonoBehaviour, Pausable {
         Projectile script = firedProjectile.GetComponent<Projectile>();
         script.element = element;
         script.camp = camp;
-        script.target = cible.transform.position;
+        if (projectile_obstacle)
+        {
+            bool pointTrouve = false;
+            int indicePoint = 0;
+            int chemin = cible.GetComponent<Soldat>().chemin;
+            int etape = cible.GetComponent<Soldat>().etape; ;
+            PointPassage[] points = FindObjectsOfType<PointPassage>();
+
+            while (!pointTrouve)
+            {
+                if (points[indicePoint].GetComponent<PointPassage>().numeroChemin == chemin && points[indicePoint].GetComponent<PointPassage>().ordre == etape)
+                {
+                    script.target = points[indicePoint].transform.position;
+                    pointTrouve = true;
+                }
+                indicePoint++;
+            }
+        }
+        else
+            script.target = cible.transform.position;
         script.speed = projectSpeed;
         script.portee = portee * 2;
         script.tour = this;

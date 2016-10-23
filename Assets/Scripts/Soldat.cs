@@ -106,6 +106,20 @@ public class Soldat : Unite, Pausable{
                             pCible = sol;
                         }
                     }
+                    //probleme, comment faire comprendre que le rochet d'obstacle est aussi un ennemi ?
+                    /*Projectile[] listeProjectiles = FindObjectsOfType<Projectile>();
+                    foreach (Projectile proj in listeProjectiles)
+                    {
+                        if (proj.GetComponent<Projectile>().attaquable)
+                        {
+                            dist = calcDistance(proj.gameObject);
+                            if (proj.camp != camp && dist < minDist)
+                            {
+                                minDist = dist;
+                                pCible = proj;
+                            }
+                        }
+                    }*/
                     if (pCible != null)
                     {
                         cible = pCible;
