@@ -33,6 +33,7 @@ public class Soldat : Unite, Pausable{
     public bool paralise;
     public UniteTour monture;
     public AudioClip sonMort;
+    public AudioClip sonCombat;
     private int cooldown;
     private PointPassage objectif;
     private Unite cible;
@@ -254,6 +255,10 @@ public class Soldat : Unite, Pausable{
     void attaque(Unite ennemi)
     {
         ennemi.degat(ennemi.element.lireRatioDegat(element) * degats);
+        if (sonCombat != null)
+        {
+            AudioSource.PlayClipAtPoint(sonCombat, Vector3.one, 1);
+        }
         cooldown = tempsRecharge;
     }
 
@@ -275,6 +280,7 @@ public class Soldat : Unite, Pausable{
             GameObject.FindObjectOfType<Partie>().joueurDroit.experience += xpGeneree;
         }
         Destroy(gameObject);
+
     }
 
     void meurt()

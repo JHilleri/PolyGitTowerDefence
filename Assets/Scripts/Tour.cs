@@ -30,6 +30,7 @@ public class Tour : MonoBehaviour, Pausable {
     internal GameObject menu;
     internal bool menuActif;
     internal bool stopTirs;
+    public AudioClip sonProjectile;
 
     // Use this for initialization
     internal virtual void Start () {
@@ -140,6 +141,11 @@ public class Tour : MonoBehaviour, Pausable {
         script.speed = projectSpeed;
         script.portee = portee * 2;
         script.tour = this;
+        if (sonProjectile != null)
+        {
+            AudioSource.PlayClipAtPoint(sonProjectile, Vector3.one, 1);
+        }
+
     }
 
     internal float distance (GameObject cible)
