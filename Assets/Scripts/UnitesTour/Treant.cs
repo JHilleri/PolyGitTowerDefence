@@ -14,7 +14,7 @@ public class Treant : UniteTour {
     {
         if (objectif.GetComponent<Soldat>().occupe == false)
         {
-            objectif.GetComponent<Soldat>().forceCible(this);
+            objectif.GetComponent<Soldat>().setCible(this);
             objectif.GetComponent<Soldat>().occupe = true;
             stopRecherches = true;
             objectifAction = objectif;
