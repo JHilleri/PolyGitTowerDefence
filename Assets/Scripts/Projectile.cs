@@ -150,27 +150,30 @@ public class Projectile : MonoBehaviour {
 
     void tir()
     {
-        GameObject projectileTire = Instantiate(projectileAdditionnel);
-        projectileTire.transform.position = transform.position;
-        projectileTire.transform.parent = transform.parent;
-        Projectile script = projectileTire.GetComponent<Projectile>();
-        script.element = element;
-        script.camp = camp;
-        script.target = cible.transform.position;
-        script.speed = speed;
-        script.portee = porteeChaine;
-        script.porteeChaine = porteeChaine;
-        script.tour = tour;
-        script.eclair_en_chaine = true;
-        script.numProjectile = numProjectile + 1;
-        script.maxChaineProjectile = maxChaineProjectile;
-        script.targetType = targetType;
-        script.sonProjectile = sonProjectile;
-        script.damage = damage;
-        script.projectileAdditionnel = projectileAdditionnel;
-        if (sonProjectile != null)
+        if (projectileAdditionnel != null)
         {
-            AudioSource.PlayClipAtPoint(sonProjectile, Vector3.one, 1);
+            GameObject projectileTire = Instantiate(projectileAdditionnel);
+            projectileTire.transform.position = transform.position;
+            projectileTire.transform.parent = transform.parent;
+            Projectile script = projectileTire.GetComponent<Projectile>();
+            script.element = element;
+            script.camp = camp;
+            script.target = cible.transform.position;
+            script.speed = speed;
+            script.portee = porteeChaine;
+            script.porteeChaine = porteeChaine;
+            script.tour = tour;
+            script.eclair_en_chaine = true;
+            script.numProjectile = numProjectile + 1;
+            script.maxChaineProjectile = maxChaineProjectile;
+            script.targetType = targetType;
+            script.sonProjectile = sonProjectile;
+            script.damage = damage;
+            script.projectileAdditionnel = projectileAdditionnel;
+            if (sonProjectile != null)
+            {
+                AudioSource.PlayClipAtPoint(sonProjectile, Vector3.one, 1);
+            }
         }
     }
 }
