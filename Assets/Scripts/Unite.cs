@@ -23,8 +23,12 @@ public abstract class Unite : MonoBehaviour {
 
     protected virtual void FixedUpdate()
     {
-        resetEffectiveStats();
-        applyEffects();
+        if(!Pause.isPaused)
+        {
+            resetEffectiveStats();
+            applyEffects();
+        }
+        
     }
 
     public virtual void degat(float dgt)

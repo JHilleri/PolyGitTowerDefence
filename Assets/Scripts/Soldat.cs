@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using Assets.Scripts;
 using System;
 
-public class Soldat : Unite, Pausable{
+public class Soldat : Unite{
 
     public int camp; // 1 = gauche 2 = droite
     public int chemin; // numero du chemin suivi par ce Soldat
@@ -42,7 +41,6 @@ public class Soldat : Unite, Pausable{
     private float distance;
     private float vitesseX;
     private float vitesseY;
-    private bool paused;
     private bool enCombat;
 
 
@@ -73,7 +71,7 @@ public class Soldat : Unite, Pausable{
 	// Update is called once per frame
 	override protected void FixedUpdate() {
         base.FixedUpdate();
-        if (!paused)
+        if (!Pause.isPaused)
         {
             if (!paralise)// Vérifie que le soldat n'est pas en pause
             {
@@ -304,16 +302,6 @@ public class Soldat : Unite, Pausable{
             GameObject.FindObjectOfType<Partie>().joueurGauche.argent += argentGagne;
             GameObject.FindObjectOfType<Partie>().joueurDroit.experience += xpGeneree;
         }
-    }
-
-    public void OnPauseGame()
-    {
-        paused = true;
-    }
-
-    public void OnResumeGame()
-    {
-        paused = false;
     }
 
     public float getVie()

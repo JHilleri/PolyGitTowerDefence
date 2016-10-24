@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Assets.Scripts;
 using System;
 
-public class Tour : MonoBehaviour, Pausable {
+public class Tour : MonoBehaviour{
 
     public GameObject cible;
     public GameObject projectileToFire;
@@ -26,7 +25,6 @@ public class Tour : MonoBehaviour, Pausable {
     internal int compteur;
     internal int compteurSpawn;
     internal int unitesEnVie;
-    private bool paused;
     internal GameObject menu;
     internal bool menuActif;
     internal bool stopTirs;
@@ -58,7 +56,7 @@ public class Tour : MonoBehaviour, Pausable {
         {
             menu.SetActive(false);
         }
-        if (!paused)
+        if (!Pause.isPaused)
         {
             if (compteur < intervalle)
             {
@@ -175,15 +173,5 @@ public class Tour : MonoBehaviour, Pausable {
     public void uniteMorte()
     {
         unitesEnVie--;
-    }
-
-    public void OnPauseGame()
-    {
-        paused = true;
-    }
-
-    public void OnResumeGame()
-    {
-        paused = false;
     }
 }

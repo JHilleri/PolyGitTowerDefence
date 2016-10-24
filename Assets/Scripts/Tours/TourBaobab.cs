@@ -17,18 +17,21 @@ public class TourBaobab : Tour {
 
     internal override void FixedUpdate() {
         base.FixedUpdate();
-        if (compteurDigestion < intervalleDegat)
+        if (Pause.isPaused)
         {
-            compteurDigestion++;
-        }
-        else if(enDigestion != null)
-        {
-            compteurDigestion = 0;
-            enDigestion.degat(enDigestion.element.lireRatioDegat(element)*degat);
-        }
-        else
-        {
-            stopTirs = false;
+            if (compteurDigestion < intervalleDegat)
+            {
+                compteurDigestion++;
+            }
+            else if (enDigestion != null)
+            {
+                compteurDigestion = 0;
+                enDigestion.degat(enDigestion.element.lireRatioDegat(element) * degat);
+            }
+            else
+            {
+                stopTirs = false;
+            }
         }
 	}
 

@@ -33,80 +33,84 @@ public abstract class UniteTour : Unite {
 	}
 	
 	// Update is called once per frame
-	internal virtual void Update () {
-        if (objectif == null)
+	protected override void FixedUpdate() {
+        base.FixedUpdate();
+        if (!Pause.isPaused)
         {
-            if (!stopRecherches)
+            if (objectif == null)
             {
-                if (calcDistance(tour.gameObject) < porteeTour)
+                if (!stopRecherches)
                 {
-                    Soldat[] soldats = FindObjectsOfType<Soldat>();
-                    float minDist = detect + 1;
-                    Soldat plusProche = null;
-                    foreach (Soldat soldat in soldats)
+                    if (calcDistance(tour.gameObject) < porteeTour)
                     {
-                        if (calcDistance(soldat.gameObject) < minDist && ((soldat.camp == camp && cibleAllies) || (soldat.camp != camp && cibleEnnemis)) && conditionsSpeciales(soldat))
+                        Soldat[] soldats = FindObjectsOfType<Soldat>();
+                        float minDist = detect + 1;
+                        Soldat plusProche = null;
+                        foreach (Soldat soldat in soldats)
                         {
-                            minDist = calcDistance(soldat.gameObject);
-                            plusProche = soldat;
+                            if (calcDistance(soldat.gameObject) < minDist && ((soldat.camp == camp && cibleAllies) || (soldat.camp != camp && cibleEnnemis)) && conditionsSpeciales(soldat))
+                            {
+                                minDist = calcDistance(soldat.gameObject);
+                                plusProche = soldat;
+                            }
+                        }
+                        if (minDist < detect)
+                        {
+                            objectif = plusProche.gameObject;
                         }
                     }
-                    if (minDist < detect)
+                    else
                     {
-                        objectif = plusProche.gameObject;
+                        objectif = tour.gameObject;
                     }
+                }
+                if (objectifAction == null)
+                {
+                    objectifMort();
+                }
+            }
+            else
+            {
+                distanceX = objectif.transform.position.x - transform.position.x;
+                distanceY = objectif.transform.position.y - transform.position.y;
+                distance = calcDistance(objectif);
+                if (distance < portee)
+                {
+                    action();
                 }
                 else
                 {
-                    objectif = tour.gameObject;
+                    vitesseX = (distanceX / distance) * vitesse;
+                    vitesseY = (distanceY / distance) * vitesse;
+                    transform.Translate(vitesseX, vitesseY, 0);
                 }
             }
-            if(objectifAction == null)
+            if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
             {
-                objectifMort();
-            }
-        }
-        else
-        {
-            distanceX = objectif.transform.position.x - transform.position.x;
-            distanceY = objectif.transform.position.y - transform.position.y;
-            distance = calcDistance(objectif);
-            if (distance < portee)
-            {
-                action();
+                if (vitesseX > 0)
+                {
+                    spriteRenderer.sprite = imageDroite;
+                }
+                else
+                {
+                    spriteRenderer.sprite = imageGauche;
+                }
             }
             else
             {
-                vitesseX = (distanceX / distance) * vitesse;
-                vitesseY = (distanceY / distance) * vitesse;
-                transform.Translate(vitesseX, vitesseY, 0);
+                if (vitesseY > 0)
+                {
+                    spriteRenderer.sprite = imageDos;
+                }
+                else
+                {
+                    spriteRenderer.sprite = imageFace;
+                }
             }
-        }
-        if (Mathf.Abs(vitesseX) > Mathf.Abs(vitesseY))
-        {
-            if (vitesseX > 0)
+            if (hitPoints <= 0)
             {
-                spriteRenderer.sprite = imageDroite;
+                meurt();
             }
-            else
-            {
-                spriteRenderer.sprite = imageGauche;
-            }
-        }
-        else
-        {
-            if (vitesseY > 0)
-            {
-                spriteRenderer.sprite = imageDos;
-            }
-            else
-            {
-                spriteRenderer.sprite = imageFace;
-            }
-        }
-        if (hitPoints <= 0)
-        {
-            meurt();
         }
     }
 

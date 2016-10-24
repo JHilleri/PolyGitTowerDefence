@@ -35,9 +35,9 @@ public class ChevalBois : UniteTour {
         }
     }
 
-    internal override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
         if(attache != null && attache.getVie() < baseVie)
         {
             attache.maxHitPoints -= maxHitPoints;

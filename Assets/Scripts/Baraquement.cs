@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Assets.Scripts;
 using System;
 
 public class Baraquement : MonoBehaviour {
@@ -19,7 +18,6 @@ public class Baraquement : MonoBehaviour {
 	
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
-    private bool paused;
     private GameObject menu;
     private bool menuActif;
 
@@ -47,44 +45,12 @@ public class Baraquement : MonoBehaviour {
         {
             menu.SetActive(false);
         }
-        /*if (!paused)
-        {
-            if (compteur < intervalle)
-            {
-                compteur++;
-            }
-            else
-            {
-                creationUnite();
-                compteur = 0;
-            }
-        }*/
 	}
 
     void OnMouseDown()
     {
         menu.SetActive(true);
         menuActif = true;
-    }
-
-    /*void creationUnite() // les unités créées se trouvent sur le baraquement (elles vont d'elles mêmes prendre leur chemin)
-    {
-        GameObject Unite = Instantiate(AjoutUnite);
-        Unite.transform.parent = transform;
-        Unite.transform.position = transform.position;
-        Soldat script = Unite.GetComponent<Soldat>(); // l'unité est déployé mais n'a pas encore de classe
-        script.element = element;
-        script.camp = camp;
-    }*/
-
-    public void OnPauseGame()
-    {
-        paused = true;
-    }
-
-    public void OnResumeGame()
-    {
-        paused = false;
     }
 
     void choixChemin()

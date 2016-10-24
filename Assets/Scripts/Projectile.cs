@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Assets.Scripts;
 using System;
 
-public class Projectile : MonoBehaviour, Pausable {
+public class Projectile : MonoBehaviour {
 
     public int damage;
     public Tour tour;
@@ -32,7 +31,6 @@ public class Projectile : MonoBehaviour, Pausable {
     internal Vector2 direction;
     private float distance_totale;
     private float distance_parcourue = 0;
-    private bool isPaused = false;
 
     void Start()
     {
@@ -42,7 +40,7 @@ public class Projectile : MonoBehaviour, Pausable {
 
     void FixedUpdate()
     {
-        if(!isPaused)
+        if(!Pause.isPaused)
         {
             if (terre_obstacle && distance_parcourue >= distance_totale)
             {
@@ -85,16 +83,6 @@ public class Projectile : MonoBehaviour, Pausable {
                 else Destroy(gameObject);
             }
         }
-    }
-
-    public void OnPauseGame()
-    {
-        isPaused = true;
-    }
-
-    public void OnResumeGame()
-    {
-        isPaused = false;
     }
 
     float distance(Vector2 cible)

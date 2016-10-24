@@ -59,9 +59,12 @@ public class Round : MonoBehaviour {
 	
 	void FixedUpdate()
     {
-        unitsToSpawn.RemoveAll(unitToSpawn => tryToSpawnUnit(unitToSpawn));
-        ++time;
-        if (isEnd()) startRound();
+        if (!Pause.isPaused)
+        {
+            unitsToSpawn.RemoveAll(unitToSpawn => tryToSpawnUnit(unitToSpawn));
+            ++time;
+            if (isEnd()) startRound();
+        }
     }
 
     bool tryToSpawnUnit(UnitToSpawn unitToTryToSpawn)
