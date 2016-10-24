@@ -9,6 +9,7 @@ public class Effect : ScriptableObject, ICloneable{
     public float hpAbsoluteModifier = 0;
     public float hpRelativeModifier = 1;
     public float attackModifier = 1;
+    public float damage = 0;
     public int duration = 1;
     public bool haveDuration = true;
 
@@ -23,6 +24,7 @@ public class Effect : ScriptableObject, ICloneable{
         clone.hpAbsoluteModifier = hpAbsoluteModifier;
         clone.hpRelativeModifier = hpRelativeModifier;
         clone.attackModifier = attackModifier;
+        clone.damage = damage;
         return clone;
     }
 

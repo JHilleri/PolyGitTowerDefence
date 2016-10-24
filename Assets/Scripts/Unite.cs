@@ -39,6 +39,8 @@ public abstract class Unite : MonoBehaviour {
         effectivesDamages *= effect.attackModifier;
         effectiveMaxHitPoints *= effect.hpRelativeModifier;
         effectiveHitPoints *= effect.hpRelativeModifier;
+
+        effectiveHitPoints -= effect.damage;
     }
 
     public void addEffect(Effect effectToAdd)
@@ -66,6 +68,7 @@ public abstract class Unite : MonoBehaviour {
                 if (effect.haveDuration) effect.duration--;
             }
         }
+        hitPoints = effectiveHitPoints * maxHitPoints / effectiveMaxHitPoints;
     }
 
     private void resetEffectiveStats()
