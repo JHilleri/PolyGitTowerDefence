@@ -27,8 +27,8 @@ public abstract class UniteTour : Unite {
     protected SpriteRenderer spriteRenderer;
 
     // Use this for initialization
-    void Start () {
-        vie = vieMax;
+    protected override void Start () {
+        hitPoints = maxHitPoints;
         spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 	
@@ -104,7 +104,7 @@ public abstract class UniteTour : Unite {
                 spriteRenderer.sprite = imageFace;
             }
         }
-        if (vie <= 0)
+        if (hitPoints <= 0)
         {
             meurt();
         }

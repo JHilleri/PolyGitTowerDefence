@@ -12,11 +12,8 @@ public class Soldat : Unite, Pausable{
     public int vieRetireeAuJoueur;//La vie qui est retirée au joueur adverse lorsque l'unité passe sa défense
     public int xpGeneree;//Quantité d'expérience générée par l'unité lors de sa destruction (Pour l'adversaire)
     public int tempsRecharge; // nombre de frames entre chaque attaque
-    public float degats; // degat causé par chaque attaque
     public float portee; // portee des attaques
     public float detect; // portee de detection
-    public float normalSpeed;
-    public float vitesse; // vitesse de déplacement du soldat
     public float marge; // distance à laquelle il considère avoir atteint un objectif
     public bool lanceProjectiles; // ce soldat lance-t-il des projectiles ?
     public GameObject projectile; // projectile que ce soldat lance (null si lanceProjectiles = false)
@@ -48,10 +45,10 @@ public class Soldat : Unite, Pausable{
     private bool paused;
     private bool enCombat;
 
-    private List<Effect> effects = new List<Effect>();
 
     // Use this for initialization
-    void Start() {
+    override protected void Start() {
+        base.Start();
         // Ce morceau devra être supprimé à la fin, il sert pour les unités de test
         if (camp == 1 && etape == 0)// Si ce soldat est dans le camps de gauche, sa première étape est la numéro 0
         {
@@ -65,7 +62,7 @@ public class Soldat : Unite, Pausable{
 
         objectif = null;
         cible = null;
-        vie = vieMax;
+        hitPoints = maxHitPoints;
         spriteRenderer = GetComponent<SpriteRenderer>();
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
@@ -74,23 +71,12 @@ public class Soldat : Unite, Pausable{
     }
 	
 	// Update is called once per frame
-	void FixedUpdate() {
+	override protected void FixedUpdate() {
+        base.FixedUpdate();
         if (!paused)
         {
             if (!paralise)// Vérifie que le soldat n'est pas en pause
             {
-                vitesse = normalSpeed;
-                if (effects.Count != 0)
-                {
-                    effects.RemoveAll(effect => (effect.haveDuration && effect.duration <= 0));
-                    foreach (Effect effect in effects)
-                    {
-                        applyEffect(effect);
-                        if (effect.haveDuration) effect.duration--;
-                    }
-                }
-
-
                 if (!enCombat)// Si le soldat n'est pas en combat
                 {
                     Soldat[] listeSoldats = FindObjectsOfType<Soldat>();
@@ -141,8 +127,8 @@ public class Soldat : Unite, Pausable{
                                 distanceY = objectif.transform.position.y - transform.position.y;
                                 distance = Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
                                 oldDistance = distance;
-                                vitesseX = (distanceX / distance) * vitesse;
-                                vitesseY = (distanceY / distance) * vitesse;
+                                vitesseX = (distanceX / distance) * effectiveSpeed;
+                                vitesseY = (distanceY / distance) * effectiveSpeed;
                                 found = true;
                             }
                             indexPoints++;
@@ -193,8 +179,8 @@ public class Soldat : Unite, Pausable{
                         }
                         else
                         {
-                            vitesseX = (distanceX / distance) * vitesse;
-                            vitesseY = (distanceY / distance) * vitesse;
+                            vitesseX = (distanceX / distance) * effectiveSpeed;
+                            vitesseY = (distanceY / distance) * effectiveSpeed;
                             transform.Translate(vitesseX, vitesseY, 0);
                         }
                     }
@@ -235,7 +221,7 @@ public class Soldat : Unite, Pausable{
                     cooldown--;
                 }
             }
-            if (vie <= 0)
+            if (hitPoints <= 0)
             {
                 meurt();
             }
@@ -268,7 +254,7 @@ public class Soldat : Unite, Pausable{
 
     void attaque(Unite ennemi)
     {
-        ennemi.degat(ennemi.element.lireRatioDegat(element) * degats);
+        ennemi.degat(ennemi.element.lireRatioDegat(element) * effectivesDamages);
         if (sonCombat != null)
         {
             AudioSource.PlayClipAtPoint(sonCombat, Vector3.one, 1);
@@ -332,7 +318,7 @@ public class Soldat : Unite, Pausable{
 
     public float getVie()
     {
-        return vie;
+        return hitPoints;
     }
 
     public int getDirection()
@@ -361,27 +347,13 @@ public class Soldat : Unite, Pausable{
         }
     }
 
-    void applyEffect(Effect effect)
-    {
-        vitesse *= effect.speedRelativeModifier;
-        vitesse += effect.speedAbsoluteModifier;
-        degats *= effect.attackModifier;
-    }
 
-    public void forceCible(Unite nCible)
+    public void setCible(Unite nCible)
     {
         cible = nCible;
         objectif = null;
         enCombat = true;
     }
 
-    public void addEffect(Effect effectToAdd)
-    {
-        Effect actualVersion = effects.Find( effect => (effect.name == effectToAdd.name));
-        if (actualVersion == null) effects.Add(effectToAdd.Clone());
-        else actualVersion = effectToAdd.Clone();
-    }
-
-    public void removeEffect(bool ennemi) { 
-    }
+    
 }
