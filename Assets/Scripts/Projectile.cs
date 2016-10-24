@@ -2,18 +2,23 @@
 using System.Collections;
 using System;
 
+[System.Flags]public enum TargetType
+{
+    none = 0,
+    enemy = 1,
+    ally = 2,
+    both = enemy | ally
+}
+
 public class Projectile : MonoBehaviour {
 
     public int damage;
     public Tour tour;
     public Element element;
     public int camp;
-    public bool tir_ennemi;
-    public bool buf_allie; // le booléen est actif si le projectile est pour du buff de ses troupes (vitesse/cooldown/attaque/PV)
+    public TargetType targetType = TargetType.enemy;
     public bool debuf_ennemie_repouse;
     public float windEffectPower;
-    public bool buf_debuf_eau;
-    public bool status; // si le projectile inflige un status (poison/paralysie/geler...)
     public bool eclair_en_chaine;
     public bool terre_obstacle;
     public int PV;
@@ -28,7 +33,7 @@ public class Projectile : MonoBehaviour {
     public AudioClip sonProjectile;
     public bool attaquable = false; // attention ne doit pas être modifié dans les prefab (juste pour que tour/soldat puissent le savoir)
     private GameObject cible;
-    internal Vector2 direction;
+    protected Vector2 direction;
     private float distance_totale;
     private float distance_parcourue = 0;
 
@@ -55,12 +60,12 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    internal virtual void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         Soldat soldat = other.gameObject.GetComponent<Soldat>();
         if(soldat != null)
         {
-            if(tir_ennemi && soldat.camp != camp || !tir_ennemi && soldat.camp == camp)
+            if( ((targetType & TargetType.enemy) != 0 && soldat.camp != camp) || ((targetType & TargetType.ally) != 0 && soldat.camp == camp) )
             {
                 foreach (Effect effect in effects)
                 {
@@ -138,7 +143,7 @@ public class Projectile : MonoBehaviour {
         script.porteeChaine = porteeChaine;
         script.tour = tour;
         script.eclair_en_chaine = true;
-        script.tir_ennemi = true;
+        script.targetType = targetType;
         script.sonProjectile = sonProjectile;
         script.damage = damage;
         script.projectileAdditionnel = projectileAdditionnel;

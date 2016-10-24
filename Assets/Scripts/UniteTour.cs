@@ -4,7 +4,6 @@ using System.Collections;
 public abstract class UniteTour : Unite {
 
     public Tour tour;
-    public int camp;
     public bool cibleAllies;
     public bool cibleEnnemis;
     public bool stopRecherches;

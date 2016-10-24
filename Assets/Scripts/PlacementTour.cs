@@ -10,7 +10,6 @@ public class PlacementTour : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
-    private new Collider2D collider;
     private bool lastPlaceableState = true;
 
     public bool isPlaceable

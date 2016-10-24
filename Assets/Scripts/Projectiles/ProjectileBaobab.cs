@@ -5,12 +5,12 @@ public class ProjectileBaobab : Projectile {
 
 
 
-    internal override void OnTriggerEnter2D(Collider2D other)
+    protected override void OnTriggerEnter2D(Collider2D other)
     {
         Soldat soldat = other.gameObject.GetComponent<Soldat>();
         if (soldat != null)
         {
-            if (tir_ennemi && soldat.camp != camp)
+            if ((targetType & TargetType.enemy) != 0 && soldat.camp != camp)
             {
                 foreach (Effect effect in effects)
                 {

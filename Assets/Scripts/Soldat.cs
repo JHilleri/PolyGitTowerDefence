@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System;
 
 public class Soldat : Unite{
-
-    public int camp; // 1 = gauche 2 = droite
     public int chemin; // numero du chemin suivi par ce Soldat
     public int etape;
     public int argentGagne;//Argent donné à l'adversaire lors de la destruction de cette unité
@@ -90,20 +88,7 @@ public class Soldat : Unite{
                             pCible = sol;
                         }
                     }
-                    //probleme, comment faire comprendre que le rochet d'obstacle est aussi un ennemi ?
-                    /*Projectile[] listeProjectiles = FindObjectsOfType<Projectile>();
-                    foreach (Projectile proj in listeProjectiles)
-                    {
-                        if (proj.GetComponent<Projectile>().attaquable)
-                        {
-                            dist = calcDistance(proj.gameObject);
-                            if (proj.camp != camp && dist < minDist)
-                            {
-                                minDist = dist;
-                                pCible = proj;
-                            }
-                        }
-                    }*/
+
                     if (pCible != null)
                     {
                         cible = pCible;

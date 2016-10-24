@@ -63,7 +63,10 @@ public class Round : MonoBehaviour {
         {
             unitsToSpawn.RemoveAll(unitToSpawn => tryToSpawnUnit(unitToSpawn));
             ++time;
-            if (isEnd()) startRound();
+            if (isEnd()) {
+                startRound();
+                foreach(var player in GameObject.FindGameObjectsWithTag("Player")) player.GetComponent<Joueur>().argent += 25;
+            }
         }
     }
 

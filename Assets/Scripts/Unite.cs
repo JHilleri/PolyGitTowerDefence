@@ -8,6 +8,7 @@ public abstract class Unite : MonoBehaviour {
     protected float hitPoints;
     public float speed;
     public float damages;
+    public int camp;
 
     protected float effectiveHitPoints;
     protected float effectiveMaxHitPoints;
@@ -28,7 +29,6 @@ public abstract class Unite : MonoBehaviour {
             resetEffectiveStats();
             applyEffects();
         }
-        
     }
 
     public virtual void degat(float dgt)
@@ -49,6 +49,10 @@ public abstract class Unite : MonoBehaviour {
 
     public void addEffect(Effect effectToAdd)
     {
+        if(effectToAdd.canRemove != EffectType.none)
+        {
+            effects.RemoveAll(effect => ((effect.type & effectToAdd.canRemove) != 0));
+        }
         Effect actualVersion = effects.Find(effect => (effect.name == effectToAdd.name));
         if (actualVersion == null) effects.Add(effectToAdd.Clone());
         else actualVersion = effectToAdd.Clone();
@@ -60,7 +64,6 @@ public abstract class Unite : MonoBehaviour {
 
     public void applyEffects()
     {
-        hitPoints = effectiveHitPoints * maxHitPoints / effectiveMaxHitPoints;
         resetEffectiveStats();
 
         if (effects.Count != 0)
