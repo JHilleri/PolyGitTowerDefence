@@ -62,7 +62,7 @@ public class Tour : MonoBehaviour{
             {
                 compteur++;
             }
-            else if (!stopTirs)
+            else if (buf_allie || tir_ennemi || !stopTirs)
             {
                 Soldat[] cibles = UnityEngine.Object.FindObjectsOfType<Soldat>();
                 if (cibles.Length >= 1)
@@ -87,6 +87,22 @@ public class Tour : MonoBehaviour{
                             {
                                 cible = pCible.gameObject;
                                 minDist = dist;
+                            }
+                        }
+                    }
+                    if (!projectile_obstacle) // si la tourelle envoi pas des obstacles, la coorddonnée cible est celle de l'étape du soldat
+                    {
+                        Projectile[] listeProjectiles = FindObjectsOfType<Projectile>();
+                        foreach (Projectile proj in listeProjectiles)
+                        {
+                            if (proj.GetComponent<Projectile>().attaquable)
+                            {
+                                dist = distance(proj.gameObject);
+                                if (proj.camp != camp && dist < minDist)
+                                {
+                                    minDist = dist;
+                                    cible = proj.gameObject;
+                                }
                             }
                         }
                     }

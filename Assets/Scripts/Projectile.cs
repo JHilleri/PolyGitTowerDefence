@@ -20,6 +20,8 @@ public class Projectile : MonoBehaviour {
     public bool debuf_ennemie_repouse;
     public float windEffectPower;
     public bool eclair_en_chaine;
+    private int numProjectile = 1;
+    public int maxChaineProjectile = 1;
     public bool terre_obstacle;
     public int PV;
     public bool terre_boulet_persistant;
@@ -32,7 +34,7 @@ public class Projectile : MonoBehaviour {
     public int porteeChaine;
     public AudioClip sonProjectile;
     public bool attaquable = false; // attention ne doit pas être modifié dans les prefab (juste pour que tour/soldat puissent le savoir)
-    private GameObject cible;
+    private GameObject cible = null;
     protected Vector2 direction;
     private float distance_totale;
     private float distance_parcourue = 0;
@@ -50,13 +52,17 @@ public class Projectile : MonoBehaviour {
             if (terre_obstacle && distance_parcourue >= distance_totale)
             {
                 attaquable = true;
+                if (PV < 1)
+                {
+                    Destroy(gameObject);
+                }
             }
             else
             {
                 transform.Translate(direction * speed);
                 distance_parcourue += speed;
             }
-            if (distance(target) > portee) Destroy(gameObject);
+            if (!terre_obstacle && distance(target) > portee) Destroy(gameObject);
         }
     }
 
@@ -88,6 +94,19 @@ public class Projectile : MonoBehaviour {
                 else Destroy(gameObject);
             }
         }
+        //ne rentre jamais ici !
+        else // si en contact avec le projectile d'obstacle
+        {
+            Projectile proj = other.gameObject.GetComponent<Projectile>();
+            if (proj != null) // toujours == nul
+            {
+                if ((targetType & TargetType.enemy) != 0 && proj.camp != camp && proj.attaquable)
+                {
+                    proj.PV -= (int)(proj.element.lireRatioDegat(element) * damage);
+                    Destroy(gameObject);
+                }
+            }
+        }
     }
 
     float distance(Vector2 cible)
@@ -111,8 +130,8 @@ public class Projectile : MonoBehaviour {
             foreach (Soldat pCible in cibles)
             {
                 dist = distance(pCible.gameObject);
-  
-                if (pCible.camp != camp && dist < minDist)
+
+                if (pCible.camp != camp && dist < minDist && dist > 0.35)
                 {
                     cible = pCible.gameObject;
                     minDist = dist;
@@ -123,7 +142,7 @@ public class Projectile : MonoBehaviour {
                 cible = null;
             }
         }
-        if (cible != null)
+        if (cible != null && numProjectile < maxChaineProjectile)
         {
             tir();
         }
@@ -133,7 +152,7 @@ public class Projectile : MonoBehaviour {
     {
         GameObject projectileTire = Instantiate(projectileAdditionnel);
         projectileTire.transform.position = transform.position;
-        projectileTire.transform.parent = transform;
+        projectileTire.transform.parent = transform.parent;
         Projectile script = projectileTire.GetComponent<Projectile>();
         script.element = element;
         script.camp = camp;
@@ -143,6 +162,8 @@ public class Projectile : MonoBehaviour {
         script.porteeChaine = porteeChaine;
         script.tour = tour;
         script.eclair_en_chaine = true;
+        script.numProjectile = numProjectile + 1;
+        script.maxChaineProjectile = maxChaineProjectile;
         script.targetType = targetType;
         script.sonProjectile = sonProjectile;
         script.damage = damage;
@@ -151,6 +172,5 @@ public class Projectile : MonoBehaviour {
         {
             AudioSource.PlayClipAtPoint(sonProjectile, Vector3.one, 1);
         }
-
     }
 }
