@@ -60,7 +60,7 @@ public class MenuContextuelBaraquement : MonoBehaviour
     {
         if (numero < ameliorations.Length && ameliorations[numero].texteDescriptif != null)
         {
-            desc.text = ameliorations[numero].texteDescriptif;
+            desc.text = ameliorations[numero].texteDescriptif+" Prix : "+ameliorations[numero].prixAmelioration;
         }
         if (numero == 5)
         {
