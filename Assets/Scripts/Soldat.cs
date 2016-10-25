@@ -45,16 +45,6 @@ public class Soldat : Unite{
     // Use this for initialization
     override protected void Start() {
         base.Start();
-        // Ce morceau devra être supprimé à la fin, il sert pour les unités de test
-        if (camp == 1 && etape == 0)// Si ce soldat est dans le camps de gauche, sa première étape est la numéro 0
-        {
-            etape = 0;
-        }
-        else if (camp == 2)// Sinon il commence à la derniere étape
-        {
-            etape = pointMax(chemin);
-        }
-        //fin du morceau des unités de test
 
         objectif = null;
         cible = null;

@@ -59,7 +59,7 @@ public class Baraquement : MonoBehaviour {
         int etapeAPrendre = 0;
         int cheminAPrendre = 0;
         float distPoint;
-        float minDistPoint = 100;
+        float minDistPoint = 20;
         foreach (PointPassage point in points)
         {
             distPoint = calcDistance(point.gameObject);
