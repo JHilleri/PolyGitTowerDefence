@@ -6,5 +6,5 @@ public class EvolutionBatiment : ScriptableObject {
     public GameObject nouvelleTour;
     public Sprite imageAmelioration;
     public string texteDescriptif;
-    public int prixAmélioration;
+    public int prixAmelioration;
 }

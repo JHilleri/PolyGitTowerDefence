@@ -31,6 +31,7 @@ public class Tour : MonoBehaviour{
     internal bool menuActif;
     internal bool stopTirs;
     public AudioClip sonProjectile;
+    private Joueur proprietaire;
 
     // Use this for initialization
     internal virtual void Start () {
@@ -43,6 +44,14 @@ public class Tour : MonoBehaviour{
         menu.SetActive(false);
         menuActif = false;
         stopTirs = false;
+        Joueur[] listeJoueurs = FindObjectsOfType<Joueur>();
+        foreach (Joueur joueur in listeJoueurs)
+        {
+            if (joueur.camp == camp)
+            {
+                proprietaire = joueur;
+            }
+        }
     }
 	
 	// Update is called once per frame
@@ -185,10 +194,18 @@ public class Tour : MonoBehaviour{
 
     public void evolue (int numero)
     {
-        GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
-        nTour.transform.position = transform.position;
-        nTour.GetComponent<Tour>().camp = camp;
-        Destroy(gameObject);
+        if (proprietaire.argent > ameliorations[numero].prixAmelioration)
+        {
+            proprietaire.argent -= ameliorations[numero].prixAmelioration;
+            GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
+            nTour.transform.position = transform.position;
+            nTour.GetComponent<Tour>().camp = camp;
+            Destroy(gameObject);
+        }
+        else
+        {
+            throw new ArgumentOutOfRangeException("Vous n'avez pas assez d'argent pour faire evoluer cette tour");
+        }
     }
 
     internal float distance (GameObject cible)

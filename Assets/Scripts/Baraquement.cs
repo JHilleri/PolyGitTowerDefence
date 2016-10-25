@@ -21,6 +21,7 @@ public class Baraquement : MonoBehaviour {
     private SpriteRenderer colorSpriteRenderer;
     private GameObject menu;
     private bool menuActif;
+    private Joueur proprietaire;
 
     // Use this for initialization
     void Start () {
@@ -31,6 +32,14 @@ public class Baraquement : MonoBehaviour {
         menu.SetActive(false);
         menuActif = false;
         choixChemin();
+        Joueur[] listeJoueurs = FindObjectsOfType<Joueur>();
+        foreach (Joueur joueur in listeJoueurs)
+        {
+            if (joueur.camp == camp)
+            {
+                proprietaire = joueur;
+            }
+        }
     }
 	
 	// Update is called once per frame
@@ -77,10 +86,17 @@ public class Baraquement : MonoBehaviour {
 
     public void evolue(int numero)
     {
-        GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
-        nTour.transform.position = transform.position;
-        nTour.GetComponent<Tour>().camp = camp;
-        Destroy(gameObject);
+        if (proprietaire.argent > ameliorations[numero].prixAmelioration)
+        {
+            GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
+            nTour.transform.position = transform.position;
+            nTour.GetComponent<Tour>().camp = camp;
+            Destroy(gameObject);
+        }
+        else
+        {
+            throw new ArgumentOutOfRangeException("Vous n'avez pas assez d'argent pour faire evoluer ce baraquement");
+        }
     }
 
     float calcDistance(GameObject other)

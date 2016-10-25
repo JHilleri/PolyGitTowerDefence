@@ -32,7 +32,7 @@ public class MenuContextuelBaraquement : MonoBehaviour
             }
             else
             {
-                transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+                transform.GetChild(index).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
             }
         }
         desc = GameObject.FindGameObjectWithTag("Description").GetComponent<Text>();
