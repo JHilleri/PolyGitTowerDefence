@@ -62,7 +62,8 @@ public class Projectile : MonoBehaviour {
                 transform.Translate(direction * speed);
                 distance_parcourue += speed;
             }
-            if (!terre_obstacle && distance(target) > portee) Destroy(gameObject);
+            if (!terre_boulet_persistant && !terre_obstacle && distance(target) > portee) Destroy(gameObject);
+            else if(terre_boulet_persistant && distance(target) > (3 * portee)) Destroy(gameObject);
         }
     }
 
@@ -87,11 +88,7 @@ public class Projectile : MonoBehaviour {
                     chaineEclair();
                     Destroy(gameObject);
                 }
-				else if (terre_boulet_persistant)
-				{
-					
-				}
-                else Destroy(gameObject);
+				Destroy(gameObject);
             }
         }
         //ne rentre jamais ici !
