@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class Tour : MonoBehaviour{
@@ -21,6 +22,7 @@ public class Tour : MonoBehaviour{
     public float projectSpeed;
     public int intervalle;
     public int portee;
+    public List<EvolutionBatiment> ameliorations;
     internal SpriteRenderer colorSpriteRenderer;
     internal int compteur;
     internal int compteurSpawn;
@@ -179,6 +181,14 @@ public class Tour : MonoBehaviour{
             AudioSource.PlayClipAtPoint(sonProjectile, Vector3.one, 1);
         }
 
+    }
+
+    public void evolue (int numero)
+    {
+        GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
+        nTour.transform.position = transform.position;
+        nTour.GetComponent<Tour>().camp = camp;
+        Destroy(gameObject);
     }
 
     internal float distance (GameObject cible)

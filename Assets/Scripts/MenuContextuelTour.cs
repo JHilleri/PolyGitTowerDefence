@@ -1,27 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System;
 
 public class MenuContextuelTour : MonoBehaviour {
 
-    public Sprite imageFond;
-    public GameObject ameliorationElement;
-    public GameObject amelioration1;
-    public GameObject amelioration2;
-    public GameObject amelioration3;
-    public GameObject amelioration4;
-    public Sprite imageAmeliorationElement;
-    public Sprite imageAmelioration1;
-    public Sprite imageAmelioration2;
-    public Sprite imageAmelioration3;
-    public Sprite imageAmelioration4;
-    public string textAmeliorationElement;
-    public string textAmelioration1;
-    public string textAmelioration2;
-    public string textAmelioration3;
-    public string textAmelioration4;
     private Tour tour;
     private Text desc;
+    private EvolutionBatiment[] ameliorations;
     Configs config;
 
 
@@ -31,45 +18,21 @@ public class MenuContextuelTour : MonoBehaviour {
         config = FindObjectOfType<Partie>().configs;
         GetComponent<SpriteRenderer>().sprite = config.fondMenuContextuel;
         transform.GetChild(5).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVendreMenuContextuel;
-        if (imageAmeliorationElement != null)
+        ameliorations = tour.ameliorations.ToArray();
+        if (ameliorations.Length > 5)
         {
-            transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmeliorationElement;
+            throw new ArgumentOutOfRangeException("Une tour ne peut avoir que 5 améliorations possibles au maximum !");
         }
-        else
+        for (int index = 0; index<5; index++)
         {
-            transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
-        }
-        if (imageAmelioration1 != null)
-        {
-            transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration1;
-        }
-        else
-        {
-            transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
-        }
-        if (imageAmelioration2 != null)
-        {
-            transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration2;
-        }
-        else
-        {
-            transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
-        }
-        if (imageAmelioration3 != null)
-        {
-            transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration3;
-        }
-        else
-        {
-            transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
-        }
-        if (imageAmelioration4 != null)
-        {
-            transform.GetChild(4).gameObject.GetComponent<SpriteRenderer>().sprite = imageAmelioration4;
-        }
-        else
-        {
-            transform.GetChild(4).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+            if (index < ameliorations.Length && ameliorations[index].imageAmelioration != null)
+            {
+                transform.GetChild(index).gameObject.GetComponent<SpriteRenderer>().sprite = ameliorations[index].imageAmelioration;
+            }
+            else
+            {
+                transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+            }
         }
         desc = GameObject.FindGameObjectWithTag("Description").GetComponent<Text>();
     }
@@ -81,42 +44,11 @@ public class MenuContextuelTour : MonoBehaviour {
 
     public void click (int numero)
     {
-        if (numero == 0 && ameliorationElement != null)
+        if (numero < ameliorations.Length && ameliorations[numero].nouvelleTour != null)
         {
-            GameObject nTour = Instantiate(ameliorationElement);
-            nTour.transform.position = transform.position;
-            nTour.GetComponent<Tour>().camp = tour.camp;
-            Destroy(tour.gameObject);
+            tour.evolue(numero);
         }
-        else if (numero == 1 && amelioration1 != null)
-        {
-            GameObject nTour = Instantiate(amelioration1);
-            nTour.transform.position = transform.position;
-            nTour.GetComponent<Tour>().camp = tour.camp;
-            Destroy(tour.gameObject);
-        }
-        else if (numero == 2 && amelioration2 != null)
-        {
-            GameObject nTour = Instantiate(amelioration2);
-            nTour.transform.position = transform.position;
-            nTour.GetComponent<Tour>().camp = tour.camp;
-            Destroy(tour.gameObject);
-        }
-        else if (numero == 3 && amelioration3 != null)
-        {
-            GameObject nTour = Instantiate(amelioration3);
-            nTour.transform.position = transform.position;
-            nTour.GetComponent<Tour>().camp = tour.camp;
-            Destroy(tour.gameObject);
-        }
-        else if (numero == 4 && amelioration4 != null)
-        {
-            GameObject nTour = Instantiate(amelioration4);
-            nTour.transform.position = transform.position;
-            nTour.GetComponent<Tour>().camp = tour.camp;
-            Destroy(tour.gameObject);
-        }
-        else if (numero == 5)
+        if (numero == 5)
         {
             Destroy(tour.gameObject);
         }
@@ -124,27 +56,11 @@ public class MenuContextuelTour : MonoBehaviour {
 
     public void mouseEnter (int numero)
     {
-        if (numero == 0)
+        if (numero < ameliorations.Length && ameliorations[numero].texteDescriptif != null)
         {
-            desc.text = textAmeliorationElement;
+            desc.text = ameliorations[numero].texteDescriptif;
         }
-        else if (numero == 1)
-        {
-            desc.text = textAmelioration1;
-        }
-        else if (numero == 2)
-        {
-            desc.text = textAmelioration2;
-        }
-        else if (numero == 3)
-        {
-            desc.text = textAmelioration3;
-        }
-        else if (numero == 4)
-        {
-            desc.text = textAmelioration4;
-        }
-        else if (numero == 5)
+        if (numero == 5)
         {
             desc.text = "Vendre la tour";
         }

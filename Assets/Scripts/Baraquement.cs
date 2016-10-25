@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class Baraquement : MonoBehaviour {
 
@@ -15,7 +16,7 @@ public class Baraquement : MonoBehaviour {
     public Sprite image;
     public Sprite imageCouleur;
     public int intervalle;
-	
+    public List<EvolutionBatiment> ameliorations;
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer colorSpriteRenderer;
     private GameObject menu;
@@ -72,6 +73,14 @@ public class Baraquement : MonoBehaviour {
         }
         chemin = cheminAPrendre;
         etape = etapeAPrendre;
+    }
+
+    public void evolue(int numero)
+    {
+        GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
+        nTour.transform.position = transform.position;
+        nTour.GetComponent<Tour>().camp = camp;
+        Destroy(gameObject);
     }
 
     float calcDistance(GameObject other)
