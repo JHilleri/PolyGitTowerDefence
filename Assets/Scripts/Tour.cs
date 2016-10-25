@@ -80,7 +80,7 @@ public class Tour : MonoBehaviour{
             {
                 if(effetZone && scriptEffetZone != null)
                 {
-                    scriptEffetZone.tour = this;
+                    scriptEffetZone.origine = gameObject;
                     scriptEffetZone.camp = camp;
                     scriptEffetZone.active();
                 }

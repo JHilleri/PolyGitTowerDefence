@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour {
     private float distance_totale;
     private float distance_parcourue = 0;
 
-    void Start()
+    protected virtual void Start()
     {
         direction = (target - (Vector2)transform.position).normalized;
         distance_totale = ((Vector2)transform.position - target).magnitude;
