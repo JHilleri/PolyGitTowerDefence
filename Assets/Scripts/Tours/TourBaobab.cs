@@ -9,13 +9,13 @@ public class TourBaobab : Tour {
     private Unite enDigestion;
     private int compteurDigestion;
 
-    internal override void Start()
+    protected override void Start()
     {
         base.Start();
         compteurDigestion = 0;
     }
 
-    internal override void FixedUpdate() {
+    protected override void FixedUpdate() {
         base.FixedUpdate();
         if (Pause.isPaused)
         {
