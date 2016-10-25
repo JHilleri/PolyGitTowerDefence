@@ -13,6 +13,8 @@ public class Tour : MonoBehaviour{
     public bool tir_ennemi;
     public bool spawner;
     public bool projectile_obstacle;
+    public bool effetZone;
+    public ZoneEffet scriptEffetZone;
     public GameObject uniteSpawn;
     public int intervalleSpawn;
     public int unitesMax;
@@ -73,8 +75,14 @@ public class Tour : MonoBehaviour{
             {
                 compteur++;
             }
-            else if (buf_allie || tir_ennemi || !stopTirs)
+            else if ((buf_allie || tir_ennemi || effetZone) && !stopTirs)
             {
+                if(effetZone && scriptEffetZone != null)
+                {
+                    scriptEffetZone.tour = this;
+                    scriptEffetZone.camp = camp;
+                    scriptEffetZone.active();
+                }
                 Soldat[] cibles = UnityEngine.Object.FindObjectsOfType<Soldat>();
                 if (cibles.Length >= 1)
                 {
