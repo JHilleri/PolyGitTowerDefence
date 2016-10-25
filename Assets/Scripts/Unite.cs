@@ -85,4 +85,9 @@ public abstract class Unite : MonoBehaviour {
         effectivesDamages = damages;
         effectiveSpeed = speed;
     }
+
+    public void receiveDamages(float damages, Element damagesElement)
+    {
+        effectiveHitPoints -= this.element.lireRatioDegat(damagesElement) * damages;
+    }
 }

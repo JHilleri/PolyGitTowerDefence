@@ -11,6 +11,7 @@ public class Tour : MonoBehaviour{
     public int cout;// Cout de la tourelle
     public bool buf_allie;
     public bool tir_ennemi;
+    public TargetType targetType = TargetType.enemy;
     public bool spawner;
     public bool projectile_obstacle;
     public bool effetZone;
@@ -23,10 +24,10 @@ public class Tour : MonoBehaviour{
     public Sprite imageCouleur;
     public float projectSpeed;
     public int intervalle;
-    public int portee;
     public List<EvolutionBatiment> ameliorations;
+    public int range;
     internal SpriteRenderer colorSpriteRenderer;
-    internal int compteur;
+    protected int compteur = 0;
     internal int compteurSpawn;
     internal int unitesEnVie;
     internal GameObject menu;
@@ -36,7 +37,7 @@ public class Tour : MonoBehaviour{
     private Joueur proprietaire;
 
     // Use this for initialization
-    internal virtual void Start () {
+    protected virtual void Start () {
         compteur = 0;
         compteurSpawn = 0;
         unitesEnVie = 0;
@@ -57,7 +58,7 @@ public class Tour : MonoBehaviour{
     }
 	
 	// Update is called once per frame
-	internal virtual void FixedUpdate () {
+	protected virtual void FixedUpdate () {
         if (menuActif)
         {
             if (Input.GetMouseButtonDown(0))
@@ -75,7 +76,7 @@ public class Tour : MonoBehaviour{
             {
                 compteur++;
             }
-            else if ((buf_allie || tir_ennemi || effetZone) && !stopTirs)
+            else if ( targetType != TargetType.none || !stopTirs)
             {
                 if(effetZone && scriptEffetZone != null)
                 {
@@ -87,26 +88,14 @@ public class Tour : MonoBehaviour{
                 if (cibles.Length >= 1)
                 {
                     float dist = 0;
-                    float minDist = portee + 1; // on initialise la la distance minimale de tir supérieur à la portée de la tour (un cas ou cela ne tire pas si aucune cible est à portée) 
+                    float minDist = range + 1; // on initialise la la distance minimale de tir supérieur à la portée de la tour (un cas ou cela ne tire pas si aucune cible est à portée) 
                     foreach (Soldat pCible in cibles)
                     {
                         dist = distance(pCible.gameObject);
-                        if(tir_ennemi)
+                        if (dist < minDist && (((targetType & TargetType.enemy) != 0 && pCible.camp != camp) || ((targetType & TargetType.ally) != 0 && pCible.camp == camp)))
                         {
-                            if (pCible.camp != camp && dist < minDist)
-                            {
-                                cible = pCible.gameObject;
-                                minDist = dist;
-                            }
-                        }
-
-                        if(buf_allie)
-                        {
-                            if (pCible.camp == camp && dist < minDist)
-                            {
-                                cible = pCible.gameObject;
-                                minDist = dist;
-                            }
+                            cible = pCible.gameObject;
+                            minDist = dist;
                         }
                     }
                     if (!projectile_obstacle) // si la tourelle envoi pas des obstacles, la coorddonnée cible est celle de l'étape du soldat
@@ -125,7 +114,7 @@ public class Tour : MonoBehaviour{
                             }
                         }
                     }
-                    if (minDist > portee)
+                    if (minDist > range)
                     {
                         cible = null;
                     }
@@ -191,7 +180,7 @@ public class Tour : MonoBehaviour{
         else
             script.target = cible.transform.position;
         script.speed = projectSpeed;
-        script.portee = portee * 2;
+        script.portee = range * 2;
         script.tour = this;
         if (sonProjectile != null)
         {
