@@ -6,7 +6,6 @@ using System;
 public class BasicShooterAction : RangedAction
 {
     public Projectile firedProjectil;
-    public Element element;
     public int reloadDuration;
     public TargetType targetsType = TargetType.enemy;
 
@@ -67,5 +66,6 @@ public class BasicShooterAction : RangedAction
         projectil.Element = element;
         projectil.camp = Owner.GetComponentInParent<Joueur>().camp;
         projectil.portee = 2 * range;
+
     }
 }

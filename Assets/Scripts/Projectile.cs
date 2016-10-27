@@ -29,6 +29,7 @@ public class Projectile : MonoBehaviour {
     public Vector2 target;
     public float speed;
     public float portee;
+    public AudioClip firedSound;
     
     public GameObject projectileAdditionnel; // utilisé seulement pour l'éclair en chaine
     public int porteeChaine;
@@ -43,7 +44,7 @@ public class Projectile : MonoBehaviour {
         get { return element; }
         set {
             element = value;
-            GetComponent<SpriteRenderer>().color = element.couleur;
+            GetComponent<SpriteRenderer>().color = value.couleur;
         }
     }
 
@@ -51,6 +52,8 @@ public class Projectile : MonoBehaviour {
     {
         direction = (target - (Vector2)transform.position).normalized;
         distance_totale = ((Vector2)transform.position - target).magnitude;
+        if(firedSound)
+            AudioSource.PlayClipAtPoint(firedSound, transform.position, 1);
     }
 
     void FixedUpdate()

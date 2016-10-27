@@ -25,7 +25,8 @@ public class MenuContextuel : MonoBehaviour {
             }
             else
             {
-                transform.GetChild(index).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+                //transform.GetChild(index).gameObject.GetComponent<SpriteRenderer>().sprite = config.boutonVideMenuContextuel;
+                transform.GetChild(index).gameObject.SetActive(false);
             }
         }
     }

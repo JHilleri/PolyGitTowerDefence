@@ -191,10 +191,10 @@ public class Tour : MonoBehaviour{
 
     public void evolue (int numero)
     {
-        if (proprietaire.argent > ameliorations[numero].prixAmelioration)
+        if (proprietaire.argent >= ameliorations[numero].prixAmelioration)
         {
             proprietaire.argent -= ameliorations[numero].prixAmelioration;
-            GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
+            GameObject nTour = (GameObject)Instantiate(ameliorations[numero].nouvelleTour, transform.parent);
             nTour.transform.position = transform.position;
             nTour.GetComponent<Tour>().camp = camp;
             Destroy(gameObject);

@@ -65,7 +65,7 @@ public class Joueur : MonoBehaviour{
 
         for(int i = 0; i < basicTowerList.GetLength(0); i++)
         {
-            Tour towerScript = basicTowerList[i].GetComponent<Tour>();
+            Building towerScript = basicTowerList[i].GetComponent<Building>();
             basicTowers.Add(towerScript.element, basicTowerList[i]);
         }
     }
@@ -92,8 +92,8 @@ public class Joueur : MonoBehaviour{
         if(!isTowerPlaceable(position)) throw new System.ArgumentOutOfRangeException("position","tower can't be placed at that position");
         if (!basicTowers.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
         if (basicTower.GetComponentInChildren<Tour>().cout > argent) throw new System.ArgumentOutOfRangeException("cout", "Vous n\'avez pas assez d\'argent pour acheter cette tour");
-        Tour towerScript = build(basicTowers[element], position).GetComponent<Tour>();
-        towerScript.camp = camp;
+        Building towerScript = build(basicTowers[element], position).GetComponent<Building>();
+        //towerScript.camp = camp;
         argent -= basicTower.GetComponentInChildren<Tour>().cout;
     }
     public void buildBarrack(Vector2 position, Element element)

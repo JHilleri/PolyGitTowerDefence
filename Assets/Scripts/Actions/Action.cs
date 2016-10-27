@@ -4,6 +4,7 @@ using System.Collections;
 public abstract class Action : ScriptableObject, System.ICloneable {
     private GameObject owner = null;
     private Joueur player = null;
+    public Element element;
     public GameObject Owner
     {
         get { return owner; }
