@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviour {
     public Effect[] effects;
     public Vector2 target;
     public float speed;
-    public int portee;
+    public float portee;
     
     public GameObject projectileAdditionnel; // utilisé seulement pour l'éclair en chaine
     public int porteeChaine;
@@ -38,6 +38,14 @@ public class Projectile : MonoBehaviour {
     protected Vector2 direction;
     private float distance_totale;
     private float distance_parcourue = 0;
+
+    public Element Element {
+        get { return element; }
+        set {
+            element = value;
+            GetComponent<SpriteRenderer>().color = element.couleur;
+        }
+    }
 
     protected virtual void Start()
     {
