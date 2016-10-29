@@ -6,11 +6,8 @@ using System;
 public class BasicShooterAction : RangedAction
 {
     public Projectile firedProjectil;
-    public int reloadDuration;
-    public TargetType targetsType = TargetType.enemy;
 
-    private Unite target;
-    private int reload = 0;
+    protected Unite target;
 
     public override object Clone()
     {

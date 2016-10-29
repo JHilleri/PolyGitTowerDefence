@@ -42,11 +42,12 @@ public class Joueur : MonoBehaviour{
             basicBarracks.Add(barrackScript.newBuilding.element, basicBarrackList[i]);
         }
 
-        cursor = new GameObject("towerCreatorCursor");
+        cursor = new GameObject("cursor");
         towerCollider = cursor.AddComponent<BoxCollider2D>();
         towerCollider.isTrigger = true;
         cursor.AddComponent<Rigidbody2D>().isKinematic = true;
         cursor.transform.parent = transform;
+        cursor.layer = 2;
 
 
         basicTowers = new Dictionary<Element, EvolutionBatiment>();
@@ -95,6 +96,7 @@ public class Joueur : MonoBehaviour{
 
     public bool isTowerPlaceable(Vector2 position, Element element)
     {
+        if (!isLoaded) return false;
         if (!basicTowers.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
         return isBuildingPlaceable(position, basicTowers[element]);
     }

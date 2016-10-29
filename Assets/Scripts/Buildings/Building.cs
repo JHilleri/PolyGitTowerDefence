@@ -52,7 +52,7 @@ public class Building : MonoBehaviour
         if (player.argent >= ameliorations[numero].cost)
         {
             player.argent -= ameliorations[numero].cost;
-            GameObject nextVersion = (GameObject)Instantiate(ameliorations[numero].newBuilding, transform.parent);
+            Building nextVersion = (Building)Instantiate(ameliorations[numero].newBuilding, transform.parent);
             nextVersion.transform.position = transform.position;
             Destroy(gameObject);
         }

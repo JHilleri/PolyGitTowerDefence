@@ -5,6 +5,7 @@ public abstract class Action : ScriptableObject, System.ICloneable {
     private GameObject owner = null;
     private Joueur player = null;
     public Element element;
+    public TargetType targetsType = TargetType.enemy;
     public GameObject Owner
     {
         get { return owner; }

@@ -64,7 +64,6 @@ public abstract class Unite : MonoBehaviour {
 
     public void applyEffects()
     {
-        resetEffectiveStats();
 
         if (effects.Count != 0)
         {
@@ -89,5 +88,6 @@ public abstract class Unite : MonoBehaviour {
     public void receiveDamages(float damages, Element damagesElement)
     {
         effectiveHitPoints -= this.element.lireRatioDegat(damagesElement) * damages;
+        hitPoints = effectiveHitPoints * maxHitPoints / effectiveMaxHitPoints;
     }
 }
