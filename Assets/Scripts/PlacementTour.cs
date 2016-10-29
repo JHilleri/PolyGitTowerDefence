@@ -15,7 +15,7 @@ public class PlacementTour : MonoBehaviour
     public bool isPlaceable
     {
         get {
-            bool isPlaceable = player.isTowerPlaceable(gameObject.transform.position);
+            bool isPlaceable = player.isTowerPlaceable(gameObject.transform.position, element);
             if(isPlaceable != lastPlaceableState)
             {
                 spriteRenderer.color = (isPlaceable) ? originalColor : cantPlaceColor;

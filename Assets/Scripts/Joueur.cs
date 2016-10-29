@@ -14,109 +14,97 @@ public class Joueur : MonoBehaviour{
 
     public PointPassage[] defaultsSpawn;
 
-    public GameObject basicTower;
-    public GameObject basicBarrack;
     public Collider2D area;
 
     public LayerMask unbuildableLayers;
-    private GameObject towerCreatorCursor;
-    private GameObject barrackCreatorCursor;
+    private GameObject cursor;
+    private GameObject buildingsObject;
 
-    public GameObject[] basicTowerList;
-    private Dictionary<Element, GameObject> basicTowers;
+    public EvolutionBatiment[] basicTowerList;
+    private Dictionary<Element, EvolutionBatiment> basicTowers;
+    private BoxCollider2D towerCollider;
 
-    public GameObject[] basicBarrackList;
-    private Dictionary<Element, GameObject> basicBarracks;
+    public EvolutionBatiment[] basicBarrackList;
+    private Dictionary<Element, EvolutionBatiment> basicBarracks;
+    private bool isLoaded = false;
 
-    // Use this for initialization
     void Start () {
 		vieText = GameObject.FindGameObjectsWithTag("VieJoueur")[0].GetComponent<Text>();
         vieText.text = vie.ToString();
 		argentText = GameObject.FindGameObjectsWithTag("Argent")[0].GetComponent<Text>();
         argentText.text = argent.ToString();
 
-        barrackCreatorCursor = new GameObject("barrackCreatorCursor");
-        BoxCollider2D barrackCollider = barrackCreatorCursor.AddComponent<BoxCollider2D>();
-        barrackCollider.offset = basicBarrack.GetComponent<BoxCollider2D>().offset;
-        barrackCollider.size = basicBarrack.GetComponent<BoxCollider2D>().size;
-        barrackCollider.isTrigger = true;
-        barrackCreatorCursor.AddComponent<Rigidbody2D>().isKinematic = true;
-        barrackCreatorCursor.transform.parent = transform;
-
-
-        basicBarracks = new Dictionary<Element, GameObject>();
+        basicBarracks = new Dictionary<Element, EvolutionBatiment>();
 
         for (int i = 0; i < basicBarrackList.GetLength(0); i++)
         {
-            Baraquement barrackScript = basicBarrackList[i].GetComponent<Baraquement>();
-            basicBarracks.Add(barrackScript.element, basicBarrackList[i]);
+            EvolutionBatiment barrackScript = basicBarrackList[i];
+            basicBarracks.Add(barrackScript.newBuilding.element, basicBarrackList[i]);
         }
 
-        towerCreatorCursor = new GameObject("towerCreatorCursor");
-        BoxCollider2D towerCollider = towerCreatorCursor.AddComponent<BoxCollider2D>();
-        towerCollider.offset = basicTower.GetComponent<BoxCollider2D>().offset;
-        towerCollider.size = basicTower.GetComponent<BoxCollider2D>().size;
+        cursor = new GameObject("towerCreatorCursor");
+        towerCollider = cursor.AddComponent<BoxCollider2D>();
         towerCollider.isTrigger = true;
-        towerCreatorCursor.AddComponent<Rigidbody2D>().isKinematic = true;
-        towerCreatorCursor.transform.parent = transform;
+        cursor.AddComponent<Rigidbody2D>().isKinematic = true;
+        cursor.transform.parent = transform;
 
 
-        basicTowers = new Dictionary<Element, GameObject>();
+        basicTowers = new Dictionary<Element, EvolutionBatiment>();
 
         for(int i = 0; i < basicTowerList.GetLength(0); i++)
         {
-            Building towerScript = basicTowerList[i].GetComponent<Building>();
-            basicTowers.Add(towerScript.element, basicTowerList[i]);
+            EvolutionBatiment towerScript = basicTowerList[i];
+            basicTowers.Add(towerScript.newBuilding.element, basicTowerList[i]);
         }
+
+        buildingsObject = new GameObject("buildings");
+        buildingsObject.transform.parent = transform;
+        isLoaded = true;
     }
 	
 	public void SetCamp(int c) {
 		camp = c;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        
-    }
 
-    private GameObject build(GameObject building, Vector2 position)
+    private Building build(Building building, Vector2 position)
     {
-        GameObject newBuilding = Instantiate(building);
-        newBuilding.transform.parent = transform;
+        Building newBuilding = (Building)Instantiate(building, buildingsObject.transform);
         newBuilding.transform.position = position;
         return newBuilding;
     }
 
     public void buildTower(Vector2 position, Element element)
     {
-        if(!isTowerPlaceable(position)) throw new System.ArgumentOutOfRangeException("position","tower can't be placed at that position");
-        if (!basicTowers.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
-        if (basicTower.GetComponentInChildren<Tour>().cout > argent) throw new System.ArgumentOutOfRangeException("cout", "Vous n\'avez pas assez d\'argent pour acheter cette tour");
-        Building towerScript = build(basicTowers[element], position).GetComponent<Building>();
-        //towerScript.camp = camp;
-        argent -= basicTower.GetComponentInChildren<Tour>().cout;
+        if(!isTowerPlaceable(position, element)) throw new System.ArgumentOutOfRangeException("position","tower can't be placed");
+        build(basicTowers[element].newBuilding, position).GetComponent<Building>();
+        argent -= basicTowers[element].cost;
     }
     public void buildBarrack(Vector2 position, Element element)
     {
-        if (!isBarrackPlaceable(position)) throw new System.ArgumentOutOfRangeException("position", "barrack can't be placed at that position");
+        if (!isBarrackPlaceable(position, element)) throw new System.ArgumentOutOfRangeException("position", "barrack can't be placed");
+        build(basicBarracks[element].newBuilding, position);
+        argent -= basicBarracks[element].cost;
+    }
+
+    public bool isBarrackPlaceable(Vector2 position, Element element)
+    {
+        if (!isLoaded) return false;
         if (!basicBarracks.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
-        if (basicBarrack.GetComponentInChildren<Baraquement>().cout > argent) throw new System.ArgumentOutOfRangeException("cout", "Vous n\'avez pas assez d\'argent pour acheter ce barraquement");
-        Baraquement barrackScript = build(basicBarracks[element], position).GetComponent<Baraquement>();
-        barrackScript.camp = camp;
-        argent -= basicBarrack.GetComponentInChildren<Baraquement>().cout;
+        return isBuildingPlaceable(position, basicBarracks[element]);
     }
 
-    public bool isBarrackPlaceable(Vector2 position)
+    public bool isTowerPlaceable(Vector2 position, Element element)
     {
-        if (basicBarrack.GetComponentInChildren<Baraquement>().cout > argent) return false;
-        barrackCreatorCursor.transform.position = position;
-        return (area.OverlapPoint(position) && !barrackCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
+        if (!basicTowers.ContainsKey(element)) throw new System.ArgumentOutOfRangeException("element", "the element " + element.nom + " isn't available");
+        return isBuildingPlaceable(position, basicTowers[element]);
     }
 
-    public bool isTowerPlaceable(Vector2 position)
+    public bool isBuildingPlaceable(Vector2 position, EvolutionBatiment upgrade)
     {
-        if (basicTower.GetComponentInChildren<Tour>().cout > argent) return false;
-        towerCreatorCursor.transform.position = position;
-        return (area.OverlapPoint(position) && !towerCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
+        if (upgrade.cost > argent) return false;
+        cursor.transform.position = position;
+        towerCollider.offset = upgrade.newBuilding.GetComponent<BoxCollider2D>().offset;
+        towerCollider.size = upgrade.newBuilding.GetComponent<BoxCollider2D>().size;
+        return (area.OverlapPoint(position) && !cursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
     }
 }

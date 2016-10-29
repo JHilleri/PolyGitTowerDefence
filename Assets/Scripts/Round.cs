@@ -5,13 +5,12 @@ public class Round : MonoBehaviour {
 
     private class UnitToSpawn
     {
-        public GameObject unit;
+        public Unite unit;
         public Vector2 position;
         public uint timeBeforSpawn;
-        public int faction;
+        public Joueur player;
         public Element element;
-        public int chemin;
-        public int etape;
+        public PointPassage path;
     }
     private List<UnitToSpawn> unitsToSpawn = new List<UnitToSpawn>();
 
@@ -28,20 +27,18 @@ public class Round : MonoBehaviour {
     }
 
     void startRound() {
-        GameObject[] barracks = GameObject.FindGameObjectsWithTag("barrack");
-        foreach (GameObject barrack in barracks)
+        Barrack[] barracks = GameObject.FindObjectsOfType<Barrack>();
+        foreach (var barrack in barracks)
         {
-            Baraquement barrackScript = barrack.GetComponent<Baraquement>();
-            for(uint index = 0; index < barrackScript.nbUnitToSpawnPerRound; ++index)
+            for(uint index = 0; index < barrack.nbUnitToSpawnPerRound; ++index)
             {
                 UnitToSpawn unitToSpawnToAdd = new UnitToSpawn();
-                unitToSpawnToAdd.unit = barrackScript.unitToSpawn;
+                unitToSpawnToAdd.unit = barrack.unitToSpawn;
                 unitToSpawnToAdd.position = barrack.transform.position;
-                unitToSpawnToAdd.faction = barrackScript.camp;
-                unitToSpawnToAdd.element = barrackScript.element;
-                unitToSpawnToAdd.chemin = barrackScript.chemin;
-                unitToSpawnToAdd.etape = barrackScript.etape;
-                unitToSpawnToAdd.timeBeforSpawn = index * barrackScript.spawnInterval;
+                unitToSpawnToAdd.player = barrack.Player;
+                unitToSpawnToAdd.element = barrack.element;
+                unitToSpawnToAdd.path = barrack.Path;
+                unitToSpawnToAdd.timeBeforSpawn = index * barrack.spawnInterval;
                 unitsToSpawn.Add(unitToSpawnToAdd);
             }
         }
@@ -74,13 +71,13 @@ public class Round : MonoBehaviour {
     {
         if(unitToTryToSpawn.timeBeforSpawn <= time)
         {
-            GameObject newUnit = Instantiate(unitToTryToSpawn.unit);
+            Unite newUnit = Instantiate(unitToTryToSpawn.unit);
             newUnit.transform.position = unitToTryToSpawn.position;
-            newUnit.GetComponent<Soldat>().camp = unitToTryToSpawn.faction;
+            newUnit.camp = unitToTryToSpawn.player.camp;
             newUnit.transform.parent = unitsContainer.transform;
             newUnit.GetComponent<Soldat>().element = unitToTryToSpawn.element;
-            newUnit.GetComponent<Soldat>().chemin = unitToTryToSpawn.chemin;
-            newUnit.GetComponent<Soldat>().etape = unitToTryToSpawn.etape;
+            newUnit.GetComponent<Soldat>().chemin = unitToTryToSpawn.path.numeroChemin;
+            newUnit.GetComponent<Soldat>().etape = unitToTryToSpawn.path.ordre;
             return true;
         }
         else

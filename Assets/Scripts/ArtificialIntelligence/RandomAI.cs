@@ -9,12 +9,13 @@ public class RandomAI : AI
         Joueur player = gameObject.GetComponent<Joueur>();
         int i = 0;
         if (player == null) throw new NullReferenceException("Player script not found");
-        while(player.argent > player.basicBarrack.GetComponent<Baraquement>().cout && i++ < 100000)
+        while( i++ < 100000)
         {
             Vector2 randomPosition = new Vector2(UnityEngine.Random.Range(player.area.bounds.min.x, player.area.bounds.max.x), UnityEngine.Random.Range(player.area.bounds.min.y, player.area.bounds.max.y));
-            if(player.isBarrackPlaceable(randomPosition))
+            Element randomElement = player.basicBarrackList[UnityEngine.Random.Range(0, player.basicBarrackList.Length)].newBuilding.element;
+            if (player.isBarrackPlaceable(randomPosition, randomElement))
             {
-                player.buildBarrack(randomPosition, player.basicBarrackList[UnityEngine.Random.Range(0, player.basicBarrackList.Length)].GetComponent<Baraquement>().element);
+                player.buildBarrack(randomPosition, randomElement);
             }
         }
     }

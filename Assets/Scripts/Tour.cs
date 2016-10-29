@@ -43,9 +43,9 @@ public class Tour : MonoBehaviour{
         unitesEnVie = 0;
         colorSpriteRenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
         colorSpriteRenderer.color = element.couleur;
-        menu = GetComponentInChildren<MenuContextuelTour>().gameObject;
-        menu.SetActive(false);
-        menuActif = false;
+        //menu = GetComponentInChildren<MenuContextuelTour>().gameObject;
+        //menu.SetActive(false);
+        //menuActif = false;
         stopTirs = false;
         Joueur[] listeJoueurs = FindObjectsOfType<Joueur>();
         foreach (Joueur joueur in listeJoueurs)
@@ -59,7 +59,7 @@ public class Tour : MonoBehaviour{
 	
 	// Update is called once per frame
 	protected virtual void FixedUpdate () {
-        if (menuActif)
+        /*if (menuActif)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -69,7 +69,7 @@ public class Tour : MonoBehaviour{
         else if (menu != null)
         {
             menu.SetActive(false);
-        }
+        }*/
         if (!Pause.isPaused)
         {
             if (compteur < intervalle)
@@ -143,12 +143,12 @@ public class Tour : MonoBehaviour{
             }
         }
 	}
-
+    /*
     void OnMouseDown()
     {
         menu.SetActive(true);
         menuActif = true;
-    }
+    }*/
 
     void tir()
     {
@@ -191,10 +191,10 @@ public class Tour : MonoBehaviour{
 
     public void evolue (int numero)
     {
-        if (proprietaire.argent >= ameliorations[numero].prixAmelioration)
+        if (proprietaire.argent >= ameliorations[numero].cost)
         {
-            proprietaire.argent -= ameliorations[numero].prixAmelioration;
-            GameObject nTour = (GameObject)Instantiate(ameliorations[numero].nouvelleTour, transform.parent);
+            proprietaire.argent -= ameliorations[numero].cost;
+            GameObject nTour = (GameObject)Instantiate(ameliorations[numero].newBuilding, transform.parent);
             nTour.transform.position = transform.position;
             nTour.GetComponent<Tour>().camp = camp;
             Destroy(gameObject);

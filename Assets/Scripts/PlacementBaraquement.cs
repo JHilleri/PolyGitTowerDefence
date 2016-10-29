@@ -16,7 +16,7 @@ public class PlacementBaraquement : MonoBehaviour {
     {
         get
         {
-            bool isPlaceable = player.isBarrackPlaceable(gameObject.transform.position);
+            bool isPlaceable = player.isBarrackPlaceable(gameObject.transform.position, element);
             if (isPlaceable != lastPlaceableState)
             {
                 spriteRenderer.color = (isPlaceable) ? originalColor : cantPlaceColor;

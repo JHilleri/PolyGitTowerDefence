@@ -12,13 +12,21 @@ public class Building : MonoBehaviour
     private Joueur player;
     private bool menuState = false;
 
+    public Joueur Player{
+        get{return player;}
+    }
+
     public virtual void Start()
     {
          player = GetComponentInParent<Joueur>();
 
-        action = (Action)actionModel.Clone();
-        action.Owner = gameObject;
-        action.element = element;
+        if(actionModel != null)
+        {
+            action = (Action)actionModel.Clone();
+            action.Owner = gameObject;
+            action.element = element;
+        }
+        
 
         menu = (GameObject)Instantiate(Resources.Load("MenuContextuel"), transform);
         menu.transform.position = transform.position;
@@ -35,16 +43,16 @@ public class Building : MonoBehaviour
             menu.SetActive(menuState);
         if (!Pause.isPaused)
         {
-            action.run();
+            if(action != null)action.run();
         }
     }
 
     public void evolve(int numero)
     {
-        if (player.argent >= ameliorations[numero].prixAmelioration)
+        if (player.argent >= ameliorations[numero].cost)
         {
-            player.argent -= ameliorations[numero].prixAmelioration;
-            GameObject nextVersion = (GameObject)Instantiate(ameliorations[numero].nouvelleTour, transform.parent);
+            player.argent -= ameliorations[numero].cost;
+            GameObject nextVersion = (GameObject)Instantiate(ameliorations[numero].newBuilding, transform.parent);
             nextVersion.transform.position = transform.position;
             Destroy(gameObject);
         }
@@ -56,7 +64,10 @@ public class Building : MonoBehaviour
 
     public void OnMouseDown()
     {
-        menu.SetActive(!menu.activeSelf);
-        menuState = true;
+        if(FindObjectOfType<Partie>().joueurGauche.GetInstanceID() == Player.GetInstanceID())
+        {
+            menu.SetActive(!menu.activeSelf);
+            menuState = true;
+        }
     }
 }

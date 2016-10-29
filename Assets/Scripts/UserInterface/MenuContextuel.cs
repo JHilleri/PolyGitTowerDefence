@@ -34,7 +34,7 @@ public class MenuContextuel : MonoBehaviour {
 
     public void click(int numero)
     {
-        if (numero < building.ameliorations.Length && building.ameliorations[numero].nouvelleTour != null)
+        if (numero < building.ameliorations.Length && building.ameliorations[numero].newBuilding != null)
         {
             building.evolve(numero);
         }
