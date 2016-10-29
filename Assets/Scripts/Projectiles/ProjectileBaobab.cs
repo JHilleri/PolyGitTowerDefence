@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/*
+ * todo : update for the new projectile system
 public class ProjectileBaobab : Projectile_old {
 
 
@@ -27,3 +28,4 @@ public class ProjectileBaobab : Projectile_old {
         }
     }
 }
+*/

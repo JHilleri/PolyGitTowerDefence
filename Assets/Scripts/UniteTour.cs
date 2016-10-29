@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class UniteTour : Unite {
 
-    public Tour tour;
+    public Action tour; // todo : make an invoker Action
     public bool cibleAllies;
     public bool cibleEnnemis;
     public bool stopRecherches;
@@ -40,7 +40,7 @@ public abstract class UniteTour : Unite {
             {
                 if (!stopRecherches)
                 {
-                    if (calcDistance(tour.gameObject) < porteeTour)
+                    if (calcDistance(tour.Owner) < porteeTour)
                     {
                         Soldat[] soldats = FindObjectsOfType<Soldat>();
                         float minDist = detect + 1;
@@ -60,7 +60,7 @@ public abstract class UniteTour : Unite {
                     }
                     else
                     {
-                        objectif = tour.gameObject;
+                        objectif = tour.Owner;
                     }
                 }
                 if (objectifAction == null)
@@ -132,7 +132,7 @@ public abstract class UniteTour : Unite {
 
     internal virtual void meurt()
     {
-        tour.uniteMorte();
+        //tour.uniteMorte();
         Destroy(gameObject);
     }
 }

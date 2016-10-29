@@ -1,6 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+[System.Flags]
+public enum TargetType
+{
+    none = 0,
+    enemy = 1,
+    ally = 2,
+    both = enemy | ally
+}
+
 public abstract class Unite : MonoBehaviour {
 
     public Element element;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/*
 public class TourBaobab : Tour {
 
     public float degat;
@@ -44,3 +44,4 @@ public class TourBaobab : Tour {
         stopTirs = true;
     }
 }
+*/
