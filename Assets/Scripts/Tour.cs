@@ -100,10 +100,10 @@ public class Tour : MonoBehaviour{
                     }
                     if (!projectile_obstacle) // si la tourelle envoi pas des obstacles, la coorddonnée cible est celle de l'étape du soldat
                     {
-                        Projectile[] listeProjectiles = FindObjectsOfType<Projectile>();
-                        foreach (Projectile proj in listeProjectiles)
+                        Projectile_old[] listeProjectiles = FindObjectsOfType<Projectile_old>();
+                        foreach (Projectile_old proj in listeProjectiles)
                         {
-                            if (proj.GetComponent<Projectile>().attaquable)
+                            if (proj.GetComponent<Projectile_old>().attaquable)
                             {
                                 dist = distance(proj.gameObject);
                                 if (proj.camp != camp && dist < minDist)
@@ -156,7 +156,7 @@ public class Tour : MonoBehaviour{
         firedProjectile.GetComponent<SpriteRenderer>().color = element.couleur;
         firedProjectile.transform.position = transform.position;
         firedProjectile.transform.parent = transform;
-        Projectile script = firedProjectile.GetComponent<Projectile>();
+        Projectile_old script = firedProjectile.GetComponent<Projectile_old>();
         script.element = element;
         script.camp = camp;
         if (projectile_obstacle)

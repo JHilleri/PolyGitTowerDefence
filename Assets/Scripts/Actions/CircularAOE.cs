@@ -8,16 +8,7 @@ using System;
 
     public override object Clone()
     {
-        CircularAOE clone = CreateInstance<CircularAOE>();
-
-        clone.range = range;
-        clone.reloadDuration = reloadDuration;
-        clone.targetsType = targetsType;
-        clone.element = element;
-        clone.effectsToApply = (Effect[])effectsToApply.Clone();
-        clone.damages = damages;
-
-        return clone;
+        return UnityEngine.Object.Instantiate(this);
     }
 
     public override void run()

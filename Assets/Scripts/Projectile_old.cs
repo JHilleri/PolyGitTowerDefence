@@ -10,7 +10,7 @@ using System;
     both = enemy | ally
 }
 
-public class Projectile : MonoBehaviour {
+public class Projectile_old : MonoBehaviour {
 
     public int damage;
     public Tour tour;
@@ -105,7 +105,7 @@ public class Projectile : MonoBehaviour {
         //ne rentre jamais ici !
         else // si en contact avec le projectile d'obstacle
         {
-            Projectile proj = other.gameObject.GetComponent<Projectile>();
+            Projectile_old proj = other.gameObject.GetComponent<Projectile_old>();
             if (proj != null) // toujours == nul
             {
                 if ((targetType & TargetType.enemy) != 0 && proj.camp != camp && proj.attaquable)
@@ -163,7 +163,7 @@ public class Projectile : MonoBehaviour {
             GameObject projectileTire = Instantiate(projectileAdditionnel);
             projectileTire.transform.position = transform.position;
             projectileTire.transform.parent = transform.parent;
-            Projectile script = projectileTire.GetComponent<Projectile>();
+            Projectile_old script = projectileTire.GetComponent<Projectile_old>();
             script.element = element;
             script.camp = camp;
             script.target = cible.transform.position;

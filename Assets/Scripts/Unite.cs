@@ -58,6 +58,14 @@ public abstract class Unite : MonoBehaviour {
         else actualVersion = effectToAdd.Clone();
     }
 
+    public void addEffects(Effect[] effects)
+    {
+        foreach(var effect in effects)
+        {
+            addEffect(effect);
+        }
+    }
+
     public void removeEffect(bool ennemi)
     {
     }

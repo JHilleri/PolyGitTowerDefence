@@ -6,4 +6,8 @@ public abstract class RangedAction : Action {
     public int reloadDuration;
 
     protected int reload = 0;
+    public override object Clone()
+    {
+        return UnityEngine.Object.Instantiate(this);
+    }
 }

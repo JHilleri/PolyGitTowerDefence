@@ -11,14 +11,7 @@ public class BasicShooterAction : RangedAction
 
     public override object Clone()
     {
-        BasicShooterAction clone = CreateInstance<BasicShooterAction>();
-
-        clone.range = range;
-        clone.firedProjectil = firedProjectil;
-        clone.reloadDuration = reloadDuration;
-        clone.element = element;
-
-        return clone;
+        return UnityEngine.Object.Instantiate(this);
     }
 
     public override void run()
@@ -29,7 +22,7 @@ public class BasicShooterAction : RangedAction
             {
                 searchTarget();
             }
-            if (target != null) fire(target.transform.position);
+            if (target != null) fire(target);
         }
         else
         {
@@ -54,15 +47,18 @@ public class BasicShooterAction : RangedAction
         target = (nearbyEntitys.Count > 0) ? nearbyEntitys[0].gameObject.GetComponent<Unite>() : null;
     }
 
-    private void fire(Vector2 targetLocation)
+    private void fire(Unite target)
     {
-        Projectile projectil = Instantiate(firedProjectil);
-        projectil.transform.parent = Owner.transform;
-        projectil.transform.position = Owner.transform.position;
-        projectil.target = target.transform.position;
-        projectil.Element = element;
-        projectil.camp = Owner.GetComponentInParent<Joueur>().camp;
-        projectil.portee = 2 * range;
-
+        Projectile projectile = Instantiate(firedProjectil, Owner.transform) as Projectile;
+        projectile.transform.position = Owner.transform.position;
+        projectile.Target = target;
+        projectile.element = element;
+        projectile.Player = Owner.GetComponentInParent<Joueur>();
+        projectile.range = 2 * range;
+        var coloredProjectile = projectile.GetComponent<ColoredProjectile>();
+        if (coloredProjectile != null)
+        {
+            coloredProjectile.updateColor();
+        }
     }
 }

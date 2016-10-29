@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ProjectileAOE : Projectile {
+public class ProjectileAOE : Projectile_old {
 
     public ZoneEffet effet;
 

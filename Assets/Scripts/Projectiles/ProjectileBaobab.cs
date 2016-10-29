@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ProjectileBaobab : Projectile {
+public class ProjectileBaobab : Projectile_old {
 
 
 

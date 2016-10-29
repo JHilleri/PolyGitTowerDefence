@@ -21,6 +21,9 @@ public abstract class Action : ScriptableObject, System.ICloneable {
         get{return player;}
     }
 
-    public abstract object Clone();
+    public virtual object Clone()
+    {
+        return UnityEngine.Object.Instantiate(this);
+    }
     public abstract void run();
 }
