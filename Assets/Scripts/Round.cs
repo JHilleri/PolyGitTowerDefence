@@ -19,12 +19,14 @@ public class Round : MonoBehaviour {
 
     private uint time;
     public uint nbRound = 0;
+    public uint nbFramesAvantDebut;
+    private uint compteurFrames; 
 
     // Use this for initialization
     void Start() {
         unitsContainer = new GameObject("Units");
         unitsContainer.transform.parent = transform;
-        startRound();
+        compteurFrames = 0;
     }
 
     void startRound() {
@@ -61,11 +63,19 @@ public class Round : MonoBehaviour {
     {
         if (!Pause.isPaused)
         {
-            unitsToSpawn.RemoveAll(unitToSpawn => tryToSpawnUnit(unitToSpawn));
-            ++time;
-            if (isEnd()) {
-                startRound();
-                foreach(var player in GameObject.FindGameObjectsWithTag("Player")) player.GetComponent<Joueur>().argent += 25;
+            if (compteurFrames < nbFramesAvantDebut)
+            {
+                compteurFrames++;
+            }
+            else
+            {
+                unitsToSpawn.RemoveAll(unitToSpawn => tryToSpawnUnit(unitToSpawn));
+                ++time;
+                if (isEnd())
+                {
+                    startRound();
+                    foreach (var player in GameObject.FindGameObjectsWithTag("Player")) player.GetComponent<Joueur>().argent += 25;
+                }
             }
         }
     }
