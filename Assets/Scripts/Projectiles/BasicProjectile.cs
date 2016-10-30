@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 public class BasicProjectile : Projectile
 {
@@ -22,24 +20,17 @@ public class BasicProjectile : Projectile
         if (!Pause.isPaused)
         {
             transform.Translate(Direction * speed);
-            if (Vector2.Distance(startPosition, transform.position) > range)
+            if ( ((Vector2)transform.localPosition).magnitude > range )
             {
                 Destroy(gameObject);
             }
         }
     }
 
-    protected override void OnTriggerEnter2D(Collider2D other)
+    protected override void onTargetReached(Unite target)
     {
-        var unit = other.GetComponent<Unite>();
-        if (unit != null)
-        {
-            if(((targetsType & TargetType.enemy) != 0 && unit.camp != Player.camp) || ((targetsType & TargetType.ally) != 0 && unit.camp == Player.camp))
-            {
-                unit.receiveDamages(damages, element);
-                unit.addEffects(effectsToApply);
-                Destroy(gameObject);
-            }
-        }
+        target.receiveDamages(damages, element);
+        target.addEffects(effectsToApply);
+        Destroy(gameObject);
     }
 }

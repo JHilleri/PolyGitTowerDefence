@@ -25,17 +25,16 @@ public class HomingProjectile : Projectile
         }
     }
 
-    protected override void OnTriggerEnter2D(Collider2D other)
+
+    protected override void onTargetReached(Unite target)
     {
-        var unit = other.GetComponent<Unite>();
-        if (unit != null)
-        {
-            if (unit == target)
-            {
-                unit.receiveDamages(damages, element);
-                unit.addEffects(effectsToApply);
-                Destroy(gameObject);
-            }
-        }
+        target.receiveDamages(damages, element);
+        target.addEffects(effectsToApply);
+        Destroy(gameObject);
+    }
+
+    protected override bool isTarget(Unite unit)
+    {
+        return (unit != null && unit == target);
     }
 }

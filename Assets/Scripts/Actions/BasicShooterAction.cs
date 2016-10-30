@@ -5,32 +5,20 @@ using System;
 [CreateAssetMenu(menuName = "Actions/BasicShooter")]
 public class BasicShooterAction : RangedAction
 {
-    public Projectile firedProjectil;
+    public Projectile firedProjectile;
 
     protected Unite target;
 
-    public override object Clone()
+    protected override void onReady()
     {
-        return UnityEngine.Object.Instantiate(this);
+        if (target == null || Vector2.Distance(Owner.transform.position, target.transform.position) > range)
+        {
+            searchTarget();
+        }
+        if (target != null) fire(target);
     }
 
-    public override void run()
-    {
-        if (reload++ == 0)
-        {
-            if (target == null || Vector2.Distance(Owner.transform.position, target.transform.position) > range)
-            {
-                searchTarget();
-            }
-            if (target != null) fire(target);
-        }
-        else
-        {
-            if (reload >= reloadDuration) reload = 0;
-        }
-    }
-
-    private void searchTarget()
+    protected virtual void searchTarget()
     {
         List<Collider2D> nearbyEntitys = new List<Collider2D>(Physics2D.OverlapCircleAll(Owner.transform.position, range));
         nearbyEntitys.RemoveAll(collider => {
@@ -47,18 +35,20 @@ public class BasicShooterAction : RangedAction
         target = (nearbyEntitys.Count > 0) ? nearbyEntitys[0].gameObject.GetComponent<Unite>() : null;
     }
 
-    private void fire(Unite target)
+    protected virtual void fire(Unite target)
     {
-        Projectile projectile = Instantiate(firedProjectil, Owner.transform) as Projectile;
+        Projectile projectile = Instantiate(firedProjectile, Owner.transform) as Projectile;
         projectile.transform.position = Owner.transform.position;
         projectile.Target = target;
         projectile.element = element;
         projectile.Player = Owner.GetComponentInParent<Joueur>();
         projectile.range = 2 * range;
+        projectile.Thrower = this;
         var coloredProjectile = projectile.GetComponent<ColoredProjectile>();
         if (coloredProjectile != null)
         {
             coloredProjectile.updateColor();
         }
+        startToReload();
     }
 }

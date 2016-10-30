@@ -24,6 +24,8 @@ public abstract class Unite : MonoBehaviour {
     protected float effectiveSpeed;
     protected float effectivesDamages;
 
+    protected bool isStun = false;
+
     protected List<Effect> effects = new List<Effect>();
 
     protected virtual void Start()
@@ -54,6 +56,7 @@ public abstract class Unite : MonoBehaviour {
         effectiveHitPoints *= effect.hpRelativeModifier;
 
         effectiveHitPoints -= effect.damage;
+        isStun = (isStun || effect.stun);
     }
 
     public void addEffect(Effect effectToAdd)
@@ -75,13 +78,8 @@ public abstract class Unite : MonoBehaviour {
         }
     }
 
-    public void removeEffect(bool ennemi)
-    {
-    }
-
     public void applyEffects()
     {
-
         if (effects.Count != 0)
         {
             effects.RemoveAll(effect => (effect.haveDuration && effect.duration <= 0));
@@ -94,12 +92,18 @@ public abstract class Unite : MonoBehaviour {
         hitPoints = effectiveHitPoints * maxHitPoints / effectiveMaxHitPoints;
     }
 
+    public bool haveEffect(string effectName)
+    {
+        return effects.Exists(effect => (effect.name == effectName));
+    }
+
     private void resetEffectiveStats()
     {
         effectiveHitPoints = hitPoints;
         effectiveMaxHitPoints = maxHitPoints;
         effectivesDamages = damages;
         effectiveSpeed = speed;
+        isStun = false;
     }
 
     public void receiveDamages(float damages, Element damagesElement)

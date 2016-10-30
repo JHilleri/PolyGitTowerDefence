@@ -61,7 +61,7 @@ public class Soldat : Unite{
         base.FixedUpdate();
         if (!Pause.isPaused)
         {
-            if (!paralise)// Vérifie que le soldat n'est pas en pause
+            if (!paralise && !isStun)// Vérifie que le soldat n'est pas en pause
             {
                 if (!enCombat)// Si le soldat n'est pas en combat
                 {

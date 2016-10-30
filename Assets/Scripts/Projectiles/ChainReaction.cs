@@ -6,26 +6,20 @@ public class ChainReaction : HomingProjectile {
     public float chainRange;
 
     private List<Unite> alreadyHitUnits = new List<Unite>();
-    protected override void OnTriggerEnter2D(Collider2D other)
+
+    protected override void onTargetReached(Unite target)
     {
-        var unit = other.GetComponent<Unite>();
-        if (unit != null)
+        target.receiveDamages(damages, element);
+        target.addEffects(effectsToApply);
+        if (nbImpact-- > 0)
         {
-            if (unit == target)
+            var nextTarget = findNextTarget();
+            if (nextTarget != null)
             {
-                unit.receiveDamages(damages, element);
-                unit.addEffects(effectsToApply);
-                if(nbImpact-- > 0)
-                {
-                    var nextTarget = findNextTarget();
-                    if(nextTarget != null)
-                    {
-                        fireNextProjectile(nextTarget);
-                    }
-                }
-                Destroy(gameObject);
+                fireNextProjectile(nextTarget);
             }
         }
+        Destroy(gameObject);
     }
 
     private Unite findNextTarget()
@@ -57,6 +51,7 @@ public class ChainReaction : HomingProjectile {
         nextProjectile.Target = nextTarget;
         nextProjectile.Player = Player;
         nextProjectile.transform.parent = transform.parent;
+        nextProjectile.Thrower = Thrower;
         var coloredProjectile = nextProjectile.GetComponent<ColoredProjectile>();
         if (coloredProjectile != null)
         {

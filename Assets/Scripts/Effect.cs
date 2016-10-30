@@ -19,6 +19,7 @@ public class Effect : ScriptableObject, ICloneable{
     public float attackModifier = 1;
     public float damage = 0;
     public EffectType canRemove = EffectType.none;
+    public bool stun = false;
 
     public int duration = 1;
     public bool haveDuration = true;
@@ -37,6 +38,7 @@ public class Effect : ScriptableObject, ICloneable{
         clone.hpRelativeModifier = hpRelativeModifier;
         clone.attackModifier = attackModifier;
         clone.damage = damage;
+        clone.stun = stun;
         clone.canRemove = canRemove;
         return clone;
     }

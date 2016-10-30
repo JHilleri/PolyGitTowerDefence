@@ -12,7 +12,9 @@ public abstract class Projectile : MonoBehaviour
     public AudioClip firedAudioClip;
 
     private Joueur player;
+    private BasicShooterAction thrower;
     protected Vector2 startPosition;
+    
 
     public Joueur Player
     {
@@ -22,6 +24,12 @@ public abstract class Projectile : MonoBehaviour
 
     public abstract Unite Target { set; }
 
+    public BasicShooterAction Thrower
+    {
+        get{ return thrower;}
+        set{ thrower = value; }
+    }
+
     public virtual void Awake()
     {
         startPosition = transform.position;
@@ -29,5 +37,21 @@ public abstract class Projectile : MonoBehaviour
     }
 
     public abstract void FixedUpdate();
-    protected abstract void OnTriggerEnter2D(Collider2D other);
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        var unit = other.GetComponent<Unite>();
+        if (unit != null && isTarget(unit))
+        {
+            Thrower.haveHit(unit);
+            onTargetReached(unit);
+        }
+    }
+
+    protected virtual bool isTarget(Unite unit)
+    {
+        if (unit == null) return false;
+        return ((targetsType & TargetType.enemy) != 0 && unit.camp != Player.camp) || ((targetsType & TargetType.ally) != 0 && unit.camp == Player.camp);
+    }
+
+    protected abstract void onTargetReached(Unite target);
 }
