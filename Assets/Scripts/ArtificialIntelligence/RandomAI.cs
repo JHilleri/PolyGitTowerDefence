@@ -12,7 +12,6 @@ public class RandomAI : AI
         while(player.argent > player.basicBarrack.GetComponent<Baraquement>().cout && i++ < 100)
         {
             bool tower = UnityEngine.Random.Range(0, 2) == 1;
-            print(tower);
             Vector2 randomPosition = new Vector2(UnityEngine.Random.Range(player.area.bounds.min.x, player.area.bounds.max.x), UnityEngine.Random.Range(player.area.bounds.min.y, player.area.bounds.max.y));
             if(!tower && player.isBarrackPlaceable(randomPosition))
             {

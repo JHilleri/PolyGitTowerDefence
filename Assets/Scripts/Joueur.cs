@@ -110,7 +110,6 @@ public class Joueur : MonoBehaviour{
     {
         if (basicBarrack.GetComponentInChildren<Baraquement>().cout > argent) return false;
         barrackCreatorCursor.transform.position = position;
-        return true;
         return (area.OverlapPoint(position) && !barrackCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
     }
 
@@ -118,7 +117,6 @@ public class Joueur : MonoBehaviour{
     {
         if (basicTower.GetComponentInChildren<Tour>().cout > argent) return false;
         towerCreatorCursor.transform.position = position;
-        return true;
         return (area.OverlapPoint(position) && !towerCreatorCursor.GetComponent<Collider2D>().IsTouchingLayers(unbuildableLayers));
     }
 }

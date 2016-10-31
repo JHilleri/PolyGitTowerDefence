@@ -30,6 +30,7 @@ public class Round : MonoBehaviour {
         unitsContainer.transform.parent = transform;
         compteurFrames = 0;
         zoneTexte = GameObject.FindGameObjectWithTag("Description").GetComponent<Text>();
+        time = 0;
     }
 
     void startRound() {
@@ -41,7 +42,6 @@ public class Round : MonoBehaviour {
                 artificialIntelligence.beginRound();
             }
         }
-        System.Threading.Thread.Sleep(500);
         GameObject[] barracks = GameObject.FindGameObjectsWithTag("barrack");
         foreach (GameObject barrack in barracks)
         {
