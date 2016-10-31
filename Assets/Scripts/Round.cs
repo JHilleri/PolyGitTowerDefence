@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Round : MonoBehaviour {
 
@@ -20,16 +21,26 @@ public class Round : MonoBehaviour {
     private uint time;
     public uint nbRound = 0;
     public uint nbFramesAvantDebut;
-    private uint compteurFrames; 
+    private uint compteurFrames;
+    private Text zoneTexte;
 
     // Use this for initialization
     void Start() {
         unitsContainer = new GameObject("Units");
         unitsContainer.transform.parent = transform;
         compteurFrames = 0;
+        zoneTexte = GameObject.FindGameObjectWithTag("Description").GetComponent<Text>();
     }
 
     void startRound() {
+        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            AI artificialIntelligence = player.GetComponent<AI>();
+            if (artificialIntelligence != null)
+            {
+                artificialIntelligence.beginRound();
+            }
+        }
         GameObject[] barracks = GameObject.FindGameObjectsWithTag("barrack");
         foreach (GameObject barrack in barracks)
         {
@@ -49,14 +60,6 @@ public class Round : MonoBehaviour {
         }
         ++nbRound;
         time = 0;
-        foreach(var player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            AI artificialIntelligence = player.GetComponent<AI>();
-            if(artificialIntelligence != null)
-            {
-                artificialIntelligence.beginRound();
-            }
-        }
 	}
 	
 	void FixedUpdate()
@@ -66,6 +69,7 @@ public class Round : MonoBehaviour {
             if (compteurFrames < nbFramesAvantDebut)
             {
                 compteurFrames++;
+                zoneTexte.text = "Temps avant le début de la partie : "+(Mathf.Ceil((nbFramesAvantDebut - compteurFrames) / 60.0f).ToString());
             }
             else
             {
