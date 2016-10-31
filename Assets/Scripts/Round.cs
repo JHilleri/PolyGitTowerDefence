@@ -33,7 +33,7 @@ public class Round : MonoBehaviour {
     }
 
     void startRound() {
-        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
         {
             AI artificialIntelligence = player.GetComponent<AI>();
             if (artificialIntelligence != null)
@@ -41,6 +41,7 @@ public class Round : MonoBehaviour {
                 artificialIntelligence.beginRound();
             }
         }
+        System.Threading.Thread.Sleep(500);
         GameObject[] barracks = GameObject.FindGameObjectsWithTag("barrack");
         foreach (GameObject barrack in barracks)
         {
