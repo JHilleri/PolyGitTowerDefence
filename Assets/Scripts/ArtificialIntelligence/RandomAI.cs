@@ -13,13 +13,27 @@ public class RandomAI : AI
         {
             bool tower = UnityEngine.Random.Range(0, 2) == 1;
             Vector2 randomPosition = new Vector2(UnityEngine.Random.Range(player.area.bounds.min.x, player.area.bounds.max.x), UnityEngine.Random.Range(player.area.bounds.min.y, player.area.bounds.max.y));
-            if(!tower && player.isBarrackPlaceable(randomPosition))
+            if(!tower)
             {
-                player.buildBarrack(randomPosition, player.basicBarrackList[UnityEngine.Random.Range(0, player.basicBarrackList.Length)].GetComponent<Baraquement>().element);
+                try
+                {
+                    player.buildBarrack(randomPosition, player.basicBarrackList[UnityEngine.Random.Range(0, player.basicBarrackList.Length)].GetComponent<Baraquement>().element);
+                }
+                catch(ArgumentOutOfRangeException e)
+                {
+                    // Ne fait rien 
+                }
             }
-            if (tower && player.isTowerPlaceable(randomPosition))
+            if (tower)
             {
-                player.buildTower(randomPosition, player.basicTowerList[UnityEngine.Random.Range(0, player.basicTowerList.Length)].GetComponent<Tour>().element);
+                try
+                {
+                    player.buildTower(randomPosition, player.basicTowerList[UnityEngine.Random.Range(0, player.basicTowerList.Length)].GetComponent<Tour>().element);
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    // Ne fait rien 
+                }
             }
         }
     }

@@ -90,7 +90,7 @@ public class Baraquement : MonoBehaviour {
         {
             GameObject nTour = Instantiate(ameliorations[numero].nouvelleTour);
             nTour.transform.position = transform.position;
-            nTour.GetComponent<Tour>().camp = camp;
+            nTour.GetComponent<Baraquement>().camp = camp;
             Destroy(gameObject);
         }
         else
