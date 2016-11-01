@@ -35,14 +35,6 @@ public class Round : MonoBehaviour {
     }
 
     void startRound() {
-        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            AI artificialIntelligence = player.GetComponent<AI>();
-            if (artificialIntelligence != null)
-            {
-                artificialIntelligence.beginRound();
-            }
-        }
         GameObject[] barracks = GameObject.FindGameObjectsWithTag("barrack");
         foreach (GameObject barrack in barracks)
         {
@@ -68,6 +60,14 @@ public class Round : MonoBehaviour {
     {
         if (!Pause.isPaused)
         {
+            foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                AI artificialIntelligence = player.GetComponent<AI>();
+                if (artificialIntelligence != null)
+                {
+                    artificialIntelligence.beginRound();
+                }
+            }
             if (compteurFrames < nbFramesAvantDebut)
             {
                 compteurFrames++;
