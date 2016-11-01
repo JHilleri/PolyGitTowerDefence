@@ -86,7 +86,7 @@ public class Round : MonoBehaviour {
                         if(script.vie <= 0)
                         {
                             Partie partie = FindObjectOfType<Partie>();
-                            if (partie.typePartie == script.camp-1)
+                            if (partie.typePartie != script.camp-1)
                             {
                                 SceneManager.LoadScene("EcranVictoire");
                             }
