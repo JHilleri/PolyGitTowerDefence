@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Round : MonoBehaviour {
 
@@ -78,8 +79,24 @@ public class Round : MonoBehaviour {
                 ++time;
                 if (isEnd())
                 {
+                    foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+                    {
+                        Joueur script = player.GetComponent<Joueur>();
+                        script.argent += 25;
+                        if(script.vie <= 0)
+                        {
+                            Partie partie = FindObjectOfType<Partie>();
+                            if (partie.typePartie == script.camp-1)
+                            {
+                                SceneManager.LoadScene("EcranVictoire");
+                            }
+                            else
+                            {
+                                SceneManager.LoadScene("EcranDefaite");
+                            }
+                        }
+                    }
                     startRound();
-                    foreach (var player in GameObject.FindGameObjectsWithTag("Player")) player.GetComponent<Joueur>().argent += 25;
                 }
             }
         }
