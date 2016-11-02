@@ -19,6 +19,7 @@ public abstract class Unite : MonoBehaviour {
 
     protected virtual void Start()
     {
+        hitPoints = maxHitPoints;
         resetEffectiveStats();
     }
 
@@ -75,7 +76,8 @@ public abstract class Unite : MonoBehaviour {
                 if (effect.haveDuration) effect.duration--;
             }
         }
-        hitPoints = effectiveHitPoints * maxHitPoints / effectiveMaxHitPoints;
+        if(effectiveMaxHitPoints != 0)
+            hitPoints = effectiveHitPoints * maxHitPoints / effectiveMaxHitPoints;
     }
 
     private void resetEffectiveStats()
